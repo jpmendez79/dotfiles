@@ -549,7 +549,7 @@
 (use-package dashboard
   :ensure t
   :config
-  (setq dashboard-match-agenda-entry "-aveneriotrejo@gmailcom")
+  (setq dashboard-match-agenda-entry "-tag")
   (dashboard-setup-startup-hook))
 
 ;; Remote Profile variables

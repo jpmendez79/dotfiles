@@ -1,6 +1,6 @@
 ;; Personal Information
-(setq user-full-name "My Name")
-(setq user-mail-address "my@email.com")
+(setq user-full-name "Jesse Mendez")
+(setq user-mail-address "student@school.edu")
 (require 'ebdb-gnus)
 (require 'ebdb-message)
 (setq ebdb-message-auto-update-p 'query)
@@ -20,22 +20,22 @@
 
 (setq nnmail-expiry-target 'nnmail-fancy-expiry-target
        nnmail-fancy-expiry-targets
-       '((to-from "me@school.edu" "nnimap:Mail/lsu/Trash")
-         (to-from "me@personal.com" "nnimap:Mail/personal/[Gmail]/Trash")))
+       '((to-from "student@school.edu" "nnimap:Mail/lsu/Trash")
+         (to-from "personal@email.com" "nnimap:Mail/personal/[Gmail]/Trash")))
 ;; Posting Styles and Replies         
 (setq gnus-posting-styles
       '((".*" ; Matches all groups of messages
-         (address "Jesse Mendez <me@personal.com.com>")
+         (address "Jesse Mendez <personal@email.com>")
 	 	 ("X-Message-SMTP-Method" "smtp smtp.gmail.com 587 me@personal.com")
 	 )
         ("LSU" ; Matches Gnus group called "LSU"
-         (address "Jesse Mendez <me@school.edu>")
+         (address "Jesse Mendez <student@school.edu")
 	 (signature-file "~/.signature-lsu")
-	 ("X-Message-SMTP-Method" "smtp localhost 1025 me@school.edu"))
+	 ("X-Message-SMTP-Method" "smtp localhost 1025 student@school.edu"))
 	))
 (setq message-dont-reply-to-names
-      '("me@school.edu"
-        "me@personal.com"))
+      '("student@school.edu"
+        "personal@email.com"))
 
 
 ;; SMTP Servers

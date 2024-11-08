@@ -33,15 +33,6 @@
   (setq
    browse-url-generic-program  "~/.local/bin/wsl-browse.sh"
    browse-url-browser-function #'browse-url-generic)
-  ;; (setq browse-url-browser-function 'browse-url-generic
-  ;; 	browse-url-generic-program "explorer.exe")
-  ;; (let ((cmd-exe "/mnt/c/Windows/System32/cmd.exe")
-  ;;       (cmd-args '("/c" "start")))
-  ;;   (when (file-exists-p cmd-exe)
-  ;;     (setq browse-url-generic-program  cmd-exe
-  ;;           browse-url-generic-args     cmd-args
-  ;;           browse-url-browser-function 'browse-url-generic
-  ;;           search-web-default-browser 'browse-url-generic)))
 
 
   )
@@ -84,6 +75,16 @@
             components (cdr components)))
     (concat str (cl-reduce (lambda (a b) (concat a "/" b)) components))))
 
+(defun print-buffer-to-pdf ()
+  "Save the current buffer as a PDF."
+  (interactive)
+  (let* ((ps-file "/tmp/emacs-buffer.ps")
+         (pdf-file (concat (file-name-base (or (buffer-file-name) "untitled")) ".pdf")))
+    (ps-print-buffer ps-file)  ; Generate a PostScript file.
+    (shell-command (concat "ps2pdf " ps-file " " pdf-file))  ; Convert to PDF.
+    (delete-file ps-file)  ; Clean up.
+    (message "PDF saved as %s" pdf-file)))
+
 ;; Look and feel
 (require 'notifications)
 (display-time-mode 1)
@@ -112,12 +113,6 @@
 ;; Images in dired
 (autoload 'iimage-mode "iimage" "Support Inline image minor mode." t)
 (autoload 'turn-on-iimage-mode "iimage" "Turn on Inline image minor mode." t)
-;; Eshell
-;; (add-hook 'eshell-mode-hook (lambda () (setenv "TERM" "xterm-256color")))
-;; (add-hook 'eshell-preoutput-filter-functions
-;;           'ansi-color-filter-apply)
-;; (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
-;; (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
 (with-eval-after-load 'esh-mode
   (add-hook 'eshell-before-prompt-hook
@@ -127,20 +122,11 @@
   (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
   (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
   (setenv "TERM" "xterm-256color")
-  (setq eshell-prompt-regexp "^[^#$\n]* ^[^#$\n] [#$] "
-	;; eshell-prompt-regexp "/^[A-Za-z][A-Za-z0-9_]*\@[A-Za-z][A-Za-z0-9_\.]*\:(\/[A-Za-z][A-Za-z0-9_]*)*$/ "
-	eshell-prompt-function
-	(lambda nil
-          (concat
-	   "[" (user-login-name) "@" (system-name) " "
-	   (if (string= (eshell/pwd) (getenv "HOME"))
-	       "~" (eshell/basename (eshell/pwd)))
-	   "]"
-	   (if (= (user-uid) 0) "# " "$ "))))
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
   )
 ;; Personal Info and PIM Settings
 (setq user-full-name "Jesse Mendez"
-      user-mail-address "me@school.com")
+      user-mail-address "student@school.edu")
 (setq compose-mail-user-agent-warnings nil)
 (setq message-send-mail-function 'message-send-mail-with-sendmail)
 (setq calendar-latitude 30.4)
@@ -151,6 +137,8 @@
 
 ;; Utilities and Tools
 ;; Programming Settings
+
+;; C stuff
 (setq c-default-style '((java-mode . "java")
 			(awk-mode . "awk")
 			(other . "linux")))
@@ -161,6 +149,9 @@
 (add-hook 'emacs-lisp-mode-hook 'electric-pair-mode)
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 (add-hook 'c++-mode-hook 'eglot-ensure)
+
+;; Python stuff
+(add-hook 'python-mode-hook 'eglot-ensure)
 
 (use-package rainbow-mode
   :ensure t
@@ -180,6 +171,9 @@
   (completion-category-defaults nil)
   (completion-category-overrides
    '((file (styles partial-completion)))))
+
+(use-package envrc
+  :hook (after-init . envrc-global-mode))
 
 (use-package detached
   :init
@@ -231,16 +225,16 @@
   :config
   (require 'org-caldav)
   (setq org-caldav-url "http://localhost:1080/users")
-  (setq org-caldav-calendar-id "me@school.edu/Calendar")
+  (setq org-caldav-calendar-id "student@school.edu/Calendar")
   (setq org-caldav-files nil)
   (setq org-caldav-inbox "~/Dropbox/org/cal_caldav.org")
   (setq org-caldav-uuid-extension ".EML")
   (setq org-caldav-save-directory "~/Dropbox/org/org-caldav/")
   (setq org-icalendar-timezone "US/Central")
   (setq org-caldav-calendars
-  '((:calendar-id "me@school.edu/Calendar"
+  '((:calendar-id "student@school.edu/Calendar"
      :inbox "~/Dropbox/org/cal_school.org")
-    (:calendar-id "me@school.edu/calendar/Personal"
+    (:calendar-id "student@school.edu/calendar/Personal"
      :inbox "~/Dropbox/org/cal_personal.org")) )
   )
 
@@ -307,7 +301,7 @@
      ("i" "Capture an idea to inbox" entry (file "~/Dropbox/org/inbox.org") "* %?\n")
      ("n" "Capture a next item" entry (file+headline "~/Dropbox/org/gtd.org" "Tasks") "* NEXT %?%^G\n")
      ("j" "Journal" entry (file+datetree "~/Dropbox/org/physics_research.org") 
-"** %^{Heading}" :jump-to-captured t) 
+"** %^{Heading}" :jump-to-captured t :tree-type week) 
      ))
   (org-directory "~/Dropbox/org")
   (org-agenda-custom-commands 
@@ -540,18 +534,6 @@
   (setq lsp-tex-server 'digestif)
   )
 
-(use-package pyvenv
-  :ensure t
-  :init
-  (setenv "WORKON_HOME" "~/.virtualenvs/")
-  :config
-  ;; Set correct Python1 interpreter
-  (setq pyvenv-post-activate-hooks
-	(list (lambda ()
-		(setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python")))))
-  (setq pyvenv-post-deactivate-hooks
-	(list (lambda ()
-		(setq python-shell-interpreter "python")))))
 
 (use-package alert
   :commands (alert)
@@ -573,15 +555,15 @@
 ;; Remote Profile variables
 ;; Remote Tramp PATH
 ;; (add-to-list 'tramp-default-remote-path 'tramp-own-remote-path)
-(require 'tramp)
-(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-
+(use-package tramp
+    :config
+    (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 ;; Connection Variables
 (connection-local-set-profile-variables
  'remote-detached-gpvm
  '((detached-shell-program . "/bin/bash")
-   (detached-session-directory . "path/.dtach-session")
-   (detached-dtach-program . "/path/dtach")))
+   (detached-session-directory . "/path/to/somewhere/.dtach-session")
+   (detached-dtach-program . "/path/to/somewhere/.bin/dtach")))
 (connection-local-set-profile-variables
  'remote-bash
  '((shell-file-name . "/bin/bash")
@@ -605,7 +587,7 @@
 (connection-local-set-profiles
  '(:machine "uboonepro") 'remote-detached-gpvm)
 (connection-local-set-profiles
- '(:protocol "ssh") 'remote-bash)
+ '(:protocol "sshx") 'remote-bash)
 
 (server-start)
 

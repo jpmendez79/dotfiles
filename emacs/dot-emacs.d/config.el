@@ -90,6 +90,7 @@
 (display-time-mode 1)
 (display-battery-mode 1)
 (column-number-mode 1)
+(windmove-default-keybindings)
 ;; (add-to-list 'default-frame-alist
 ;;              '(font . "DejaVu Sans Mono-11"))
 

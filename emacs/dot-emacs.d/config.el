@@ -570,6 +570,20 @@
  '((shell-file-name . "/bin/bash")
    (shell-command-switch . "-c")
    (shell-login-switch . "-l")))
+;; (connection-local-set-profile-variables
+;;  'hep-root
+;;  '((print "HI")
+;;    (add-to-list 'tramp-remote-process-environment "ROOTSYS=/home/jpmendez/code/root_install")))
+;; Define a profile with specific environment variables for a remote host
+(connection-local-set-profile-variables
+ 'my-remote-host-profile
+ '((process-environment . ("PATH=/home/jpmendez/code/root_install/bin:$PATH"
+                           "ROOTSYS=/home/jpmendez/code/root_install"
+                           "LD_LIBRARY_PATH=/custom/path/to/libs:$LD_LIBRARY_PATH"))))
+
+;; Apply the profile to a specific host and TRAMP method
+
+
 
 
 (connection-local-set-profiles
@@ -589,6 +603,13 @@
  '(:machine "uboonepro") 'remote-detached-gpvm)
 (connection-local-set-profiles
  '(:protocol "sshx") 'remote-bash)
-
+;; (connection-local-set-profiles
+;;  '(:machine "pg08") 'hep-root)
+;; (connection-local-set-profiles
+;;  '(:application tramp :machine "pg08" :protocol "sshx")
+;;  'my-remote-host-profile)
+(add-to-list 'tramp-connection-properties
+             (list (regexp-quote "/sshx:pg08:/")  ; Replace with your remote host
+                   :shell "/bin/bash --login -i -c \"source /home/jpmendez/code/root_install/bin/thisroot.sh && exec $SHELL\""))
 (server-start)
 

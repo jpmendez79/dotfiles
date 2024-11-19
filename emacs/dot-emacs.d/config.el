@@ -550,6 +550,7 @@
 (use-package dashboard
   :ensure t
   :config
+  (setq recentf-auto-cleanup 'never) ;; disable before we start recentf!
   (setq dashboard-match-agenda-entry "-tag")
   (dashboard-setup-startup-hook))
 

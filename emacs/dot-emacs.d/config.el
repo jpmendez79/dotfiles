@@ -85,6 +85,7 @@
     (delete-file ps-file)  ; Clean up.
     (message "PDF saved as %s" pdf-file)))
 
+
 ;; Look and feel
 (require 'notifications)
 (display-time-mode 1)
@@ -115,11 +116,16 @@
 (autoload 'iimage-mode "iimage" "Support Inline image minor mode." t)
 (autoload 'turn-on-iimage-mode "iimage" "Turn on Inline image minor mode." t)
 
+;; Eshell stuff
+(require 'eshell)
+(add-to-list 'eshell-modules-list 'eshell-smart)
+(setq eshell-where-to-jump 'begin)
+(setq eshell-review-quick-commands nil)
+(setq eshell-smart-space-goes-to-end t)
 (with-eval-after-load 'esh-mode
   (add-hook 'eshell-before-prompt-hook
             (lambda ()
               (setq xterm-color-preserve-properties t)))
-
   (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
   (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
   (setenv "TERM" "xterm-256color")
@@ -541,6 +547,52 @@
   :init
   (setq alert-default-style 'mode-line))
 
+
+(use-package slack
+  :bind (("C-c S K" . slack-stop)
+         ("C-c S c" . slack-select-rooms)
+         ("C-c S u" . slack-select-unread-rooms)
+         ("C-c S U" . slack-user-select)
+         ("C-c S s" . slack-search-from-messages)
+         ("C-c S J" . slack-jump-to-browser)
+         ("C-c S j" . slack-jump-to-app)
+         ("C-c S e" . slack-insert-emoji)
+         ("C-c S E" . slack-message-edit)
+         ("C-c S r" . slack-message-add-reaction)
+         ("C-c S t" . slack-thread-show-or-create)
+         ("C-c S g" . slack-message-redisplay)
+         ("C-c S G" . slack-conversations-list-update-quick)
+         ("C-c S q" . slack-quote-and-reply)
+         ("C-c S Q" . slack-quote-and-reply-with-link)
+         (:map slack-mode-map
+               (("@" . slack-message-embed-mention)
+                ("#" . slack-message-embed-channel)))
+         (:map slack-thread-message-buffer-mode-map
+               (("C-c '" . slack-message-write-another-buffer)
+                ("@" . slack-message-embed-mention)
+                ("#" . slack-message-embed-channel)))
+         (:map slack-message-buffer-mode-map
+               (("C-c '" . slack-message-write-another-buffer)))
+         (:map slack-message-compose-buffer-mode-map
+               (("C-c '" . slack-message-send-from-buffer)))
+	 
+         )
+  :custom
+  (slack-extra-subscribed-channels (mapcar 'intern (list "some-channel")))
+  :config
+  (slack-register-team
+     :name "Microboone"
+     :token (auth-source-pick-first-password
+             :host "microboone.slack.com"
+             :user "jmend46@lsu.edu")
+     :cookie (auth-source-pick-first-password
+             :host "microboone.slack.com"
+             :user "jmend46@lsu.edu^cookie")
+     :full-and-display-names t
+     :default t
+     :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically
+     ))
+
 ;; Ledger mode
 (use-package ledger-mode
   :hook (ledger-mode . my-ledger-hook)
@@ -560,6 +612,7 @@
 (use-package tramp
     :config
     (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+
 ;; Connection Variables
 (connection-local-set-profile-variables
  'remote-detached-gpvm
@@ -571,18 +624,12 @@
  '((shell-file-name . "/bin/bash")
    (shell-command-switch . "-c")
    (shell-login-switch . "-l")))
-;; (connection-local-set-profile-variables
-;;  'hep-root
-;;  '((print "HI")
-;;    (add-to-list 'tramp-remote-process-environment "ROOTSYS=/home/jpmendez/code/root_install")))
-;; Define a profile with specific environment variables for a remote host
 (connection-local-set-profile-variables
- 'my-remote-host-profile
- '((process-environment . ("PATH=/home/jpmendez/code/root_install/bin:$PATH"
-                           "ROOTSYS=/home/jpmendez/code/root_install"
-                           "LD_LIBRARY_PATH=/custom/path/to/libs:$LD_LIBRARY_PATH"))))
+ 'remote-root-profile
+ '((explicit-shell-file-name . "/bin/bash")
+   (explicit-bash-args . ("--login" "-i"))))
 
-;; Apply the profile to a specific host and TRAMP method
+
 
 
 
@@ -603,14 +650,7 @@
 (connection-local-set-profiles
  '(:machine "uboonepro") 'remote-detached-gpvm)
 (connection-local-set-profiles
- '(:protocol "sshx") 'remote-bash)
-;; (connection-local-set-profiles
-;;  '(:machine "pg08") 'hep-root)
-;; (connection-local-set-profiles
-;;  '(:application tramp :machine "pg08" :protocol "sshx")
-;;  'my-remote-host-profile)
-(add-to-list 'tramp-connection-properties
-             (list (regexp-quote "/sshx:pg08:/")  ; Replace with your remote host
-                   :shell "/bin/bash --login -i -c \"source /home/jpmendez/code/root_install/bin/thisroot.sh && exec $SHELL\""))
+ '(:machine "pg8") 'remote-root-profile)
+
 (server-start)
 

@@ -87,7 +87,12 @@
 
 
 ;; Look and feel
-(require 'notifications)
+;; (require 'notifications)
+(fringe-mode)
+(use-package alert
+  :commands (alert)
+  :init
+  (setq alert-default-style 'fringe))
 (display-time-mode 1)
 (display-battery-mode 1)
 (column-number-mode 1)
@@ -164,12 +169,12 @@
   :ensure t
   )
 
-(use-package vertico
-  :ensure t
-  :init
-  (vertico-mode)
-  :custom
-  (vertico-sort-function 'vertico-sort-history-alpha))
+;; (use-package vertico
+;;   :ensure t
+;;   :init
+;;   (vertico-mode)
+;;   :custom
+;;   (vertico-sort-function 'vertico-sort-history-alpha))
 
 (use-package orderless
   :ensure t
@@ -542,12 +547,6 @@
   )
 
 
-(use-package alert
-  :commands (alert)
-  :init
-  (setq alert-default-style 'mode-line))
-
-
 (use-package slack
   :bind (("C-c S K" . slack-stop)
          ("C-c S c" . slack-select-rooms)
@@ -579,7 +578,9 @@
          )
   :custom
   (slack-extra-subscribed-channels (mapcar 'intern (list "some-channel")))
+  
   :config
+  (setq slack-buffer-emojify t)
   (slack-register-team
      :name "Microboone"
      :token (auth-source-pick-first-password

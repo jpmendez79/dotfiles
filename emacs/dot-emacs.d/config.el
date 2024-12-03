@@ -169,12 +169,12 @@
   :ensure t
   )
 
-;; (use-package vertico
-;;   :ensure t
-;;   :init
-;;   (vertico-mode)
-;;   :custom
-;;   (vertico-sort-function 'vertico-sort-history-alpha))
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode)
+  :custom
+  (vertico-sort-function 'vertico-sort-history-alpha))
 
 (use-package orderless
   :ensure t
@@ -187,30 +187,30 @@
 (use-package envrc
   :hook (after-init . envrc-global-mode))
 
-(use-package detached
-  :init
-  (detached-init)
-  :bind
-  (;; Replace `async-shell-command' with `detached-shell-command'
-   ([remap async-shell-command] . detached-shell-command)
-   ;; Replace `compile' with `detached-compile'
-   ([remap compile] . detached-compile)
-   ([remap recompile] . detached-compile-recompile)
-   ;; Replace built in completion of sessions with `consult'
-   ([remap detached-open-session] . detached-consult-session))
-  ("C-c m v" . detached-view-session)
-  ("C-c m a" . detached-attach-session)
-  ("C-c m =" . detached-diff-session)
-  ("C-c m c" . detached-compile-session)
-  ("C-c m r" . detached-rerun-session)
-  ("C-c m i" . detached-insert-session-command)
-  ("C-c m w" . detached-copy-session-command)
-  ("C-c m W" . detached-copy-session-output)
-  ("C-c m k" . detached-kill-session)
-  ("C-c m d" . detached-delete-session)
+;; (use-package detached
+;;   :init
+;;   (detached-init)
+;;   :bind
+;;   (;; Replace `async-shell-command' with `detached-shell-command'
+;;    ([remap async-shell-command] . detached-shell-command)
+;;    ;; Replace `compile' with `detached-compile'
+;;    ([remap compile] . detached-compile)
+;;    ([remap recompile] . detached-compile-recompile)
+;;    ;; Replace built in completion of sessions with `consult'
+;;    ([remap detached-open-session] . detached-consult-session))
+;;   ("C-c m v" . detached-view-session)
+;;   ("C-c m a" . detached-attach-session)
+;;   ("C-c m =" . detached-diff-session)
+;;   ("C-c m c" . detached-compile-session)
+;;   ("C-c m r" . detached-rerun-session)
+;;   ("C-c m i" . detached-insert-session-command)
+;;   ("C-c m w" . detached-copy-session-command)
+;;   ("C-c m W" . detached-copy-session-output)
+;;   ("C-c m k" . detached-kill-session)
+;;   ("C-c m d" . detached-delete-session)
   
-  :custom ((detached-show-output-on-attach t)
-           (detached-terminal-data-command system-type)))
+;;   :custom ((detached-show-output-on-attach t)
+;;            (detached-terminal-data-command system-type)))
 
 
 ;; Enable richer annotations using the Marginalia package
@@ -464,12 +464,17 @@
 
 (use-package denote
   :ensure t
+  :init
+  (require 'denote-org-extras)
+  (require 'denote-journal-extras)
+  (denote-rename-buffer-mode 1)
   :custom
   (denote-directory "~/Dropbox/denote")
   (denote-sort-keywords t)
   :hook (dired-mode . denote-dired-mode)
   :bind
   (("C-c d n" . denote-create-note)
+   ("C-c d j" . denote-journal-extras-new-entry)
    ("C-c d d" . denote-date)
    ("C-c d i" . denote-link-or-create)
    ("C-c d l" . denote-find-link)
@@ -635,21 +640,21 @@
 
 
 
-(connection-local-set-profiles
- '(:machine "ub1")
- 'remote-detached-gpvm)
-(connection-local-set-profiles
- '(:machine "ub2") 'remote-detached-gpvm)
-(connection-local-set-profiles
- '(:machine "ub3") 'remote-detached-gpvm)
-(connection-local-set-profiles
- '(:machine "ub4") 'remote-detached-gpvm)
-(connection-local-set-profiles
- '(:machine "ub5") 'remote-detached-gpvm)
-(connection-local-set-profiles
- '(:machine "ub6") 'remote-detached-gpvm)
-(connection-local-set-profiles
- '(:machine "uboonepro") 'remote-detached-gpvm)
+;; (connection-local-set-profiles
+;;  '(:machine "ub1")
+;;  'remote-detached-gpvm)
+;; (connection-local-set-profiles
+;;  '(:machine "ub2") 'remote-detached-gpvm)
+;; (connection-local-set-profiles
+;;  '(:machine "ub3") 'remote-detached-gpvm)
+;; (connection-local-set-profiles
+;;  '(:machine "ub4") 'remote-detached-gpvm)
+;; (connection-local-set-profiles
+;;  '(:machine "ub5") 'remote-detached-gpvm)
+;; (connection-local-set-profiles
+;;  '(:machine "ub6") 'remote-detached-gpvm)
+;; (connection-local-set-profiles
+;;  '(:machine "uboonepro") 'remote-detached-gpvm)
 (connection-local-set-profiles
  '(:machine "pg8") 'remote-root-profile)
 

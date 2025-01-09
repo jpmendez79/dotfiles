@@ -7,6 +7,8 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+(add-to-list 'load-path "~/.emacs.d/package-src/denote")
+
 (require 'plstore)
 (add-to-list 'load-path "~/.emacs.d/org-gantt-master")
 (package-initialize)
@@ -14,28 +16,22 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-;; Application specific settings
 (eval-and-compile
   (setq use-package-always-ensure t
         use-package-expand-minimally t))
 
-   (setq browse-url-browser-function 'browse-url-generic
-	 browse-url-generic-program "/usr/bin/firefox-bin")
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "/usr/bin/firefox-bin")
+
 
 (when (and (eq system-type 'gnu/linux)
            (getenv "WSLENV"))
   (message "WSL")
   (setq visible-bell       nil
 	ring-bell-function #'ignore)
-  ;; Change the font size
-  ;; (add-to-list 'default-frame-alist
-  ;; 	       '(font . "DejaVu Sans Mono-18"))
   (setq
    browse-url-generic-program  "~/.local/bin/wsl-browse.sh"
-   browse-url-browser-function #'browse-url-generic)
-
-
-  )
+   browse-url-browser-function #'browse-url-generic))
 
 
 ;; Defun Section
@@ -57,6 +53,11 @@
   (display-line-numbers-mode)
   ;; (flycheck-prog-mode 1)
   )
+
+(defun my-python-mode-hook ()
+  (display-line-numbers-mode)
+  )
+
 
 (defun shortened-path (path max-len)
   "Return a modified version of `path', replacing some components
@@ -88,6 +89,12 @@
 
 ;; Look and feel
 ;; (require 'notifications)
+;; Use shell-like backspace C-h, rebind help to F1
+(define-key key-translation-map [?\C-h] [?\C-?])
+(global-set-key (kbd "<f1>") 'help-command)
+(require 'hardcore-mode)
+(global-hardcore-mode)
+
 (fringe-mode)
 (use-package alert
   :commands (alert)
@@ -121,21 +128,34 @@
 (autoload 'iimage-mode "iimage" "Support Inline image minor mode." t)
 (autoload 'turn-on-iimage-mode "iimage" "Turn on Inline image minor mode." t)
 
-;; Eshell stuff
+;; ;; Eshell stuff
+;; (use-package esh-mode
+;;   :ensure nil
+;;   :config
+;)
+(require 'esh-mode)
 (require 'eshell)
+;; (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
+;; (delq 'eshell-handle-ansi-color eshell-output-filter-functions)
+;; (add-hook 'eshell-before-prompt-hook
+;;           (lambda ()
+;;             (setq xterm-color-preserve-properties t)))
+;; (setq xterm-color-use-bold-for-bright t)
+;; (setenv "TERM" "rxvt-unicode-256color")
 (add-to-list 'eshell-modules-list 'eshell-smart)
 (setq eshell-where-to-jump 'begin)
 (setq eshell-review-quick-commands nil)
 (setq eshell-smart-space-goes-to-end t)
 (with-eval-after-load 'esh-mode
+  ;; Ensure xterm-color is used for processing ANSI sequences
   (add-hook 'eshell-before-prompt-hook
             (lambda ()
               (setq xterm-color-preserve-properties t)))
   (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
-  (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
-  (setenv "TERM" "xterm-256color")
-  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-  )
+  ;; Remove the default ANSI color handler
+  (setq eshell-output-filter-functions
+        (remove 'eshell-handle-ansi-color eshell-output-filter-functions)))
+  
 ;; Personal Info and PIM Settings
 (setq user-full-name "Jesse Mendez"
       user-mail-address "student@school.edu")
@@ -164,6 +184,7 @@
 
 ;; Python stuff
 (add-hook 'python-mode-hook 'eglot-ensure)
+(add-hook 'python-mode-hook 'my-python-mode-hook)
 
 (use-package rainbow-mode
   :ensure t
@@ -187,32 +208,6 @@
 (use-package envrc
   :hook (after-init . envrc-global-mode))
 
-;; (use-package detached
-;;   :init
-;;   (detached-init)
-;;   :bind
-;;   (;; Replace `async-shell-command' with `detached-shell-command'
-;;    ([remap async-shell-command] . detached-shell-command)
-;;    ;; Replace `compile' with `detached-compile'
-;;    ([remap compile] . detached-compile)
-;;    ([remap recompile] . detached-compile-recompile)
-;;    ;; Replace built in completion of sessions with `consult'
-;;    ([remap detached-open-session] . detached-consult-session))
-;;   ("C-c m v" . detached-view-session)
-;;   ("C-c m a" . detached-attach-session)
-;;   ("C-c m =" . detached-diff-session)
-;;   ("C-c m c" . detached-compile-session)
-;;   ("C-c m r" . detached-rerun-session)
-;;   ("C-c m i" . detached-insert-session-command)
-;;   ("C-c m w" . detached-copy-session-command)
-;;   ("C-c m W" . detached-copy-session-output)
-;;   ("C-c m k" . detached-kill-session)
-;;   ("C-c m d" . detached-delete-session)
-  
-;;   :custom ((detached-show-output-on-attach t)
-;;            (detached-terminal-data-command system-type)))
-
-
 ;; Enable richer annotations using the Marginalia package
 (use-package marginalia
   :ensure t
@@ -230,8 +225,6 @@
   (require 'ebdb-gnus)
   (require 'ebdb-org))
 
-
-
 (use-package org-caldav
   :ensure t
   :config
@@ -244,25 +237,23 @@
   (setq org-caldav-save-directory "~/Dropbox/org/org-caldav/")
   (setq org-icalendar-timezone "US/Central")
   (setq org-caldav-calendars
-  '((:calendar-id "student@school.edu/Calendar"
-     :inbox "~/Dropbox/org/cal_school.org")
-    (:calendar-id "student@school.edu/calendar/Personal"
-     :inbox "~/Dropbox/org/cal_personal.org")) )
+	'((:calendar-id "student@school.edu/Calendar"
+			:inbox "~/Dropbox/org/cal_school.org")
+	  (:calendar-id "student@school.edu/calendar/Personal"
+			:inbox "~/Dropbox/org/cal_personal.org")) )
   )
-
-
 
 (use-package calfw
   :ensure t)
 
-(use-package calfw-org
-  :ensure t
-  ;; :bind
-  ;; ("M-<f3>" . cfw:open-org-calendar)
-  :config
-  ;; hotfix: incorrect time range display
-  ;; source: https://github.com/zemaye/emacs-calfw/commit/3d17649c545423d919fd3bb9de2efe6dfff210fe
-  )
+;; (use-package calfw-org
+;;   :ensure t
+;;   ;; :bind
+;;   ;; ("M-<f3>" . cfw:open-org-calendar)
+;;   :config
+;;   ;; hotfix: incorrect time range display
+;;   ;; source: https://github.com/zemaye/emacs-calfw/commit/3d17649c545423d919fd3bb9de2efe6dfff210fe
+;;   )
 
 ;; Tex and Latex Settings
 (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
@@ -281,7 +272,6 @@
   (setq pdf-annot-activate-created-annotations t)
   (require 'pdf-occur)
   (pdf-tools-install :no-query))
-
 
 ;; Nov.el File associations
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
@@ -312,9 +302,8 @@
       "* %?\n\n:PROPERTIES:\n\n:END:\n\n")
      ("i" "Capture an idea to inbox" entry (file "~/Dropbox/org/inbox.org") "* %?\n")
      ("n" "Capture a next item" entry (file+headline "~/Dropbox/org/gtd.org" "Tasks") "* NEXT %?%^G\n")
-     ("j" "Journal" entry (file+datetree "~/Dropbox/org/physics_research.org") 
-"** %^{Heading}" :jump-to-captured t :tree-type week) 
-     ))
+     ("j" "Journal" entry (function denote-journal-extras-new-or-existing-entry)
+      "\n* %<%I:%M %p>\n%?" :jump-to-captured t :immediate-finish t)))
   (org-directory "~/Dropbox/org")
   (org-agenda-custom-commands 
    '(
@@ -452,7 +441,7 @@
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
   :bind
-  (("C-c w b o" . citar-open)
+  (("C-c w b" . citar-open)
    (:map org-mode-map
          :package org
          ("C-c w C". #'org-cite-insert))))
@@ -463,25 +452,33 @@
   )
 
 (use-package denote
-  :ensure t
+  ;; :ensure t
   :init
+  (require 'denote)
   (require 'denote-org-extras)
   (require 'denote-journal-extras)
+  (require 'denote-sequence)
   (denote-rename-buffer-mode 1)
   :custom
   (denote-directory "~/Dropbox/denote")
   (denote-sort-keywords t)
+  (denote-journal-extras-title-format 'day-date-month-year-12h)
   :hook (dired-mode . denote-dired-mode)
   :bind
   (("C-c d n" . denote-create-note)
-   ("C-c d j" . denote-journal-extras-new-entry)
-   ("C-c d d" . denote-date)
+   ("C-c d S" . denote-sequence)
+   ("C-c d c" . denote-sequence-new-child-of-curent)
+   ("C-c d s" . denote-sequence-new-sibling-of-current)
+   ("C-c d p" . denote-sequence-new-parent)
+   ("C-c d P" . denote-sequence-reparent)
+   ("C-c d d" . denote-sequence-dired)
+   ("C-c d j" . denote-sequence-new-journal-extras-new-entry)
    ("C-c d i" . denote-link-or-create)
    ("C-c d l" . denote-find-link)
    ("C-c d b" . denote-find-backlink)
    ("C-c d r" . denote-rename-file)
    ("C-c d R" . denote-rename-file-using-front-matter)
-   ("C-c d k" . denote-keywords-add)
+   ("C-c d k" . denote-rename-file-keywords)
    ("C-c d K" . denote-keywords-remove))
   )
 
@@ -506,32 +503,32 @@
 
 ;; Denote Explore
 (use-package denote-explore
-    :custom
-    ;; Where to store network data and in which format
-    (denote-explore-network-directory "~/Dropbox/denote/viz/")
-    (denote-explore-network-filename "denote-network")
-    (denote-explore-network-format 'graphviz)
-    (denote-explore-network-graphviz-filetype "pdf")
-    :bind
-    (;; Statistics
-     ("C-c w e c" . denote-explore-count-notes)
-     ("C-c w e C" . denote-explore-count-keywords)
-     ("C-c w e b" . denote-explore-keywords-barchart)
-     ("C-c w e x" . denote-explore-extensions-barchart)
-     ;; Random walks
-     ("C-c w e r" . denote-explore-random-note)
-     ("C-c w e l" . denote-explore-random-link)
-     ("C-c w e k" . denote-explore-random-keyword)
-     ;; Denote Janitor
-     ("C-c w e d" . denote-explore-identify-duplicate-notes)
-     ("C-c w e z" . denote-explore-zero-keywords)
-     ("C-c w e s" . denote-explore-single-keywords)
-     ("C-c w e o" . denote-explore-sort-keywords)
-     ("C-c w e r" . denote-explore-rename-keywords)
-     ;; Visualise denote
-     ("C-c w e n" . denote-explore-network)
-     ("C-c w e v" . denote-explore-network-regenerate)
-     ("C-c w e D" . denote-explore-degree-barchart)))
+  :custom
+  ;; Where to store network data and in which format
+  (denote-explore-network-directory "~/Dropbox/denote/viz/")
+  (denote-explore-network-filename "denote-network")
+  (denote-explore-network-format 'graphviz)
+  (denote-explore-network-graphviz-filetype "pdf")
+  :bind
+  (;; Statistics
+   ("C-c e c" . denote-explore-count-notes)
+   ("C-c e C" . denote-explore-count-keywords)
+   ("C-c e b" . denote-explore-keywords-barchart)
+   ("C-c e x" . denote-explore-extensions-barchart)
+   ;; Random walks
+   ("C-c e r" . denote-explore-random-note)
+   ("C-c e l" . denote-explore-random-link)
+   ("C-c e k" . denote-explore-random-keyword)
+   ;; Denote Janitor
+   ("C-c e d" . denote-explore-identify-duplicate-notes)
+   ("C-c e z" . denote-explore-zero-keywords)
+   ("C-c e s" . denote-explore-single-keywords)
+   ("C-c e o" . denote-explore-sort-keywords)
+   ("C-c e r" . denote-explore-rename-keywords)
+   ;; Visualise denote
+   ("C-c e n" . denote-explore-network)
+   ("C-c e v" . denote-explore-network-regenerate)
+   ("C-c e D" . denote-explore-degree-barchart)))
 
 ;; Denote extensions
 (use-package consult-notes
@@ -587,17 +584,17 @@
   :config
   (setq slack-buffer-emojify t)
   (slack-register-team
-     :name "Microboone"
-     :token (auth-source-pick-first-password
-             :host "microboone.slack.com"
-             :user "jmend46@lsu.edu")
-     :cookie (auth-source-pick-first-password
-             :host "microboone.slack.com"
-             :user "jmend46@lsu.edu^cookie")
-     :full-and-display-names t
-     :default t
-     :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically
-     ))
+   :name "Microboone"
+   :token (auth-source-pick-first-password
+           :host "microboone.slack.com"
+           :user "jmend46@lsu.edu")
+   :cookie (auth-source-pick-first-password
+            :host "microboone.slack.com"
+            :user "jmend46@lsu.edu^cookie")
+   :full-and-display-names t
+   :default t
+   :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically
+   ))
 
 ;; Ledger mode
 (use-package ledger-mode
@@ -616,47 +613,9 @@
 ;; Remote Tramp PATH
 ;; (add-to-list 'tramp-default-remote-path 'tramp-own-remote-path)
 (use-package tramp
-    :config
-    (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+  :config
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 ;; Connection Variables
-(connection-local-set-profile-variables
- 'remote-detached-gpvm
- '((detached-shell-program . "/bin/bash")
-   (detached-session-directory . "/path/to/somewhere/.dtach-session")
-   (detached-dtach-program . "/path/to/somewhere/.bin/dtach")))
-(connection-local-set-profile-variables
- 'remote-bash
- '((shell-file-name . "/bin/bash")
-   (shell-command-switch . "-c")
-   (shell-login-switch . "-l")))
-(connection-local-set-profile-variables
- 'remote-root-profile
- '((explicit-shell-file-name . "/bin/bash")
-   (explicit-bash-args . ("--login" "-i"))))
-
-
-
-
-
-
-;; (connection-local-set-profiles
-;;  '(:machine "ub1")
-;;  'remote-detached-gpvm)
-;; (connection-local-set-profiles
-;;  '(:machine "ub2") 'remote-detached-gpvm)
-;; (connection-local-set-profiles
-;;  '(:machine "ub3") 'remote-detached-gpvm)
-;; (connection-local-set-profiles
-;;  '(:machine "ub4") 'remote-detached-gpvm)
-;; (connection-local-set-profiles
-;;  '(:machine "ub5") 'remote-detached-gpvm)
-;; (connection-local-set-profiles
-;;  '(:machine "ub6") 'remote-detached-gpvm)
-;; (connection-local-set-profiles
-;;  '(:machine "uboonepro") 'remote-detached-gpvm)
-(connection-local-set-profiles
- '(:machine "pg8") 'remote-root-profile)
-
 (server-start)
 

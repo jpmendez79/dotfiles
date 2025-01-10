@@ -31,7 +31,8 @@
 	ring-bell-function #'ignore)
   (setq
    browse-url-generic-program  "~/.local/bin/wsl-browse.sh"
-   browse-url-browser-function #'browse-url-generic))
+   browse-url-browser-function #'browse-url-generic)
+  (add-to-list 'load-path "~/.emacs.d/package-src/pdf-tools"))
 
 
 ;; Defun Section
@@ -92,8 +93,6 @@
 ;; Use shell-like backspace C-h, rebind help to F1
 (define-key key-translation-map [?\C-h] [?\C-?])
 (global-set-key (kbd "<f1>") 'help-command)
-(require 'hardcore-mode)
-(global-hardcore-mode)
 
 (fringe-mode)
 (use-package alert
@@ -575,12 +574,9 @@
          (:map slack-message-buffer-mode-map
                (("C-c '" . slack-message-write-another-buffer)))
          (:map slack-message-compose-buffer-mode-map
-               (("C-c '" . slack-message-send-from-buffer)))
-	 
-         )
+               (("C-c '" . slack-message-send-from-buffer))))
   :custom
   (slack-extra-subscribed-channels (mapcar 'intern (list "some-channel")))
-  
   :config
   (setq slack-buffer-emojify t)
   (slack-register-team
@@ -594,7 +590,18 @@
    :full-and-display-names t
    :default t
    :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically
-   ))
+   (slack-register-team
+   :name "LSU Neutrino Group"
+   :token (auth-source-pick-first-password
+           :host "lsuneutrinophysics.slack.com"
+           :user "jmend46@lsu.edu")
+   :cookie (auth-source-pick-first-password
+            :host "lsuneutrinophysics.slack.com"
+            :user "jmend46@lsu.edu^cookie")
+   :full-and-display-names t
+   :default t
+   :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically
+   )))
 
 ;; Ledger mode
 (use-package ledger-mode

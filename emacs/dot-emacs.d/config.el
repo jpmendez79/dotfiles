@@ -3,22 +3,40 @@
 ;; (load-file "~/.emacs.d/config.el")
 
 ;; Package Manager and Use package setup
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))
-(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
-(add-to-list 'load-path "~/.emacs.d/package-src/denote")
+;; (require 'package)
+;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+;; (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))
+;; (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+;; (add-to-list 'load-path "~/.emacs.d/package-src/denote")
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+(straight-use-package 'org)
+(setq package-enable-at-startup nil)
+(straight-use-package 'use-package)
 
 (require 'plstore)
 (add-to-list 'load-path "~/.emacs.d/org-gantt-master")
-(package-initialize)
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+;; (package-initialize)
+;; (unless (package-installed-p 'use-package)
+;;   (package-refresh-contents)
+;;   (package-install 'use-package))
 
-(eval-and-compile
-  (setq use-package-always-ensure t
-        use-package-expand-minimally t))
+;; (eval-and-compile
+;;   (setq use-package-always-ensure t
+;;         use-package-expand-minimally t))
 
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "/usr/bin/firefox-bin")
@@ -107,6 +125,7 @@
 ;;              '(font . "DejaVu Sans Mono-11"))
 
 (use-package fira-code-mode
+  :straight t
   :config
   (fira-code-mode-set-font)
   :hook prog-mode
@@ -157,7 +176,7 @@
   
 ;; Personal Info and PIM Settings
 (setq user-full-name "Jesse Mendez"
-      user-mail-address "student@school.edu")
+      user-mail-address "jmend46@lsu.edu")
 (setq compose-mail-user-agent-warnings nil)
 (setq message-send-mail-function 'message-send-mail-with-sendmail)
 (setq calendar-latitude 30.4)
@@ -186,18 +205,18 @@
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 
 (use-package rainbow-mode
-  :ensure t
+  :straight t
   )
 
 (use-package vertico
-  :ensure t
+  :straight t
   :init
   (vertico-mode)
   :custom
   (vertico-sort-function 'vertico-sort-history-alpha))
 
 (use-package orderless
-  :ensure t
+  :straight t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-defaults nil)
@@ -205,16 +224,18 @@
    '((file (styles partial-completion)))))
 
 (use-package envrc
+  :straight t
   :hook (after-init . envrc-global-mode))
 
 ;; Enable richer annotations using the Marginalia package
 (use-package marginalia
-  :ensure t
+  :straight t
   :init
   (marginalia-mode))
 
 ;; Setup EBDB for contacts
 (use-package ebdb
+  :straight t
   :config
   (setq ebdb-mua-auto-update-p 'query)
   (setq ebdb-gnus-auto-update-p 'query)
@@ -225,20 +246,20 @@
   (require 'ebdb-org))
 
 (use-package org-caldav
-  :ensure t
+  :straight t
   :config
   (require 'org-caldav)
   (setq org-caldav-url "http://localhost:1080/users")
-  (setq org-caldav-calendar-id "student@school.edu/Calendar")
+  (setq org-caldav-calendar-id "jmend46@lsu.edu/Calendar")
   (setq org-caldav-files nil)
   (setq org-caldav-inbox "~/Dropbox/org/cal_caldav.org")
   (setq org-caldav-uuid-extension ".EML")
   (setq org-caldav-save-directory "~/Dropbox/org/org-caldav/")
   (setq org-icalendar-timezone "US/Central")
   (setq org-caldav-calendars
-	'((:calendar-id "student@school.edu/Calendar"
+	'((:calendar-id "jmend46@lsu.edu/Calendar"
 			:inbox "~/Dropbox/org/cal_school.org")
-	  (:calendar-id "student@school.edu/calendar/Personal"
+	  (:calendar-id "jmend46@lsu.edu/calendar/Personal"
 			:inbox "~/Dropbox/org/cal_personal.org")) )
   )
 
@@ -262,7 +283,7 @@
 (add-hook 'TeX-mode-hook #'eglot-ensure)
 
 (use-package pdf-tools
-  :ensure f
+  :straight f
   :magic ("%PDF" . pdf-view-mode)
   :pin manual ;; don't reinstall when package updates
   :mode  ("\\.pdf\\'" . pdf-view-mode)
@@ -277,6 +298,7 @@
 
 ;; Org Mode and various org packages
 (use-package org
+  :straight t
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -396,7 +418,7 @@
 
 ;; Managing Bibliographies
 (use-package bibtex
-  :ensure nil
+  :straight t
   :custom
   (bibtex-dialect 'biblatex)
   (bibtex-user-optional-fields
@@ -404,9 +426,11 @@
      ("file" "Link to a document file." "" )))
   (bibtex-align-at-equal-sign t))
 
-(use-package biblio)
+(use-package biblio
+  :straight t)
 
 (use-package org-modern
+  :straight t
   :hook
   (org-mode . global-org-modern-mode)
   :custom
@@ -415,6 +439,7 @@
   (org-modern-table nil))
 ;; LaTeX previews
 (use-package org-fragtog
+  :straight t
   :after org
   :custom
   (org-startup-with-latex-preview t)
@@ -430,6 +455,7 @@
 (require 'org-gantt)
 ;; Citar to access bibliographies
 (use-package citar
+  :straight t
   :custom
   (org-cite-global-bibliography
    (directory-files "~/Dropbox/Library/" t
@@ -447,11 +473,11 @@
 
 
 (use-package org-noter
-  :ensure t
+  :straight t
   )
 
 (use-package denote
-  ;; :ensure t
+  :straight t
   :init
   (require 'denote)
   (require 'denote-org-extras)
@@ -466,10 +492,11 @@
   :bind
   (("C-c d n" . denote-create-note)
    ("C-c d S" . denote-sequence)
-   ("C-c d c" . denote-sequence-new-child-of-curent)
+   ("C-c d c" . denote-sequence-new-child-of-current)
    ("C-c d s" . denote-sequence-new-sibling-of-current)
    ("C-c d p" . denote-sequence-new-parent)
    ("C-c d P" . denote-sequence-reparent)
+   ("C-c d g" . denote-rename-file-signature)
    ("C-c d d" . denote-sequence-dired)
    ("C-c d j" . denote-sequence-new-journal-extras-new-entry)
    ("C-c d i" . denote-link-or-create)
@@ -482,6 +509,7 @@
   )
 
 (use-package citar-denote
+  :straight t
   :config
   (citar-denote-mode)
   :custom
@@ -502,6 +530,7 @@
 
 ;; Denote Explore
 (use-package denote-explore
+  :straight t
   :custom
   ;; Where to store network data and in which format
   (denote-explore-network-directory "~/Dropbox/denote/viz/")
@@ -531,6 +560,7 @@
 
 ;; Denote extensions
 (use-package consult-notes
+  :straight t
   :commands (consult-notes
              consult-notes-search-in-all-notes)
   :custom
@@ -549,6 +579,7 @@
 
 
 (use-package slack
+  :straight t
   :bind (("C-c s K" . slack-stop)
          ("C-c s c" . slack-select-rooms)
          ("C-c s u" . slack-select-unread-rooms)
@@ -605,12 +636,13 @@
 
 ;; Ledger mode
 (use-package ledger-mode
+  :straight t
   :hook (ledger-mode . my-ledger-hook)
   )
 
 ;; use-package with package.el:
 (use-package dashboard
-  :ensure t
+  :straight t
   :config
   (setq recentf-auto-cleanup 'never) ;; disable before we start recentf!
   (setq dashboard-match-agenda-entry "-tag")

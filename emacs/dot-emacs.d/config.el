@@ -50,7 +50,7 @@
   (setq
    browse-url-generic-program  "~/.local/bin/wsl-browse.sh"
    browse-url-browser-function #'browse-url-generic)
-  (add-to-list 'load-path "~/.emacs.d/package-src/pdf-tools"))
+  )
 
 
 ;; Defun Section
@@ -105,6 +105,12 @@
     (delete-file ps-file)  ; Clean up.
     (message "PDF saved as %s" pdf-file)))
 
+(defun my-dired-init ()
+  "to be run as hook for `dired-mode'."
+  (dired-hide-details-mode 1))
+
+
+
 
 ;; Look and feel
 ;; (require 'notifications)
@@ -142,10 +148,10 @@
 (setq auto-save-file-name-transforms
       `((".*" ,temporary-file-directory t)))
 
-;; Images in dired
+;; Dired config
 (autoload 'iimage-mode "iimage" "Support Inline image minor mode." t)
 (autoload 'turn-on-iimage-mode "iimage" "Turn on Inline image minor mode." t)
-
+(add-hook 'dired-mode-hook 'my-dired-init)
 ;; ;; Eshell stuff
 ;; (use-package esh-mode
 ;;   :ensure nil

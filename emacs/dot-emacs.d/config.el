@@ -664,7 +664,11 @@
 ;; (add-to-list 'tramp-default-remote-path 'tramp-own-remote-path)
 (use-package tramp
   :config
-  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+  ;; required to make tramp directory tracking work correctly
+(setq tramp-default-method "ssh")
+(setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+)
 
 ;; Connection Variables
 (server-start)

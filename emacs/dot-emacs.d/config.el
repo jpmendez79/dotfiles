@@ -179,7 +179,9 @@
   ;; Remove the default ANSI color handler
   (setq eshell-output-filter-functions
         (remove 'eshell-handle-ansi-color eshell-output-filter-functions)))
-  
+(use-package vterm
+  :straight t
+  )  
 ;; Personal Info and PIM Settings
 (setq user-full-name "Jesse Mendez"
       user-mail-address "jmend46@lsu.edu")
@@ -194,6 +196,9 @@
 ;; Utilities and Tools
 ;; Programming Settings
 
+(use-package magit
+  :straight t
+  )
 ;; C stuff
 (setq c-default-style '((java-mode . "java")
 			(awk-mode . "awk")
@@ -269,8 +274,8 @@
 			:inbox "~/Dropbox/org/cal_personal.org")) )
   )
 
-(use-package calfw
-  :ensure t)
+;; (use-package calfw
+;;   :ensure t)
 
 ;; (use-package calfw-org
 ;;   :ensure t
@@ -289,9 +294,9 @@
 (add-hook 'TeX-mode-hook #'eglot-ensure)
 
 (use-package pdf-tools
-  :straight f
+  :straight t
   :magic ("%PDF" . pdf-view-mode)
-  :pin manual ;; don't reinstall when package updates
+  ;; :pin manual ;; don't reinstall when package updates
   :mode  ("\\.pdf\\'" . pdf-view-mode)
   :config
   (setq-default pdf-view-display-size 'fit-page)

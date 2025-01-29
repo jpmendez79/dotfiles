@@ -304,6 +304,10 @@
   (require 'pdf-occur)
   (pdf-tools-install :no-query))
 
+;; Yasnippets
+(use-package yasnippet
+  :straight t
+  )
 ;; Nov.el File associations
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 

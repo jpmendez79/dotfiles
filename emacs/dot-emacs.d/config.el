@@ -307,6 +307,10 @@
 ;; Yasnippets
 (use-package yasnippet
   :straight t
+  :config
+  (add-to-list 'load-path
+              "~/.emacs.d/snippets/")
+  (yas-global-mode 1)
   )
 ;; Nov.el File associations
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
@@ -382,6 +386,8 @@
 		org-hide-emphasis-markers t
 		org-startup-with-inline-images t
 		org-image-actual-width '(300))
+  (add-to-list 'org-entities-user
+      '(("nubar" "\\bar{\\nu}" nil "ν̅" "ν̅" "ν̅" "ν̅")))
   (setq org-refile-use-outline-path 'file)
   (setq org-refile-allow-creating-parent-nodes t)					; Show full paths for refiling
   (setq org-outline-path-complete-in-steps nil)
@@ -636,18 +642,19 @@
    :full-and-display-names t
    :default t
    :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically
-   (slack-register-team
-   :name "LSU Neutrino Group"
-   :token (auth-source-pick-first-password
-           :host "lsuneutrinophysics.slack.com"
-           :user "jmend46@lsu.edu")
-   :cookie (auth-source-pick-first-password
-            :host "lsuneutrinophysics.slack.com"
-            :user "jmend46@lsu.edu^cookie")
-   :full-and-display-names t
-   :default t
-   :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically
-   )))
+   ;; (slack-register-team
+   ;; :name "LSU Neutrino Group"
+   ;; :token (auth-source-pick-first-password
+   ;;         :host "lsuneutrinophysics.slack.com"
+   ;;         :user "jmend46@lsu.edu")
+   ;; :cookie (auth-source-pick-first-password
+   ;;          :host "lsuneutrinophysics.slack.com"
+   ;;          :user "jmend46@lsu.edu^cookie")
+   ;; :full-and-display-names t
+   ;; :default t
+   ;; :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically
+   ;; )
+   ))
 
 ;; Ledger mode
 (use-package ledger-mode

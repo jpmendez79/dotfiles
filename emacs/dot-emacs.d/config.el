@@ -152,6 +152,8 @@
 (autoload 'iimage-mode "iimage" "Support Inline image minor mode." t)
 (autoload 'turn-on-iimage-mode "iimage" "Turn on Inline image minor mode." t)
 (add-hook 'dired-mode-hook 'my-dired-init)
+(setq dired-dwim-target t)
+
 ;; ;; Eshell stuff
 ;; (use-package esh-mode
 ;;   :ensure nil

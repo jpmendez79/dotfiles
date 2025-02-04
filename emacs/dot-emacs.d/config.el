@@ -3,11 +3,6 @@
 ;; (load-file "~/.emacs.d/config.el")
 
 ;; Package Manager and Use package setup
-;; (require 'package)
-;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-;; (add-to-list 'package-archives '("nongnu" . "https://elpa.nongnu.org/nongnu/"))
-;; (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
-;; (add-to-list 'load-path "~/.emacs.d/package-src/denote")
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name
@@ -29,14 +24,6 @@
 
 (require 'plstore)
 (add-to-list 'load-path "~/.emacs.d/org-gantt-master")
-;; (package-initialize)
-;; (unless (package-installed-p 'use-package)
-;;   (package-refresh-contents)
-;;   (package-install 'use-package))
-
-;; (eval-and-compile
-;;   (setq use-package-always-ensure t
-;;         use-package-expand-minimally t))
 
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "/usr/bin/firefox-bin")
@@ -70,7 +57,6 @@
 (defun my-c-mode-common-hook ()
   (c-toggle-auto-newline 1)
   (display-line-numbers-mode)
-  ;; (flycheck-prog-mode 1)
   )
 
 (defun my-python-mode-hook ()
@@ -114,9 +100,6 @@
 
 ;; Look and feel
 ;; (require 'notifications)
-;; Use shell-like backspace C-h, rebind help to F1
-(define-key key-translation-map [?\C-h] [?\C-?])
-(global-set-key (kbd "<f1>") 'help-command)
 
 (fringe-mode)
 (use-package alert
@@ -127,8 +110,6 @@
 (display-battery-mode 1)
 (column-number-mode 1)
 (windmove-default-keybindings)
-;; (add-to-list 'default-frame-alist
-;;              '(font . "DejaVu Sans Mono-11"))
 
 (use-package fira-code-mode
   :straight t

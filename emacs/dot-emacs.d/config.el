@@ -586,62 +586,65 @@
 ;;   (require 'rx)
 ;;   )
 
-;; (use-package slack
-;;   :straight t
-;;   :bind (("C-c s K" . slack-stop)
-;;          ("C-c s c" . slack-select-rooms)
-;;          ("C-c s u" . slack-select-unread-rooms)
-;;          ("C-c s U" . slack-user-select)
-;;          ("C-c s s" . slack-search-from-messages)
-;;          ("C-c s J" . slack-jump-to-browser)
-;;          ("C-c s j" . slack-jump-to-app)
-;;          ("C-c s e" . slack-insert-emoji)
-;;          ("C-c s E" . slack-message-edit)
-;;          ("C-c s r" . slack-message-add-reaction)
-;;          ("C-c s t" . slack-thread-show-or-create)
-;;          ("C-c s g" . slack-message-redisplay)
-;;          ("C-c s G" . slack-conversations-list-update-quick)
-;;          ("C-c s q" . slack-quote-and-reply)
-;;          ("C-c s Q" . slack-quote-and-reply-with-link)
-;;          (:map slack-mode-map
-;;                (("@" . slack-message-embed-mention)
-;;                 ("#" . slack-message-embed-channel)))
-;;          (:map slack-thread-message-buffer-mode-map
-;;                (("C-c '" . slack-message-write-another-buffer)
-;;                 ("@" . slack-message-embed-mention)
-;;                 ("#" . slack-message-embed-channel)))
-;;          (:map slack-message-buffer-mode-map
-;;                (("C-c '" . slack-message-write-another-buffer)))
-;;          (:map slack-message-compose-buffer-mode-map
-;;                (("C-c '" . slack-message-send-from-buffer))))
-;;   :custom
-;;   (slack-extra-subscribed-channels (mapcar 'intern (list "some-channel")))
-;;   :config
-;;   (setq slack-buffer-emojify t)
-;;   (slack-register-team
-;;    :name "Microboone"
-;;    :token (auth-source-pick-first-password
-;;            :host "microboone.slack.com"
-;;            :user "jmend46@lsu.edu")
-;;    :cookie (auth-source-pick-first-password
-;;             :host "microboone.slack.com"
-;;             :user "jmend46@lsu.edu^cookie")
-;;    :full-and-display-names t
-;;    :default t
-;;    :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically
-;;    ;; (slack-register-team
-;;    ;; :name "LSU Neutrino Group"
-;;    ;; :token (auth-source-pick-first-password
-;;    ;;         :host "lsuneutrinophysics.slack.com"
-;;    ;;         :user "jmend46@lsu.edu")
-;;    ;; :cookie (auth-source-pick-first-password
-;;    ;;          :host "lsuneutrinophysics.slack.com"
-;;    ;;          :user "jmend46@lsu.edu^cookie")
-;;    ;; :full-and-display-names t
-;;    ;; :default t
-;;    ;; :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically
-;;    ;; )
-;;    ))
+(use-package slack
+  :straight t
+  :bind (("C-c s K" . slack-stop)
+         ("C-c s c" . slack-select-rooms)
+         ("C-c s u" . slack-select-unread-rooms)
+         ("C-c s U" . slack-user-select)
+         ("C-c s s" . slack-search-from-messages)
+         ("C-c s J" . slack-jump-to-browser)
+         ("C-c s j" . slack-jump-to-app)
+         ("C-c s e" . slack-insert-emoji)
+         ("C-c s E" . slack-message-edit)
+         ("C-c s r" . slack-message-add-reaction)
+         ("C-c s t" . slack-thread-show-or-create)
+         ("C-c s g" . slack-message-redisplay)
+         ("C-c s G" . slack-conversations-list-update-quick)
+         ("C-c s q" . slack-quote-and-reply)
+         ("C-c s Q" . slack-quote-and-reply-with-link)
+         (:map slack-mode-map
+               (("@" . slack-message-embed-mention)
+                ("#" . slack-message-embed-channel)))
+         (:map slack-thread-message-buffer-mode-map
+               (("C-c '" . slack-message-write-another-buffer)
+                ("@" . slack-message-embed-mention)
+                ("#" . slack-message-embed-channel)))
+         (:map slack-message-buffer-mode-map
+               (("C-c '" . slack-message-write-another-buffer)))
+         (:map slack-message-compose-buffer-mode-map
+               (("C-c '" . slack-message-send-from-buffer))))
+  :custom
+  (setq slack-buffer-emojify t)
+  (setq slack-modeline t)
+
+  ;; (slack-extra-subscribed-channels (mapcar 'intern (list "some-channel")))
+ :config
+ (setq slack-enable-global-modeline-string t)
+  (slack-register-team
+   :name "Microboone"
+   :token (auth-source-pick-first-password
+           :host "microboone.slack.com"
+           :user "jmend46@lsu.edu")
+   :cookie (auth-source-pick-first-password
+            :host "microboone.slack.com"
+            :user "jmend46@lsu.edu^cookie")
+   :full-and-display-names t
+   :default t
+   :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically
+   (slack-register-team
+   :name "LSU Neutrino Group"
+   :token (auth-source-pick-first-password
+           :host "lsuneutrinophysics.slack.com"
+           :user "jmend46@lsu.edu")
+   :cookie (auth-source-pick-first-password
+            :host "lsuneutrinophysics.slack.com"
+            :user "jmend46@lsu.edu^cookie")
+   :full-and-display-names t
+   :default t
+   :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically
+   )
+   ))
 
 ;; Ledger mode
 (use-package ledger-mode

@@ -95,6 +95,37 @@
   "to be run as hook for `dired-mode'."
   (dired-hide-details-mode 1))
 
+(defun ews--bibtex-combined-biblio-lookup ()
+  "Combines `biblio-lookup' and `biblio-doi-insert-bibtex'."
+  (require 'biblio)
+  (let* ((dbs (biblio--named-backends))
+         (db-list (append dbs '(("DOI" . biblio-doi-backend))))
+         (db-selected (biblio-completing-read-alist
+                       "Backend:"
+                       db-list)))
+    (if (eq db-selected 'biblio-doi-backend)
+        (let ((doi (read-string "DOI: ")))
+          (biblio-doi-insert-bibtex doi))
+      (biblio-lookup db-selected))))
+
+
+
+(defun ews-bibtex-biblio-lookup ()
+  "Insert Biblio search results into current buffer or select BibTeX file."
+  (interactive)
+  (if-let ((current-mode major-mode)
+	   org-cite-global-bibliography
+	   (bibfiles (length org-cite-global-bibliography))
+	   (bibfile (cond ((eq bibfiles 1) (car org-cite-global-bibliography))
+			  ((equal major-mode 'bibtex-mode)
+			   (buffer-file-name))
+			  (t (completing-read
+			      "Select BibTeX file:" org-cite-global-bibliography)))))
+      (progn (find-file bibfile)
+	     (goto-char (point-max))
+	     (ews--bibtex-combined-biblio-lookup)
+	     (save-buffer))
+    (message "No BibTeX file(s) defined.")))
 
 
 
@@ -103,9 +134,14 @@
 
 (fringe-mode)
 (use-package alert
+  :straight t
   :commands (alert)
   :init
-  (setq alert-default-style 'fringe))
+  (setq alert-default-style 'toast))
+
+(use-package alert-toast
+  :straight t
+  :after alert)
 (display-time-mode 1)
 (display-battery-mode 1)
 (column-number-mode 1)
@@ -276,6 +312,9 @@
           #'TeX-revert-document-buffer)
 (add-hook 'TeX-mode-hook #'eglot-ensure)
 
+(use-package auctex
+  :straight t)
+
 (use-package pdf-tools
   :straight t
   :magic ("%PDF" . pdf-view-mode)
@@ -431,7 +470,10 @@
   (bibtex-align-at-equal-sign t))
 
 (use-package biblio
-  :straight t)
+  :straight t
+  :bind
+  ("C-c b b" . ews-bibtex-biblio-lookup)
+  )
 
 (use-package org-modern
   :straight t

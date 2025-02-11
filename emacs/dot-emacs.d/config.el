@@ -127,7 +127,9 @@
 	     (save-buffer))
     (message "No BibTeX file(s) defined.")))
 
-
+(defun kill-src-block-at-point ()
+ (interactive)
+ (kill-new (org-element-property :value (org-element-at-point))))
 
 ;; Look and feel
 ;; (require 'notifications)
@@ -422,6 +424,7 @@
   (global-set-key "\C-c." 'org-time-stamp)
   (global-set-key "\C-cp" 'org-pomodoro)
   (global-set-key "\C-co" 'org-noter)
+  (global-set-key "\C-ck" 'kill-src-block-at-point)
   (global-set-key "\C-cu" 'org-reset-checkbox-state-subtree)
 
   (setq org-tags-exclude-from-inheritance "project")
@@ -534,6 +537,7 @@
   (denote-directory "~/Dropbox/denote")
   (denote-sort-keywords t)
   (denote-journal-extras-title-format 'day-date-month-year-12h)
+  (denote-sequence-scheme 'alphanumeric)
   :hook (dired-mode . denote-dired-mode)
   :bind
   (("C-c d n" . denote-create-note)
@@ -630,6 +634,7 @@
 
 (use-package slack
   :straight t
+  ;; :hook (slack-mode-hook . emojify-mode)
   :bind (("C-c s K" . slack-stop)
          ("C-c s c" . slack-select-rooms)
          ("C-c s u" . slack-select-unread-rooms)
@@ -656,13 +661,16 @@
                (("C-c '" . slack-message-write-another-buffer)))
          (:map slack-message-compose-buffer-mode-map
                (("C-c '" . slack-message-send-from-buffer))))
-  :custom
-  (setq slack-buffer-emojify t)
-  (setq slack-modeline t)
-
   ;; (slack-extra-subscribed-channels (mapcar 'intern (list "some-channel")))
- :config
- (setq slack-enable-global-modeline-string t)
+  :custom
+  (slack-buffer-emojify t)
+  (slack-modeline t)
+  (lack-enable-global-modeline-string t)
+  :config
+  ;; (setq slack-buffer-emojify t)
+
+
+  
   (slack-register-team
    :name "Microboone"
    :token (auth-source-pick-first-password

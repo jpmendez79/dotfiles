@@ -528,10 +528,10 @@
 (use-package denote
   :straight t
   :init
-  (require 'denote)
-  (require 'denote-org-extras)
-  (require 'denote-journal-extras)
-  (require 'denote-sequence)
+  ;; (require 'denote)
+  ;; (require 'denote-org-extras)
+  ;; (require 'denote-journal-extras)
+  ;; (require 'denote-sequence)
   (denote-rename-buffer-mode 1)
   :custom
   (denote-directory "~/Dropbox/denote")
@@ -550,6 +550,7 @@
    ("C-c d d" . denote-sequence-dired)
    ("C-c d j" . denote-sequence-new-journal-extras-new-entry)
    ("C-c d i" . denote-link-or-create)
+   ("C-c d l" . denote-find-link)
    ("C-c d l" . denote-find-link)
    ("C-c d b" . denote-find-backlink)
    ("C-c d r" . denote-rename-file)

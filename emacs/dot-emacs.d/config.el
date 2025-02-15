@@ -371,16 +371,15 @@
   (org-directory "~/Dropbox/org")
   (org-agenda-custom-commands 
    '(
-     ("c" "Computer" tags-todo "@computer-someday|@laptop-someday")
      ("e" "Errands" tags-todo "@errand-someday")
      ("p" "Phone" tags-todo "@phone-someday")
      ("o" "Internet" tags-todo "@online-someday")
+     ("f" "Offline" tags-todo "@offline-someday")
      ("h" "Home" tags-todo "@home-someday")
      ("l" "LSU Campus" tags-todo "@campus-someday")
      ("s" "LArASIC Lab" tags-todo "@larasic-someday")
-     ("r" "Research" tags-todo "@research-someday")
      ("w" "Homework" tags-todo "@homework-someday")
-     ("m" "Personal Computer mercury" tags-todo "@mercury-someday")
+     ("m" "Personal Computer mercury" tags-todo "@milo-someday")
      ("b" "Work Computer bortan" tags-todo "@bortan-someday")
      ("g" "Agendas" tags-todo "@agenda-someday")
      ("W" "Weekly Review"

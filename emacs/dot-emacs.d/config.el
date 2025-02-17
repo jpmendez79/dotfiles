@@ -523,6 +523,8 @@
 (use-package org-noter
   :straight t
   )
+(use-package nov
+  :straight t)
 
 (use-package denote
   :straight t

@@ -133,6 +133,9 @@
 
 ;; Look and feel
 ;; (require 'notifications)
+(use-package emojify
+  :straight t
+  :hook (after-init . global-emojify-mode))
 
 (fringe-mode)
 (use-package alert
@@ -216,6 +219,11 @@
 
 ;; Utilities and Tools
 ;; Programming Settings
+(require 'epa-file)
+(epa-file-enable)
+(setq org-crypt-key "jessepmendez79@gmail.com")
+(setq epa-pinentry-mode 'loopback)
+
 
 (use-package magit
   :straight t
@@ -712,6 +720,9 @@
   (setq dashboard-match-agenda-entry "-tag")
   (dashboard-setup-startup-hook))
 
+(use-package htmlize
+  :straight t
+  )
 ;; Remote Profile variables
 ;; Remote Tramp PATH
 ;; (add-to-list 'tramp-default-remote-path 'tramp-own-remote-path)

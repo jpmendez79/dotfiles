@@ -652,7 +652,7 @@
          ("C-c s U" . slack-user-select)
          ("C-c s s" . slack-search-from-messages)
          ("C-c s J" . slack-jump-to-browser)
-         ("C-c s j" . slack-jump-to-app)
+         ("C-c s p" . slack-room-pins-list)
          ("C-c s e" . slack-insert-emoji)
          ("C-c s E" . slack-message-edit)
          ("C-c s r" . slack-message-add-reaction)

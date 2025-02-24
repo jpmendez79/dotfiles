@@ -543,7 +543,7 @@
   ;; (require 'denote-sequence)
   (denote-rename-buffer-mode 1)
   :custom
-  (denote-directory "~/Dropbox/denote")
+  (denote-directory "~/Dropbox/org/denote")
   (denote-sort-keywords t)
   (denote-journal-extras-title-format 'day-date-month-year-12h)
   (denote-sequence-scheme 'alphanumeric)
@@ -555,6 +555,7 @@
    ("C-c d s" . denote-sequence-new-sibling-of-current)
    ("C-c d p" . denote-sequence-new-parent)
    ("C-c d P" . denote-sequence-reparent)
+   ("C-c d f" . denote-sequence-find)
    ("C-c d g" . denote-rename-file-signature)
    ("C-c d d" . denote-sequence-dired)
    ("C-c d j" . denote-sequence-new-journal-extras-new-entry)
@@ -574,7 +575,7 @@
   (citar-denote-mode)
   :custom
   (citar-open-always-create-notes t)
-  (citar-notes-paths '("~/Dropbox/denote/"))
+  (citar-notes-paths '("~/Dropbox/org/denote/"))
   
   :bind (("C-c b n" . citar-create-note)
          ("C-c b o" . citar-denote-open-note)
@@ -593,10 +594,14 @@
   :straight t
   :custom
   ;; Where to store network data and in which format
-  (denote-explore-network-directory "~/Dropbox/denote/viz/")
+  (denote-explore-network-directory "~/Dropbox/org/denote/viz/")
   (denote-explore-network-filename "denote-network")
   (denote-explore-network-format 'graphviz)
   (denote-explore-network-graphviz-filetype "pdf")
+  (denote-file-name-slug-functions
+      '((title . denote-sluggify-title)
+        (keyword . identity)
+        (signature . denote-sluggify-signature)))
   :bind
   (;; Statistics
    ("C-c e c" . denote-explore-count-notes)
@@ -625,7 +630,7 @@
              consult-notes-search-in-all-notes)
   :custom
   (consult-notes-file-dir-sources
-   `(("Denote" ?d ,"~/Dropbox/denote")))
+   `(("Denote" ?d ,"~/Dropbox/org/denote")))
   :bind
   (("C-c n f" . consult-notes)
    ("C-c n s" . consult-notes-search-in-all-notes)))

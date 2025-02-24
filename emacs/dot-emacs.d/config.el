@@ -537,10 +537,6 @@
 (use-package denote
   :straight t
   :init
-  ;; (require 'denote)
-  ;; (require 'denote-org-extras)
-  ;; (require 'denote-journal-extras)
-  ;; (require 'denote-sequence)
   (denote-rename-buffer-mode 1)
   :custom
   (denote-directory "~/Dropbox/org/denote")

@@ -1,0 +1,2 @@
+#!/bin/bash
+gpg2 -q -d ~/.authinfo.gpg | awk -F '"' 'FNR == 2 {print $2}'

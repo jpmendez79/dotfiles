@@ -15,7 +15,7 @@ if [[ $- != *i* ]] ; then
 fi
 
 # put your fun stuff here.
-PATH=$PATH:/home/random/.bin:/home/random/.texlive/2022/bin/x86_64-linux:/usr/local/zoom:/home/random/Games/LNPDF:/usr/local/Zotero_linux-x86_64/:/home/random/.local/bin:/usr/bin/mu-mh:/home/random/.davmail-6.1.0-3423:/opt/cisco/anyconnect/bin/:/home/random/.local/texlive/2023/bin/x86_64-linux/
+PATH=$PATH:/home/random/.bin:/home/random/.texlive/2022/bin/x86_64-linux:/usr/local/zoom:/home/random/Games/LNPDF:/usr/local/Zotero_linux-x86_64/:/home/random/.local/bin:/usr/bin/mu-mh:/home/random/.davmail-6.1.0-3423:/opt/cisco/anyconnect/bin/:/home/random/.local/texlive/2023/bin/x86_64-linux/:/home/jpmendez/.davmail
 alias config='/usr/bin/git --git-dir=/home/random/.cfg/ --work-tree=/home/random'
 MANPATH=/home/random/.local/texlive/2023/texmf-dist/doc/man:$MANPATH
 INFOPATH=/home/random/.local/texlive/2023/texmf-dist/doc/info:$INFOPATH

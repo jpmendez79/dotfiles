@@ -1,0 +1,67 @@
+IMAPAccount gmail
+# Address to connect to
+Host imap.gmail.com
+User jessepmendez79@gmail.com
+PassCmd "gpg2 -q -d ~/.authinfo.gpg | awk 'FNR == 3 {print $6}'"
+#
+# Use TLS
+SSLType IMAPS
+# The following line should work. If you get certificate errors, uncomment the two following lines and read the "Troubleshooting" section.
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+#CertificateFile ~/.cert/imap.gmail.com.pem
+#CertificateFile ~/.cert/Equifax_Secure_CA.pem
+
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
+SubFolders Verbatim
+# The trailing "/" is important
+Path ~/Mail/personal/
+Inbox ~/Mail/personal/Inbox
+
+Channel gmail
+Far :gmail-remote:
+Near :gmail-local:
+# Exclude everything under the internal [Gmail] folder, except the interesting folders
+Patterns *
+# ![Gmail]* "[Gmail]/Sent Mail" "[Gmail]/Starred" "[Gmail]/All Mail [Gmail]/Trash"
+# Or include everything
+#Patterns *
+# Automatically create missing mailboxes, both locally and on the server
+Create Both
+# Sync the movement of messages between folders and deletions, add after making sure the sync works
+# Expunge Both
+# Save the synchronization state files in the relevant directory
+SyncState *
+
+IMAPAccount university
+Host 127.0.0.1
+Port 1143
+User jmend46@lsu.edu
+PassCmd "~/.mbpassawk"
+# Is it literally the comment?
+# For whatever reason mbsync NEEDS a comment string below the above passcmd
+SSLType None
+Authmechs LOGIN
+PipelineDepth 1
+
+IMAPStore university-remote
+Account university
+MaxSize 40M
+PathDelimiter /
+
+MaildirStore university-local
+# AltMap yes
+Subfolders Verbatim
+Path ~/Mail/lsu/
+Inbox ~/Mail/lsu/Inbox
+
+Channel university
+Far :university-remote:
+Near :university-local:
+SyncState *
+Patterns *
+Create Both
+# Expunge Both
+Sync All

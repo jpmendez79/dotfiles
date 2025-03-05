@@ -23,7 +23,6 @@
 (straight-use-package 'use-package)
 
 (require 'plstore)
-(add-to-list 'load-path "~/.emacs.d/org-gantt-master")
 
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "/usr/bin/firefox-bin")
@@ -508,8 +507,6 @@
    (plist-put org-format-latex-options :foreground 'auto)
    (plist-put org-format-latex-options :background 'auto)))
 
-;; Org-gantt
-(require 'org-gantt)
 ;; Citar to access bibliographies
 (use-package citar
   :straight t

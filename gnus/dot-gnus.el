@@ -7,10 +7,10 @@
 (setq ebdb-gnus-auto-update-p 'query)
 
 ;; Gnus Servers
-(require 'gnus-desktop-notify)
-(gnus-desktop-notify-mode)
-(require 'gnus-demon)
-(gnus-demon-add-handler 'gnus-demon-scan-news 1 t)
+;; (require 'gnus-desktop-notify)
+;; (gnus-desktop-notify-mode)
+;; (require 'gnus-demon)
+;; (gnus-demon-add-handler 'gnus-demon-scan-news 1 t)
 (setq gnus-select-method '(nnnil ""))
 (setq gnus-desktop-notify-groups 'gnus-desktop-notify-explicit)
 

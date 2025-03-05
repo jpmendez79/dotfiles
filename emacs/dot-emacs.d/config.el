@@ -356,6 +356,7 @@
    '((ditaa . t)
      (python . t)
      (plantuml . t)
+     (calc . t)
      ))
   :hook (org-mode . my-org-hook)
   :custom

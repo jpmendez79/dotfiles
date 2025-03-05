@@ -1,0 +1,27 @@
+# /etc/skel/.bashrc
+#
+# This file is sourced by all *interactive* bash shells on startup,
+# including some apparently interactive shells such as scp and rcp
+# that can't tolerate any output.  So make sure this doesn't display
+# anything or bad things will happen !
+
+
+# Test for an interactive shell.  There is no need to set anything
+# past this point for scp and rcp, and it's important to refrain from
+# outputting anything in those cases.
+if [[ $- != *i* ]] ; then
+	# Shell is non-interactive.  Be done now!
+	return
+fi
+
+# put your fun stuff here.
+PATH=$PATH:/home/random/.bin:/home/random/.texlive/2022/bin/x86_64-linux:/usr/local/zoom:/home/random/Games/LNPDF:/usr/local/Zotero_linux-x86_64/:/home/random/.local/bin:/usr/bin/mu-mh:/home/random/.davmail-6.1.0-3423:/opt/cisco/anyconnect/bin/:/home/random/.local/texlive/2023/bin/x86_64-linux/
+alias config='/usr/bin/git --git-dir=/home/random/.cfg/ --work-tree=/home/random'
+MANPATH=/home/random/.local/texlive/2023/texmf-dist/doc/man:$MANPATH
+INFOPATH=/home/random/.local/texlive/2023/texmf-dist/doc/info:$INFOPATH
+export VISUAL="emacsclient"
+# Drduh ssh YubiKey Setup
+export GPG_TTY="$(tty)"
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
+gpg-connect-agent updatestartuptty /bye > /dev/null

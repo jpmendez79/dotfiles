@@ -399,13 +399,13 @@
        (tags-todo "-someday+TODO=\"WAITING\"")
 
        (tags "someday+LEVEL=2")))))
+    (org-agenda-files '("~/Dropbox/org/inbox.org"
+		      "~/Dropbox/org/project.org"
+		      "~/Dropbox/org/gtd.org"
+		      "~/Dropbox/org/cal_school.org"
+		      "~/Dropbox/org/cal_personal.org"))
+
   :config
-  (setq org-agenda-files '("~/Dropbox/org/inbox.org"
-			   "~/Dropbox/org/project.org"
-			   "~/Dropbox/org/gtd.org"
-			   "~/Dropbox/org/cal_calendar.org"
-			   "~/Dropbox/org/cal_school.org"
-			   "~/Dropbox/org/cal_personal.org"))
 
   (setq org-refile-targets '((nil :maxlevel . 9)
 			     ("~/Dropbox/org/someday.org" :maxlevel . 9)

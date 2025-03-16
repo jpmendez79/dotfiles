@@ -1,0 +1,29 @@
+configurations:
+    -
+        host: localhost
+        port: 1143
+        tls: false
+        username: jmend46@lsu.edu
+        alias: university
+        passwordCMD: "gpg2 -q -d ~/.authinfo.gpg | awk 'FNR == 2 {print $2}'"
+        boxes:
+            -
+                mailbox: INBOX
+                onNewMail: '~/.bin/getmail.sh university'
+                onNewMailPost: SKIP
+    -
+        host: imap.gmail.com
+        port: 993
+        tls: true
+        tlsOptions:
+            rejectUnauthorized: false
+            starttls: false
+        username: jessepmendez79@gmail.com
+        alias: personal
+        passwordCMD: "gpg2 -q -d ~/.authinfo.gpg | awk 'FNR == 3 {print $6}'"
+        boxes:
+            -
+                mailbox: INBOX
+                onNewMail: '~/.bin/getmail.sh gmail'
+                onNewMailPost: SKIP
+

@@ -39,7 +39,7 @@ IMAPAccount university
 Host 127.0.0.1
 Port 1143
 User jmend46@lsu.edu
-PassCmd "~/.mbpassawk"
+PassCmd "gpg2 -q -d ~/.authinfo.gpg | awk 'FNR == 2 {print $2}'"
 # Is it literally the comment?
 # For whatever reason mbsync NEEDS a comment string below the above passcmd
 SSLType None

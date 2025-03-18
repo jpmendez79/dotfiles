@@ -149,7 +149,7 @@
 (display-time-mode 1)
 (display-battery-mode 1)
 (column-number-mode 1)
-(windmove-default-keybindings)
+;; (windmove-default-keybindings)
 
 (use-package fira-code-mode
   :straight t
@@ -384,6 +384,7 @@
      (plantuml . t)
      (calc . t)
      ))
+  (add-to-list 'org-modules 'org-habit)
   :hook (org-mode . my-org-hook)
   :custom
   (org-agenda-timegrid-use-ampm t)
@@ -413,7 +414,7 @@
      ("h" "Home" tags-todo "@home-someday")
      ("l" "LSU Campus" tags-todo "@campus-someday")
      ("s" "LArASIC Lab" tags-todo "@larasic-someday")
-     ("w" "Homework" tags-todo "@homework-someday")
+     ("r" "Research" tags-todo "@research-someday")
      ("m" "Personal Computer mercury" tags-todo "@milo-someday")
      ("b" "Work Computer bortan" tags-todo "@bortan-someday")
      ("g" "Agendas" tags-todo "@agenda-someday")
@@ -747,6 +748,9 @@
   (setq recentf-auto-cleanup 'never) ;; disable before we start recentf!
   (setq dashboard-match-agenda-entry "-tag")
   (dashboard-setup-startup-hook))
+
+(use-package org-gantt
+  :straight (:host github :repo "swillner/org-gantt"))
 
 (use-package htmlize
   :straight t

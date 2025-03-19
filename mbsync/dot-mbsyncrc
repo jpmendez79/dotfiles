@@ -1,3 +1,4 @@
+# -*-conf-*-
 IMAPAccount gmail
 # Address to connect to
 Host imap.gmail.com

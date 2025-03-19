@@ -6,7 +6,7 @@ User jessepmendez79@gmail.com
 PassCmd "gpg2 -q -d ~/.authinfo.gpg | awk 'FNR == 3 {print $6}'"
 #
 # Use TLS
-SSLType IMAPS
+TLSType IMAPS
 # The following line should work. If you get certificate errors, uncomment the two following lines and read the "Troubleshooting" section.
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 #CertificateFile ~/.cert/imap.gmail.com.pem
@@ -43,7 +43,7 @@ User jmend46@lsu.edu
 PassCmd "gpg2 -q -d ~/.authinfo.gpg | awk 'FNR == 2 {print $2}'"
 # Is it literally the comment?
 # For whatever reason mbsync NEEDS a comment string below the above passcmd
-SSLType None
+TLSType None
 Authmechs LOGIN
 PipelineDepth 1
 

@@ -51,3 +51,6 @@
       '(nnregistry))
 (gnus-registry-initialize)
 
+;; Message Mode
+(setq message-fill-column nil)
+(add-hook 'message-mode-hook 'flyspell-mode)

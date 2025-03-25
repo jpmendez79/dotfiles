@@ -15,5 +15,7 @@ config.ssh_domains = {
     username = "jpmendez"
   },
 }
+config.window_background_opacity = 0.60
+config.enable_tab_bar = false
 -- and finally, return the configuration to wezterm
 return config

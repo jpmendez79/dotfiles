@@ -132,6 +132,11 @@
 
 ;; Look and feel
 ;; (require 'notifications)
+(use-package modus-themes
+  :straight t
+  :config
+  (load-theme 'modus-vivendi)
+  (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
 (use-package emojify
   :straight t
   :hook (after-init . global-emojify-mode))

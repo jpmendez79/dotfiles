@@ -54,3 +54,7 @@
 ;; Message Mode
 (setq message-fill-column nil)
 (add-hook 'message-mode-hook 'flyspell-mode)
+
+;; Prefer Plaintext
+(setq mm-discouraged-alternatives
+      '("text/html" "text/richtext"))

@@ -2,6 +2,7 @@
 ;; Place this in init.el
 ;; (load-file "~/.emacs.d/config.el")
 
+
 ;; Package Manager and Use package setup
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -677,7 +678,7 @@
 ;;   )
 
 (use-package slack
-  :straight t
+  :straight (:host github :repo "emacs-slack/emacs-slack")
   ;; :hook (slack-mode-hook . emojify-mode)
   :bind (("C-c s K" . slack-stop)
          ("C-c s c" . slack-select-rooms)

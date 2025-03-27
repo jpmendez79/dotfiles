@@ -5,7 +5,7 @@ configurations:
         tls: false
         username: jmend46@lsu.edu
         alias: university
-        passwordCMD: "gpg2 -q -d ~/.authinfo.gpg | awk 'FNR == 2 {print $2}'"
+        passwordCMD: "gpg --decrypt ~/.authinfo.gpg 2>/dev/null | awk '/^machine localhost/ {match($0, /password \"([^\"]+)\"/, m); if (m[1] != \"\") print m[1]}'"
         boxes:
             -
                 mailbox: INBOX

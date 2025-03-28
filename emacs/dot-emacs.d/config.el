@@ -147,11 +147,8 @@
   :straight t
   :commands (alert)
   :init
-  (setq alert-default-style 'toast))
+  (setq alert-default-style 'notifications))
 
-(use-package alert-toast
-  :straight t
-  :after alert)
 (display-time-mode 1)
 (display-battery-mode 1)
 (column-number-mode 1)
@@ -710,12 +707,8 @@
   :custom
   (slack-buffer-emojify t)
   (slack-modeline t)
-  (lack-enable-global-modeline-string t)
+  (slack-enable-global-modeline-string t)
   :config
-  ;; (setq slack-buffer-emojify t)
-
-
-  
   (slack-register-team
    :name "Microboone"
    :token (auth-source-pick-first-password
@@ -726,7 +719,9 @@
             :user "jmend46@lsu.edu^cookie")
    :full-and-display-names t
    :default t
-   :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically
+   ;; :subscribed-channels '((wirecell_elee general ))
+   :subscribed-channels nil
+   ) ;; using slack-extra-subscribed-channels because I can change it dynamically
    (slack-register-team
    :name "LSU Neutrino Group"
    :token (auth-source-pick-first-password
@@ -738,7 +733,6 @@
    :full-and-display-names t
    :default t
    :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically
-   )
    ))
 
 ;; Ledger mode

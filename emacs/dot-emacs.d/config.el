@@ -131,12 +131,31 @@
  (interactive)
  (kill-new (org-element-property :value (org-element-at-point))))
 
+;; Calendar showing org-agenda entries
+(defun my-open-calendar-agenda ()
+  (interactive)
+  (cfw:open-calendar-buffer
+   :contents-sources
+   (list
+    (cfw:org-create-source "medium purple"))
+   :view 'block-week))
+
+;; Calendar showing org entries from files
+(defun my-open-calendar-files ()
+  (interactive)
+  (cfw:open-calendar-buffer
+   :contents-sources
+   (list
+    (cfw:org-create-file-source "Todos" "~/stuff/todos.org" "green")
+    (cfw:org-create-file-source "Events" "~/stuff/events.org" "blue"))
+   :view 'block-3-day))
+
 ;; Look and feel
 ;; (require 'notifications)
 (use-package modus-themes
   :straight t
   :config
-  (load-theme 'modus-vivendi)
+  (load-theme 'modus-vivendi t)
   (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
 (use-package emojify
   :straight t
@@ -331,18 +350,6 @@
 	  (:calendar-id "jmend46@lsu.edu/calendar/Personal"
 			:inbox "~/Dropbox/org/cal_personal.org")) )
   )
-
-;; (use-package calfw
-;;   :ensure t)
-
-;; (use-package calfw-org
-;;   :ensure t
-;;   ;; :bind
-;;   ;; ("M-<f3>" . cfw:open-org-calendar)
-;;   :config
-;;   ;; hotfix: incorrect time range display
-;;   ;; source: https://github.com/zemaye/emacs-calfw/commit/3d17649c545423d919fd3bb9de2efe6dfff210fe
-;;   )
 
 ;; Tex and Latex Settings
 (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
@@ -751,6 +758,22 @@
 
 (use-package org-gantt
   :straight (:host github :repo "swillner/org-gantt"))
+
+;; (use-package calfw
+;;   :straight (:host github :repo "kiwanami/emacs-calfw" :includes calfw-org)
+;;   :config
+;;   (require 'calfw-org))
+(use-package calfw
+  :straight t)
+
+
+(use-package calfw-org
+  :after (calfw org)
+  :straight t)
+
+(use-package calfw-blocks
+  :straight (:host github :repo "ml729/calfw-blocks"))
+
 
 (use-package htmlize
   :straight t

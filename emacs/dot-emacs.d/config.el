@@ -2,7 +2,6 @@
 ;; Place this in init.el
 ;; (load-file "~/.emacs.d/config.el")
 
-
 ;; Package Manager and Use package setup
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -151,7 +150,10 @@
    :view 'block-3-day))
 
 ;; Look and feel
-;; (require 'notifications)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
 (use-package modus-themes
   :straight t
   :config

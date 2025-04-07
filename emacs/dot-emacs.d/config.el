@@ -764,7 +764,27 @@
 ;;   :config
 ;;   (require 'calfw-org))
 (use-package calfw
-  :straight t)
+  :straight t
+  :config
+  ;; hotfix: incorrect time range display
+  ;; source: https://github.com/zemaye/emacs-calfw/commit/3d17649c545423d919fd3bb9de2efe6dfff210fe
+  (defun cfw:org-get-timerange (text)
+  "Return a range object (begin end text).
+If TEXT does not have a range, return nil."
+  (let* ((dotime (cfw:org-tp text 'dotime)))
+    (and (stringp dotime) (string-match org-ts-regexp dotime)
+	 (let* ((matches  (s-match-strings-all org-ts-regexp dotime))
+           (start-date (nth 1 (car matches)))
+           (end-date (nth 1 (nth 1 matches)))
+	       (extra (cfw:org-tp text 'extra)))
+	   (if (string-match "(\\([0-9]+\\)/\\([0-9]+\\)): " extra)
+       ( list( calendar-gregorian-from-absolute
+       (time-to-days
+       (org-read-date nil t start-date))
+       )
+       (calendar-gregorian-from-absolute
+       (time-to-days
+       (org-read-date nil t end-date))) text)))))))
 
 
 (use-package calfw-org
@@ -772,7 +792,9 @@
   :straight t)
 
 (use-package calfw-blocks
-  :straight (:host github :repo "ml729/calfw-blocks"))
+  :straight (:host github :repo "ml729/calfw-blocks")
+  :config
+  (setq calfw-blocks-earliest-visible-time '(8 0)))
 
 
 (use-package htmlize

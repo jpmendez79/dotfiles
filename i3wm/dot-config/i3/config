@@ -35,6 +35,9 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 exec --no-startup-id nm-applet
 exec --no-startup-id flatpak run com.bitwarden.desktop
 
+# Start the emacs daemons when i3 is started
+# exec --no-startup-id emacs-daemon.sh
+
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
@@ -52,12 +55,13 @@ tiling_drag modifier titlebar
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
-# start emacs client
-bindsym $mod+c exec emacsclient -c
+# start emacs clients
+bindsym $mod+g exec emacsclient -c -s general
+bindsym $mod+c exec emacsclient -c -s comms
 # kill focused window
 bindsym $mod+Shift+q kill
 # Lock Screen
-bindsym  Control+$mod+l exec --no-startup-id sh ~/lock.sh
+bindsym  Control+$mod+l exec --no-startup-id sh ~/.bin/lock.sh
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec --no-startup-id dmenu_run

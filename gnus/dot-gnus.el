@@ -1,3 +1,4 @@
+
 ;; Personal Information
 (setq user-full-name "Jesse Mendez")
 (setq user-mail-address "jmend46@lsu.edu")
@@ -58,3 +59,5 @@
 ;; Prefer Plaintext
 (setq mm-discouraged-alternatives
       '("text/html" "text/richtext"))
+
+;; EBDB Popup Window

@@ -24,6 +24,6 @@ configurations:
         boxes:
             -
                 mailbox: INBOX
-                onNewMail: '~/.bin/getmail.sh gmail'
+                onNewMail: '~/.bin/getmail.sh personal'
                 onNewMailPost: SKIP
 

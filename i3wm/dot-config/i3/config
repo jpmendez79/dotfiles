@@ -56,8 +56,8 @@ tiling_drag modifier titlebar
 bindsym $mod+Return exec i3-sensible-terminal
 
 # start emacs clients
-bindsym $mod+g exec emacsclient -c -s general
-bindsym $mod+c exec emacsclient -c -s comms
+bindsym $mod+g exec emacsclient -c --socket-name='/tmp/emacs1000/server'
+# bindsym $mod+c exec emacsclient -c -s comms
 # kill focused window
 bindsym $mod+Shift+q kill
 # Lock Screen

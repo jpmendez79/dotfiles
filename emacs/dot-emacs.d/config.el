@@ -274,6 +274,16 @@
      (yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))
      (xml . ("https://github.com/tree-sitter-grammars/tree-sitter-xml.git"))))
 
+(setq major-mode-remap-alist
+ '((yaml-mode . yaml-ts-mode)
+   (bash-mode . bash-ts-mode)
+   (js2-mode . js-ts-mode)
+   (typescript-mode . typescript-ts-mode)
+   (json-mode . json-ts-mode)
+   (css-mode . css-ts-mode)
+   (python-mode . python-ts-mode)
+   (c-mode . c-or-c++-ts-mode)
+   (c++-mode . c-or-c++-ts-mode)))
 
 (use-package magit
   :straight t
@@ -819,8 +829,9 @@ If TEXT does not have a range, return nil."
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
   ;; required to make tramp directory tracking work correctly
-(setq tramp-default-method "ssh")
-(setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+  (setopt tramp-remote-path '(tramp-own-remote-path))
+  (setq tramp-default-method "ssh")
+  (setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
 )
 
 ;; Connection Variables

@@ -33,10 +33,10 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
+exec --no-startup-id pasystray
+exec --no-startup-id blueman-applet
 exec --no-startup-id flatpak run com.bitwarden.desktop
-
-# Start the emacs daemons when i3 is started
-# exec --no-startup-id emacs-daemon.sh
+exec --no-startup-id hsetroot -fill cloud_la.jpg
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -44,6 +44,11 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 3
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 3
+
+# Adjust Backlight
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -56,7 +61,7 @@ tiling_drag modifier titlebar
 bindsym $mod+Return exec i3-sensible-terminal
 
 # start emacs clients
-bindsym $mod+g exec emacsclient -c --socket-name='/tmp/emacs1000/server'
+bindsym $mod+g exec emacsclient --socket-name=/tmp/emacs$(id -u)/server -c
 # bindsym $mod+c exec emacsclient -c -s comms
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -197,6 +202,10 @@ gaps outer 15px
 smart_gaps inverse_outer
 
 default_border none
+
+# Window Configuration
+# enable floating mode for all XTerm windows
+for_window [class="Bitwarden"] floating enable
 
 # Configure an additional 5px of extra space to the screen edges,
 # for a total ga

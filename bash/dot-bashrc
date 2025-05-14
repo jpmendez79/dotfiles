@@ -14,6 +14,11 @@ if [[ $- != *i* ]] ; then
 	return
 fi
 
+
+# . ~/.keychain/${HOSTNAME}-sh
+# . ~/.keychain/${HOSTNAME}-sh-gpg
+
+
 # put your fun stuff here.
 export VISUAL="emacsclient"
 # Drduh ssh YubiKey Setup
@@ -21,3 +26,4 @@ export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpgconf --launch gpg-agent
 gpg-connect-agent updatestartuptty /bye > /dev/null
+export PATH="${PATH}:~/go/bin:~/.bin/"

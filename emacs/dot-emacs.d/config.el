@@ -53,14 +53,14 @@
   (fira-code-mode 1)
   )
 
-(defun my-c-mode-common-hook ()
-  (c-toggle-auto-newline 1)
-  (display-line-numbers-mode)
-  )
+;; (defun my-c-mode-common-hook ()
+;;   (c-toggle-auto-newline 1)
+  
+;;   )
 
-(defun my-python-mode-hook ()
-  (display-line-numbers-mode)
-  )
+;; (defun my-python-mode-hook ()
+;;   (display-line-numbers-mode)
+;;   )
 
 
 (defun shortened-path (path max-len)
@@ -288,20 +288,15 @@
 (use-package magit
   :straight t
   )
-;; C stuff
-(setq c-default-style '((java-mode . "java")
-			(awk-mode . "awk")
-			(other . "linux")))
-(setq-default c-electric-flag t)
 
-(setq c-toggle-electric-state 1)
-(add-hook 'c-mode-hook 'c-toggle-auto-newline 1)
+
+
 (add-hook 'emacs-lisp-mode-hook 'electric-pair-mode)
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
-(add-hook 'c++-mode-hook 'eglot-ensure)
+;; (add-hook 'c++-mode-hook 'eglot-ensure)
 
 ;; Python stuff
-(add-hook 'python-mode-hook 'eglot-ensure)
+;; (add-hook 'python-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'my-python-mode-hook)
 
 (use-package rainbow-mode
@@ -363,12 +358,17 @@
 			:inbox "~/Dropbox/org/cal_personal.org")) )
   )
 
+<<<<<<< HEAD
+=======
+                                  
+
+>>>>>>> a8ed53c (Cleaned up eglot configuration and the org-gcal mistake)
 ;; Tex and Latex Settings
 (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
       TeX-source-correlate-start-server t)
 (add-hook 'TeX-after-compilation-finished-functions
           #'TeX-revert-document-buffer)
-(add-hook 'TeX-mode-hook #'eglot-ensure)
+;; (add-hook 'TeX-mode-hook #'eglot-ensure)
 
 (use-package auctex
   :straight t)
@@ -691,12 +691,32 @@
   (("C-c n f" . consult-notes)
    ("C-c n s" . consult-notes-search-in-all-notes)))
 
+;; Prog Mode
+(use-package prog-mode
+  :hook ((prog-mode . display-line-numbers-mode))
+  )
+
 ;; Eglot Server
 (use-package eglot
+  :hook (prog-mode . eglot-ensure)
   :ensure t
   :config
   (setq lsp-tex-server 'digestif)
   )
+
+
+(use-package c-or-c++-ts-mode
+  :hook (c-or-c++-ts-mode . subword-mode)
+  :custom
+  (c-default-style '((java-mode . "java")
+		     (awk-mode . "awk")
+		     (other . "linux")))
+  (c-electric-flag t)
+  (c-toggle-electric-state 1)
+)
+;; C stuff
+
+
 ;; (use-package weechat
 ;;   :straight t
 ;;   :config

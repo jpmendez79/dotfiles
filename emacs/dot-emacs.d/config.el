@@ -53,15 +53,9 @@
   (fira-code-mode 1)
   )
 
-;; (defun my-c-mode-common-hook ()
-;;   (c-toggle-auto-newline 1)
-  
-;;   )
-
-;; (defun my-python-mode-hook ()
-;;   (display-line-numbers-mode)
-;;   )
-
+(defun my-denote-mode-hook ()
+  (visible-mode)
+  )
 
 (defun shortened-path (path max-len)
   "Return a modified version of `path', replacing some components
@@ -199,6 +193,10 @@
 (add-hook 'dired-mode-hook 'my-dired-init)
 (setq dired-dwim-target t)
 
+(use-package xterm-color
+  :straight t
+  )
+
 ;; ;; Eshell stuff
 ;; (use-package esh-mode
 ;;   :ensure nil
@@ -285,20 +283,6 @@
    (c-mode . c-or-c++-ts-mode)
    (c++-mode . c-or-c++-ts-mode)))
 
-(use-package magit
-  :straight t
-  )
-
-
-
-(add-hook 'emacs-lisp-mode-hook 'electric-pair-mode)
-(add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
-;; (add-hook 'c++-mode-hook 'eglot-ensure)
-
-;; Python stuff
-;; (add-hook 'python-mode-hook 'eglot-ensure)
-(add-hook 'python-mode-hook 'my-python-mode-hook)
-
 (use-package rainbow-mode
   :straight t
   )
@@ -350,7 +334,7 @@
   (setq org-caldav-inbox "~/Dropbox/org/cal_caldav.org")
   (setq org-caldav-uuid-extension ".EML")
   (setq org-caldav-save-directory "~/Dropbox/org/org-caldav/")
-  (setq org-icalendar-timezone "US/Central")
+  (setq org-icalendar-timezone "UTC")
   (setq org-caldav-calendars
 	'((:calendar-id "jmend46@lsu.edu/Calendar"
 			:inbox "~/Dropbox/org/cal_school.org")
@@ -358,17 +342,29 @@
 			:inbox "~/Dropbox/org/cal_personal.org")) )
   )
 
-<<<<<<< HEAD
-=======
-                                  
+(use-package org-gcal
+  :straight t
+  :config
+  (defun org-gcal-client-sync ()
+  "Run on first start to retrieve and set org-gcal client from gpg encrypted authinfo. After use org-gcal-commands as needed."
+  (setq org-gcal-client-id (auth-source-pick-first-password
+   :host "localhost"
+   :user "org-gcal-client-id"))
+  (setq org-gcal-client-secret (auth-source-pick-first-password
+   :host "localhost"
+   :user "org-gcal-client-secret"))
 
->>>>>>> a8ed53c (Cleaned up eglot configuration and the org-gcal mistake)
+  (org-gcal-reload-client-id-secret)
+  (org-gcal-sync))
+  (setq org-gcal-fetch-file-alist '(("jessepmendez79@gmail.com" .  "~/Dropbox/org/cal_personal.org")))
+  )
+
 ;; Tex and Latex Settings
 (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
       TeX-source-correlate-start-server t)
 (add-hook 'TeX-after-compilation-finished-functions
           #'TeX-revert-document-buffer)
-;; (add-hook 'TeX-mode-hook #'eglot-ensure)
+
 
 (use-package auctex
   :straight t)
@@ -411,6 +407,7 @@
   :custom
   (org-agenda-timegrid-use-ampm t)
   (org-agenda-include-diary t)
+  (calendar-mark-diary-entries-flag t)
   (org-stuck-projects
    '("+Project-someday+LEVEL=1/-DONE-CANCELED-someday" ("NEXT" "WAITING")))
   (org-todo-keywords
@@ -496,7 +493,10 @@
   (require 'ox-latex)
   (setq org-export-allow-bind-keywords t)
   (setq org-latex-listings 'minted)
-  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  (add-to-list 'org-latex-packages-alist '(("" "minted")
+					   ("" "braket")))
+					   
+	       
   (setq org-latex-pdf-process
 	'("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
 	  "bibtex %b"
@@ -691,37 +691,49 @@
   (("C-c n f" . consult-notes)
    ("C-c n s" . consult-notes-search-in-all-notes)))
 
-;; Prog Mode
 (use-package prog-mode
-  :hook ((prog-mode . display-line-numbers-mode))
-  )
+  :hook (prog-mode . display-line-numbers-mode))
 
 ;; Eglot Server
 (use-package eglot
-  :hook (prog-mode . eglot-ensure)
   :ensure t
   :config
   (setq lsp-tex-server 'digestif)
   )
 
+(use-package flymake
+  :hook (prog-mode . flymake-mode))
 
-(use-package c-or-c++-ts-mode
-  :hook (c-or-c++-ts-mode . subword-mode)
-  :custom
-  (c-default-style '((java-mode . "java")
-		     (awk-mode . "awk")
-		     (other . "linux")))
-  (c-electric-flag t)
-  (c-toggle-electric-state 1)
-)
 ;; C stuff
+(use-package c-ts-mode
+  :hook (c-or-c++-ts-mode . eglot-ensure)
+  :config
+  (setq c-toggle-auto-newline 1)
+  (setq c-toggle-electric-state 1)
+  (setq c-default-style '((java-mode . "java")
+			(awk-mode . "awk")
+			(other . "linux")))
+(setq-default c-electric-flag t))
 
+;; Other
+
+(use-package yaml-ts-mode
+    :mode "\\.yaml\\'")
+
+
+(use-package lisp-mode
+  :hook (lisp-mode . electric-pair-mode))
+
+
+;; (add-hook '
 
 ;; (use-package weechat
 ;;   :straight t
 ;;   :config
 ;;   (require 'rx)
 ;;   )
+
+
 
 (use-package slack
   :straight (:host github :repo "emacs-slack/emacs-slack")

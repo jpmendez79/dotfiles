@@ -1,11 +1,11 @@
 configurations:
     -
-        host: localhost
+        host: 127.0.0.1
         port: 1143
         tls: false
         username: jmend46@lsu.edu
         alias: university
-        passwordCMD: "gpg --decrypt ~/.authinfo.gpg 2>/dev/null | awk '/^machine localhost/ {match($0, /password \"([^\"]+)\"/, m); if (m[1] != \"\") print m[1]}'"
+        passwordCMD: "gpg2 -q -d ~/.authinfo.gpg | awk -F'\"' 'FNR == 4 {print $2}'"
         boxes:
             -
                 mailbox: INBOX

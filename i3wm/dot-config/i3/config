@@ -61,8 +61,8 @@ tiling_drag modifier titlebar
 bindsym $mod+Return exec i3-sensible-terminal
 
 # start emacs clients
-bindsym $mod+g exec emacsclient --socket-name=/tmp/emacs$(id -u)/server -c
-# bindsym $mod+c exec emacsclient -c -s comms
+bindsym $mod+g exec emacsclient -c
+
 # kill focused window
 bindsym $mod+Shift+q kill
 # Lock Screen
@@ -213,5 +213,5 @@ for_window [class="Bitwarden"] floating enable
 # finds out, if available)
 bar {
 	position top
-        status_command i3status
+        status_command i3blocks
 }

@@ -1,0 +1,58 @@
+# Global properties
+#
+# The top properties below are applied to every block, but can be overridden.
+# Each block command defaults to the script name to avoid boilerplate.
+# Change $SCRIPT_DIR to the location of your scripts!
+command=/usr/libexec/i3blocks/$BLOCK_NAME
+separator_block_width=15
+markup=none
+
+[weather_NOAA]
+# command=$SCRIPT_DIR/weather_NOAA/weather_NOAA
+LAT=30.28
+LON=-91.8
+interval=600
+
+[memory]
+label=MEM USE 
+separator=false
+interval=30
+
+[cpu_usage]
+interval=10
+LABEL=CPU
+
+[batterybar]
+
+label=bat:
+interval=5
+markup=pango
+min_width=bat: ■■■■■
+# Discharging colors low to high
+C1=#FF0027
+C2=#FF3B05
+C3=#FFB923
+C4=#FFD000
+C5=#E4FF00
+C6=#ADFF00
+C7=#6DFF00
+C8=#10BA00
+CHARGING_COLOR=#00AFE3
+FULL_COLOR=#FFFFFF
+AC_COLOR=#535353
+
+# [battery]
+# interval=30
+# LABEL=BAT
+# BAT_NUMBER=0
+
+[TIME_DATE]
+command=date +"%A %m-%d-%Y %l:%M %p %Z"
+interval=1
+
+[dunst]
+interval=once
+format=json
+markup=pango
+#min_width=50
+#align=center

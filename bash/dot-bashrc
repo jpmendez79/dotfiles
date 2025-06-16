@@ -26,7 +26,8 @@ fi
 
 
 # put your fun stuff here.
-export VISUAL="emacsclient --socket-name=/tmp/emacs$(id -u)/server"
+export VISUAL="emacsclient -c"
+export EDITOR="emacsclient -c"
 # Drduh ssh YubiKey Setup
 export GPG_TTY="$(tty)"
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)

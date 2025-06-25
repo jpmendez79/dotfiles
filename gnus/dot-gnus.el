@@ -25,7 +25,7 @@
          (to-from "jessepmendez79@gmail.com" "nnimap:Mail/personal/[Gmail]/Trash")))
 ;; Posting Styles and Replies         
 (setq gnus-posting-styles
-      '((".*" ; Matches all groups of messages
+      '(("Personal" ; Matches Gnus group called "Personal"
          (address "Jesse Mendez <jessepmendez79@gmail.com>")
 	 	 ("X-Message-SMTP-Method" "smtp smtp.gmail.com 587 jessepmendez79@gmail.com")
 	 )
@@ -38,6 +38,7 @@
       '("jmend46@lsu.edu"
         "jessepmendez79@gmail.com"))
 
+(define-key message-mode-map (kbd "C-<tab>") 'mail-abbrev-complete-alias)
 
 ;; SMTP Servers
 (setq send-mail-function 'sendmail-send-it

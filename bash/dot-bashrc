@@ -13,6 +13,12 @@ if [[ $- != *i* ]] ; then
 	# Shell is non-interactive.  Be done now!
 	return
 fi
+# Before emacs setup should fix all issues
+# Drduh ssh YubiKey Setup
+export GPG_TTY="$(tty)"
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+gpgconf --launch gpg-agent
+gpg-connect-agent updatestartuptty /bye > /dev/null
 
 if ! ps -e -o args | grep -q '^emacs --daemon$'; then
   emacs --daemon
@@ -28,9 +34,4 @@ fi
 # put your fun stuff here.
 export VISUAL="emacsclient -c"
 export EDITOR="emacsclient -c"
-# Drduh ssh YubiKey Setup
-export GPG_TTY="$(tty)"
-export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-gpgconf --launch gpg-agent
-gpg-connect-agent updatestartuptty /bye > /dev/null
 export PATH="${PATH}:~/go/bin:~/.bin/"

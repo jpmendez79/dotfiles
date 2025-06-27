@@ -786,8 +786,7 @@
             :user "jmend46@lsu.edu^cookie")
    :full-and-display-names t
    :default t
-   ;; :subscribed-channels '((wirecell_elee general ))
-   :subscribed-channels nil
+   :subscribed-channels '((wirecell_elee general "DM: Hanyu Wei" dm_team))
    ) ;; using slack-extra-subscribed-channels because I can change it dynamically
    (slack-register-team
    :name "LSU Neutrino Group"

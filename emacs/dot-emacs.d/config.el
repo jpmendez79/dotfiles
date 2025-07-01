@@ -590,6 +590,29 @@
 (use-package nov
   :straight t)
 
+(use-package org-roam
+  :straight t
+  :config
+  (setq org-roam-directory "~/Dropbox/org/roam")
+  (setq org-roam-dailies-directory "journals/")
+  (setq org-roam-file-exclude-regexp "\\.st[^/]*\\|logseq/.*$")
+  ;; ensure org-roam is creating nodes similarly to Logseq
+;; bear in mind that it won't be exact mapping due to Logseq's built-in
+;;    :file/name-format :triple-lowbar
+  (setq org-roam-capture-templates '(("d" "default"
+                                     plain
+                                    "%?"
+                                    :target (file+head "pages/${slug}.org" "#+title: ${title}\n")
+                                    :unnarrowed t)))
+
+;; ensure your org-roam daily template follows the journal settings in Logseq
+;;    :journal/page-title-format "yyyy-MM-dd"
+;;    :journal/file-name-format "yyyy_MM_dd"
+(setq org-roam-dailies-capture-templates '(("d" "default"
+                                            entry
+                                            "* %?"
+                                            :target (file+head "%<%Y_%m_%d>.org" "#+title: %<%Y-%m-%d>\n"))))
+)
 (use-package denote
   :straight t
   :init
@@ -871,6 +894,7 @@ If TEXT does not have a range, return nil."
   (setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
 )
 
-;; Connection Variables
+;; Global startup commands
+(org-roam-db-autosync-mode)
 (server-start)
 

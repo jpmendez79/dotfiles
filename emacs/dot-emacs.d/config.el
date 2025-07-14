@@ -152,11 +152,9 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(use-package modus-themes
-  :straight t
-  :config
-  (load-theme 'modus-vivendi t)
-  (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
+(use-package moe-theme
+  :straight t)
+
 (use-package emojify
   :straight t
   :hook (after-init . global-emojify-mode))
@@ -614,7 +612,12 @@
 (setq org-roam-dailies-capture-templates '(("d" "default"
                                             entry
                                             "* %?"
-                                           :target (file+head "%<%Y_%m_%d>.org" "#+title: %<%Y-%m-%d>\n")))))
+                                            :target (file+head "%<%Y_%m_%d>.org" "#+title: %<%Y-%m-%d>\n")))))
+
+
+(use-package org-roam-ui
+  :straight t)
+
 (use-package denote
   :straight t
   :init

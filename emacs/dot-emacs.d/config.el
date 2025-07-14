@@ -589,9 +589,12 @@
   )
 (use-package nov
   :straight t)
-
 (use-package org-roam
   :straight t
+  :bind
+  (("C-c r d" . org-roam-dailies-capture-today)
+   ("C-c r f" . org-roam-node-find)
+   ("C-c r i" . org-roam-node-insert))
   :config
   (setq org-roam-directory "~/Dropbox/org/roam")
   (setq org-roam-dailies-directory "journals/")
@@ -611,8 +614,7 @@
 (setq org-roam-dailies-capture-templates '(("d" "default"
                                             entry
                                             "* %?"
-                                            :target (file+head "%<%Y_%m_%d>.org" "#+title: %<%Y-%m-%d>\n"))))
-)
+                                           :target (file+head "%<%Y_%m_%d>.org" "#+title: %<%Y-%m-%d>\n")))))
 (use-package denote
   :straight t
   :init

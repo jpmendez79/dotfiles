@@ -152,9 +152,6 @@
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(use-package moe-theme
-  :straight t)
-
 (use-package emojify
   :straight t
   :hook (after-init . global-emojify-mode))
@@ -199,33 +196,33 @@
   :straight t
   )
 
-;; ;; Eshell stuff
-;; (use-package esh-mode
-;;   :ensure nil
-;;   :config
-;)
+;; Eshell stuff
+(use-package esh-mode
+  :ensure nil
+  :config
+)
 (require 'esh-mode)
 (require 'eshell)
-;; (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
-;; (delq 'eshell-handle-ansi-color eshell-output-filter-functions)
-;; (add-hook 'eshell-before-prompt-hook
-;;           (lambda ()
-;;             (setq xterm-color-preserve-properties t)))
-;; (setq xterm-color-use-bold-for-bright t)
-;; (setenv "TERM" "rxvt-unicode-256color")
+(add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
+(delq 'eshell-handle-ansi-color eshell-output-filter-functions)
+(add-hook 'eshell-before-prompt-hook
+          (lambda ()
+            (setq xterm-color-preserve-properties t)))
+(setq xterm-color-use-bold-for-bright t)
+(setenv "TERM" "rxvt-unicode-256color")
 (add-to-list 'eshell-modules-list 'eshell-smart)
 (setq eshell-where-to-jump 'begin)
 (setq eshell-review-quick-commands nil)
 (setq eshell-smart-space-goes-to-end t)
-(with-eval-after-load 'esh-mode
-  ;; Ensure xterm-color is used for processing ANSI sequences
-  (add-hook 'eshell-before-prompt-hook
-            (lambda ()
-              (setq xterm-color-preserve-properties t)))
-  (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
-  ;; Remove the default ANSI color handler
-  (setq eshell-output-filter-functions
-        (remove 'eshell-handle-ansi-color eshell-output-filter-functions)))
+;; (with-eval-after-load 'esh-mode
+;;   ;; Ensure xterm-color is used for processing ANSI sequences
+;;   (add-hook 'eshell-before-prompt-hook
+;;             (lambda ()
+;;               (setq xterm-color-preserve-properties t)))
+;;   (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
+;;   ;; Remove the default ANSI color handler
+;;   (setq eshell-output-filter-functions
+;;         (remove 'eshell-handle-ansi-color eshell-output-filter-functions)))
 (use-package vterm
   :straight t
   )  
@@ -497,8 +494,7 @@
   (require 'ox-latex)
   (setq org-export-allow-bind-keywords t)
   (setq org-latex-listings 'minted)
-  (add-to-list 'org-latex-packages-alist '(("" "minted")
-					   ("" "braket")))
+  ;; (add-to-list 'org-latex-packages-alist '(("" "minted")))
 					   
 	       
   (setq org-latex-pdf-process
@@ -541,14 +537,6 @@
   ("C-c b b" . ews-bibtex-biblio-lookup)
   )
 
-(use-package org-modern
-  :straight t
-  :hook
-  (org-mode . global-org-modern-mode)
-  :custom
-  (org-modern-keyword nil)
-  (org-modern-checkbox nil)
-  (org-modern-table nil))
 ;; LaTeX previews
 (use-package org-fragtog
   :straight t
@@ -612,118 +600,46 @@
 (setq org-roam-dailies-capture-templates '(("d" "default"
                                             entry
                                             "* %?"
-                                            :target (file+head "%<%Y_%m_%d>.org" "#+title: %<%Y-%m-%d>\n")))))
+                                            :target (file+head "%<%Y_%m_%d>.org" "#+title: %<%Y-%m-%d>\n"))))
+(setq org-roam-node-display-template
+      (concat "${title:*} "
+              (propertize "${tags:10}" 'face 'org-tag))))
 
 
 (use-package org-roam-ui
   :straight t)
+(use-package consult-org-roam
+   :straight t
+   :after org-roam
+   :init
+   (require 'consult-org-roam)
+   ;; Activate the minor mode
+   (consult-org-roam-mode 1)
+   :custom
+   ;; Use `ripgrep' for searching with `consult-org-roam-search'
+   (consult-org-roam-grep-func #'consult-ripgrep)
+   ;; Configure a custom narrow key for `consult-buffer'
+   (consult-org-roam-buffer-narrow-key ?r)
+   ;; Display org-roam buffers right after non-org-roam buffers
+   ;; in consult-buffer (and not down at the bottom)
+   (consult-org-roam-buffer-after-buffers t)
+   :config
+   ;; Eventually suppress previewing for certain functions
+   (consult-customize
+    consult-org-roam-forward-links
+    :preview-key "M-.")
+   :bind
+   ;; Define some convenient keybindings as an addition
+   ("C-c r e" . consult-org-roam-file-find)
+   ("C-c r b" . consult-org-roam-backlinks)
+   ("C-c r B" . consult-org-roam-backlinks-recursive)
+   ("C-c r l" . consult-org-roam-forward-links)
+   ("C-c r r" . consult-org-roam-search))
 
-(use-package denote
+(use-package org-roam-bibtex
+  :after org-roam
   :straight t
-  :init
-  (denote-rename-buffer-mode 1)
-  :custom
-  (denote-directory "~/Dropbox/org/denote")
-  (denote-sort-keywords t)
-  (denote-journal-extras-title-format 'day-date-month-year-12h)
-  (denote-sequence-scheme 'alphanumeric)
-  :hook (dired-mode . denote-dired-mode)
-  :bind
-  (("C-c d n" . denote-create-note)
-   ("C-c d S" . denote-sequence)
-   ("C-c d c" . denote-sequence-new-child-of-current)
-   ("C-c d s" . denote-sequence-new-sibling-of-current)
-   ("C-c d p" . denote-sequence-new-parent)
-   ("C-c d P" . denote-sequence-reparent)
-   ("C-c d f" . denote-sequence-find)
-   ("C-c d g" . denote-rename-file-signature)
-   ("C-c d d" . denote-sequence-dired)
-   ("C-c d j" . denote-sequence-new-journal-extras-new-entry)
-   ("C-c d i" . denote-link-or-create)
-   ("C-c d l" . denote-find-link)
-   ("C-c d l" . denote-find-link)
-   ("C-c d b" . denote-find-backlink)
-   ("C-c d r" . denote-rename-file)
-   ("C-c d R" . denote-rename-file-using-front-matter)
-   ("C-c d k" . denote-rename-file-keywords)
-   ("C-c d K" . denote-keywords-remove))
   )
-
-(use-package citar-denote
-  :straight t
-  :config
-  (citar-denote-mode)
-  :custom
-  (citar-open-always-create-notes t)
-  (citar-notes-paths '("~/Dropbox/org/denote/"))
-  
-  :bind (("C-c b n" . citar-create-note)
-         ("C-c b o" . citar-denote-open-note)
-         ("C-c b f" . citar-denote-find-citation)
-         ("C-c b d" . citar-denote-dwim)
-         ("C-c b e" . citar-denote-open-reference-entry)
-         ("C-c b a" . citar-denote-add-citekey)
-         ("C-c b k" . citar-denote-remove-citekey)
-         ("C-c b r" . citar-denote-find-reference)
-         ("C-c b l" . citar-denote-link-reference)
-         ("C-c b x" . citar-denote-nocite)
-         ("C-c b y" . citar-denote-cite-nocite)))
-
-(use-package denote-menu
-  :straight t
-  :config
-  (global-set-key (kbd "C-c z") #'list-denotes)
-  (define-key denote-menu-mode-map (kbd "c") #'denote-menu-clear-filters)
-  (define-key denote-menu-mode-map (kbd "/ r") #'denote-menu-filter)
-  (define-key denote-menu-mode-map (kbd "/ k") #'denote-menu-filter-by-keyword)
-  (define-key denote-menu-mode-map (kbd "/ o") #'denote-menu-filter-out-keyword)
-  (define-key denote-menu-mode-map (kbd "e") #'denote-menu-export-to-dired))
-
-;; Denote Explore
-(use-package denote-explore
-  :straight t
-  :custom
-  ;; Where to store network data and in which format
-  (denote-explore-network-directory "~/Dropbox/org/denote/viz/")
-  (denote-explore-network-filename "denote-network")
-  (denote-explore-network-format 'graphviz)
-  (denote-explore-network-graphviz-filetype "pdf")
-  (denote-file-name-slug-functions
-      '((title . denote-sluggify-title)
-        (keyword . identity)
-        (signature . denote-sluggify-signature)))
-  :bind
-  (;; Statistics
-   ("C-c e c" . denote-explore-count-notes)
-   ("C-c e C" . denote-explore-count-keywords)
-   ("C-c e b" . denote-explore-keywords-barchart)
-   ("C-c e x" . denote-explore-extensions-barchart)
-   ;; Random walks
-   ("C-c e r" . denote-explore-random-note)
-   ("C-c e l" . denote-explore-random-link)
-   ("C-c e k" . denote-explore-random-keyword)
-   ;; Denote Janitor
-   ("C-c e d" . denote-explore-identify-duplicate-notes)
-   ("C-c e z" . denote-explore-zero-keywords)
-   ("C-c e s" . denote-explore-single-keywords)
-   ("C-c e o" . denote-explore-sort-keywords)
-   ("C-c e r" . denote-explore-rename-keywords)
-   ;; Visualise denote
-   ("C-c e n" . denote-explore-network)
-   ("C-c e v" . denote-explore-network-regenerate)
-   ("C-c e D" . denote-explore-degree-barchart)))
-
-;; Denote extensions
-(use-package consult-notes
-  :straight t
-  :commands (consult-notes
-             consult-notes-search-in-all-notes)
-  :custom
-  (consult-notes-file-dir-sources
-   `(("Denote" ?d ,"~/Dropbox/org/denote")))
-  :bind
-  (("C-c n f" . consult-notes)
-   ("C-c n s" . consult-notes-search-in-all-notes)))
 
 (use-package prog-mode
   :hook (prog-mode . display-line-numbers-mode))
@@ -898,6 +814,11 @@ If TEXT does not have a range, return nil."
   (setq tramp-default-method "ssh")
   (setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
 )
+
+(use-package moe-theme
+  :straight t
+  :config
+  (moe-light))
 
 ;; Global startup commands
 (org-roam-db-autosync-mode)

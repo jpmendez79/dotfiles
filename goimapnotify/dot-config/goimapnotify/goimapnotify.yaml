@@ -5,7 +5,7 @@ configurations:
         tls: false
         username: jmend46@lsu.edu
         alias: university
-        passwordCMD: "pass show education/sso.paws.lsu.edu | head -n1"
+        passwordCMD: "pass show auth/lsu_sso | head -n1"
         boxes:
             -
                 mailbox: INBOX
@@ -20,7 +20,7 @@ configurations:
             starttls: false
         username: jessepmendez79@gmail.com
         alias: personal
-        passwordCMD: "pass show app/gmail |head -n1"
+        passwordCMD: "pass show token/gmail |head -n1"
         boxes:
             -
                 mailbox: INBOX

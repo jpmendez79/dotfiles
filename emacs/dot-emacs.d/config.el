@@ -147,6 +147,14 @@
     (cfw:org-create-file-source "Events" "~/stuff/events.org" "blue"))
    :view 'block-3-day))
 
+(defun org-gcal-client-sync ()
+  "Run on first start to retrieve and set org-gcal client from gpg encrypted authinfo. After use org-gcal-commands as n…"
+  (setq org-gcal-client-id (auth-source-pick-first-password
+   :user "org-gcal-client-id"))
+  (setq org-gcal-client-secret (auth-source-pick-first-password
+   :user "org-gcal-client-secret"))
+  (org-gcal-reload-client-id-secret))
+
 ;; Look and feel
 (menu-bar-mode -1)
 (tool-bar-mode -1)
@@ -343,20 +351,10 @@
 
 (use-package org-gcal
   :straight t
+  :init (org-gcal-client-sync)
   :config
-  (defun org-gcal-client-sync ()
-  "Run on first start to retrieve and set org-gcal client from gpg encrypted authinfo. After use org-gcal-commands as needed."
-  (setq org-gcal-client-id (auth-source-pick-first-password
-   :host "localhost"
-   :user "org-gcal-client-id"))
-  (setq org-gcal-client-secret (auth-source-pick-first-password
-   :host "localhost"
-   :user "org-gcal-client-secret"))
-
-  (org-gcal-reload-client-id-secret)
-  (org-gcal-sync))
   (setq org-gcal-fetch-file-alist '(("jessepmendez79@gmail.com" .  "~/Dropbox/org/cal_personal.org")))
-  )
+	)
 
 ;; Tex and Latex Settings
 (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
@@ -414,8 +412,8 @@
   (org-capture-templates
    '(
      ("a" "Capture an Appointment")
-     ("ap" "Personal Calendar Appointment" entry (file  "~/Dropbox/org/cal_calendar.org" )
-      "* %?\n\n:PROPERTIES:\n\n:END:\n\n")
+     ("ap" "Appointment" entry (file "~/Dropbox/cal_personal.org")
+        "* %?\n:PROPERTIES:\n:calendar-id:\tjessepmendez79@gmail.com\n:END:\n:org-gcal:\n%^T--%^T\n:END:\n\n" :jump-to-captured t)
      ("as" "School Calendar Appointment" entry (file  "~/Dropbox/org/cal_school.org" )
       "* %?\n\n:PROPERTIES:\n\n:END:\n\n")
      ("i" "Capture an idea to inbox" entry (file "~/Dropbox/org/inbox.org") "* %?\n")

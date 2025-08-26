@@ -49,6 +49,7 @@
   (org-fragtog-mode 1)
   (visual-line-mode 1)
   (fira-code-mode 1)
+  (org-agenda-files-track-mode 1)
   )
 (defun my-ledger-hook ()
   (setq-local tab-always-indent 'complete)
@@ -445,14 +446,12 @@
        (tags-todo "-someday+TODO=\"WAITING\"")
 
        (tags "someday+LEVEL=2")))))
-    (org-agenda-files '("~/Dropbox/org/inbox.org"
-		      "~/Dropbox/org/project.org"
-		      "~/Dropbox/org/gtd.org"
-		      "~/Dropbox/org/cal_school.org"
-		      "~/Dropbox/org/cal_personal.org"))
-
+    ;; (org-agenda-files '("~/Dropbox/org/inbox.org"
+    ;; 		      "~/Dropbox/org/project.org"
+    ;; 		      "~/Dropbox/org/gtd.org"
+    ;; 		      "~/Dropbox/org/cal_school.org"
+  ;; 		      "~/Dropbox/org/cal_personal.org")
   :config
-
   (setq org-refile-targets '((nil :maxlevel . 9)
 			     ("~/Dropbox/org/someday.org" :maxlevel . 9)
 			     ("~/Dropbox/org/gtd.org" :maxlevel . 3)
@@ -637,6 +636,24 @@
 (use-package org-roam-bibtex
   :after org-roam
   :straight t
+  )
+
+(use-package org-agenda-files-track
+  :straight t
+  :config
+  (defun org-agenda-files-track-predicate ()
+  "Return non-nil if the current file should be in `org-agenda-files'.  
+Exclude the file if its name is exactly someday.org."
+  (let ((fname (buffer-file-name)))
+    (and fname
+         (not (string-equal (file-name-nondirectory fname)
+			    '("someday.org" "inbox.org")))
+         (org-element-map (org-element-parse-buffer 'headline) 'headline
+           (lambda (h)
+             (eq (org-element-property :todo-type h) 'todo))
+           nil 'first-match))))
+    (setq org-agenda-files
+      (expand-file-name "~/Dropbox/org/agenda-list.txt"))
   )
 
 (use-package prog-mode

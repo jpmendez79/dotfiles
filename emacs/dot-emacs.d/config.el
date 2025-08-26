@@ -401,7 +401,8 @@
      (calc . t)
      ))
   (add-to-list 'org-modules 'org-habit)
-  :hook (org-mode . my-org-hook)
+  :hook ((org-mode . my-org-hook)
+	 (org-agenda-mode . hl-line-mode))
   :custom
   (org-agenda-timegrid-use-ampm t)
   (org-agenda-include-diary t)
@@ -643,17 +644,29 @@
   :config
   (defun org-agenda-files-track-predicate ()
   "Return non-nil if the current file should be in `org-agenda-files'.  
-Exclude the file if its name is exactly someday.org."
+Exclude the file if its name is `someday.org` or `archive.org`."
   (let ((fname (buffer-file-name)))
     (and fname
-         (not (string-equal (file-name-nondirectory fname)
-			    '("someday.org" "inbox.org")))
+         (not (member (file-name-nondirectory fname)
+                      '("someday.org" "archive.org")))
          (org-element-map (org-element-parse-buffer 'headline) 'headline
            (lambda (h)
              (eq (org-element-property :todo-type h) 'todo))
            nil 'first-match))))
-    (setq org-agenda-files
-      (expand-file-name "~/Dropbox/org/agenda-list.txt"))
+
+;;   (defun org-agenda-files-track-predicate ()
+;;   "Return non-nil if the current file should be in `org-agenda-files'.  
+;; Exclude the file if its name is exactly someday.org."
+;;   (let ((fname (buffer-file-name)))
+;;     (and fname
+;;          (not (string-equal (file-name-nondirectory fname)
+;; 			    '("someday.org" "inbox.org")))
+;;          (org-element-map (org-element-parse-buffer 'headline) 'headline
+;;            (lambda (h)
+;;              (eq (org-element-property :todo-type h) 'todo))
+;;            nil 'first-match))))
+;;     (setq org-agenda-files
+;;       (expand-file-name "~/Dropbox/org/agenda-list.txt"))
   )
 
 (use-package prog-mode

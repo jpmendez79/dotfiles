@@ -642,10 +642,11 @@
 (use-package org-agenda-files-track
   :straight t
   :config
-  (defun org-agenda-files-track-predicate ()
+  ;; Updated to print ~/ instead of /home/
+(defun org-agenda-files-track-predicate ()
   "Return non-nil if the current file should be in `org-agenda-files'.  
 Exclude the file if its name is `someday.org` or `archive.org`."
-  (let ((fname (buffer-file-name)))
+  (let ((fname (abbreviate-file-name (buffer-file-name))))
     (and fname
          (not (member (file-name-nondirectory fname)
                       '("someday.org" "archive.org")))
@@ -653,20 +654,8 @@ Exclude the file if its name is `someday.org` or `archive.org`."
            (lambda (h)
              (eq (org-element-property :todo-type h) 'todo))
            nil 'first-match))))
-
-;;   (defun org-agenda-files-track-predicate ()
-;;   "Return non-nil if the current file should be in `org-agenda-files'.  
-;; Exclude the file if its name is exactly someday.org."
-;;   (let ((fname (buffer-file-name)))
-;;     (and fname
-;;          (not (string-equal (file-name-nondirectory fname)
-;; 			    '("someday.org" "inbox.org")))
-;;          (org-element-map (org-element-parse-buffer 'headline) 'headline
-;;            (lambda (h)
-;;              (eq (org-element-property :todo-type h) 'todo))
-;;            nil 'first-match))))
-;;     (setq org-agenda-files
-;;       (expand-file-name "~/Dropbox/org/agenda-list.txt"))
+    (setq org-agenda-files
+      (expand-file-name "~/Dropbox/org/agenda-list.txt"))
   )
 
 (use-package prog-mode

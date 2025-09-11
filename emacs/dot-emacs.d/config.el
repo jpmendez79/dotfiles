@@ -674,14 +674,14 @@
   (setq bibtex-completion-edit-notes-function 'orb-bibtex-completion-edit-note) ; use org-roam-capture-templates for notes
   )
 
-(use-package org-noter
-  :straight t
-  (setq org-noter-notes-search-path '("/home/USER/roam/references/notes/")) ; V IMPORTANT: SET FULL PATH!
+;; (use-package org-noter
+;;   :straight t
+;;   (setq org-noter-notes-search-path '("/home/USER/roam/references/notes/")) ; V IMPORTANT: SET FULL PATH!
 
-  (setq orb-preformat-keywords '("citekey" "title" "url" "author-or-editor" "keywords" "file") ; customisation for notes, org-noter integration
-      orb-process-file-keyword t
-      orb-attached-file-extensions '("pdf"))
-  )
+;;   (setq orb-preformat-keywords '("citekey" "title" "url" "author-or-editor" "keywords" "file") ; customisation for notes, org-noter integration
+;;       orb-process-file-keyword t
+;;       orb-attached-file-extensions '("pdf"))
+;;   )
 
 
 (use-package org-agenda-files-track

@@ -49,8 +49,7 @@
   (org-fragtog-mode 1)
   (visual-line-mode 1)
   (fira-code-mode 1)
-  (org-agenda-files-track-mode 1)
-  )
+   )
 (defun my-ledger-hook ()
   (setq-local tab-always-indent 'complete)
   (setq-local completion-cycle-threshold t)
@@ -148,13 +147,13 @@
     (cfw:org-create-file-source "Events" "~/stuff/events.org" "blue"))
    :view 'block-3-day))
 
-(defun org-gcal-client-sync ()
-  "Run on first start to retrieve and set org-gcal client from gpg encrypted authinfo. After use org-gcal-commands as n…"
-  (setq org-gcal-client-id (auth-source-pick-first-password
-   :user "org-gcal-client-id"))
-  (setq org-gcal-client-secret (auth-source-pick-first-password
-   :user "org-gcal-client-secret"))
-  (org-gcal-reload-client-id-secret))
+;; (defun org-gcal-client-sync ()
+;;   "Run on first start to retrieve and set org-gcal client from gpg encrypted authinfo. After use org-gcal-commands as n…"
+;;   (setq org-gcal-client-id (auth-source-pick-first-password
+;;    :user "org-gcal-client-id"))
+;;   (setq org-gcal-client-secret (auth-source-pick-first-password
+;;    :user "org-gcal-client-secret"))
+;;   (org-gcal-reload-client-id-secret))
 
 ;; Look and feel
 (menu-bar-mode -1)
@@ -350,12 +349,12 @@
 			:inbox "~/Dropbox/org/cal_personal.org")) )
   )
 
-(use-package org-gcal
-  :straight t
-  :init (org-gcal-client-sync)
-  :config
-  (setq org-gcal-fetch-file-alist '(("jessepmendez79@gmail.com" .  "~/Dropbox/org/cal_personal.org")))
-	)
+;; (use-package org-gcal
+;;   :straight t
+;;   ;; :init (org-gcal-client-sync)
+;;   :config
+;;   (setq org-gcal-fetch-file-alist '(("jessepmendez79@gmail.com" .  "~/Dropbox/org/cal_personal.org")))
+;; 	)
 
 ;; Tex and Latex Settings
 (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
@@ -447,11 +446,12 @@
        (tags-todo "-someday+TODO=\"WAITING\"")
 
        (tags "someday+LEVEL=2")))))
-    ;; (org-agenda-files '("~/Dropbox/org/inbox.org"
-    ;; 		      "~/Dropbox/org/project.org"
-    ;; 		      "~/Dropbox/org/gtd.org"
-    ;; 		      "~/Dropbox/org/cal_school.org"
-  ;; 		      "~/Dropbox/org/cal_personal.org")
+  (org-agenda-files '("~/Dropbox/org/roam/projects/"
+		      "~/Dropbox/org/roam/journals/"
+		      "~/Dropbox/org/project.org"
+		      "~/Dropbox/org/gtd.org"
+		      "~/Dropbox/org/cal_school.org"
+		      "~/Dropbox/org/cal_personal.org"))
   :config
   (setq org-refile-targets '((nil :maxlevel . 9)
 			     ("~/Dropbox/org/someday.org" :maxlevel . 9)
@@ -527,33 +527,30 @@
   (bibtex-user-optional-fields
    '(("keywords" "Keywords to describe the entry" "")
      ("file" "Link to a document file." "" )))
-  (bibtex-align-at-equal-sign t)
+  (bibtex-align-at-equal-sign t))
+
+
+
+(use-package helm-bibtex
+  :straight t
   :config
-  ;; IMP: Ensure 'latexmk' installed as a system package!
-;; see also: http://www.jonathanleroux.org/bibtex-mode.html
-(setq bibtex-completion-bibliography '("~/roam/references/master.bib"))  ; location of .bib file containing bibliography entries
-(setq bibtex-completion-find-additional-pdfs t)                          ; support for multiple pdfs for one %citekey
-(setq bibtex-completion-pdf-field "File")                                ; in bib entry, file = {/path/to/file.pdf} could be set to locate the accompanying file
-                                                                         ;; for multiple files use, file = {:/path/to/file0.pdf:PDF;:/path/to/file1.pdf:PDF}
-(setq bibtex-completion-library-path '("~/roam/references/documents/"))  ; in this dir, %citekey-name(s).pdf would automatically attach pdf(s) to %citekey
-                                                                         ;; if only !exist "file" field in bib entry
-(setq bibtex-completion-notes-path "~/roam/references/notes/")           ; dir to keep notes for the pdfs
+  (global-set-key (kbd "C-c r r") 'helm-bibtex)
+    ;; IMP: Ensure 'latexmk' installed as a system package!
+  ;; see also: http://www.jonathanleroux.org/bibtex-mode.html
+  (setq bibtex-completion-bibliography '("~/Dropbox/org/roam/ref/main.bib"))  ; location of .bib file containing bibliography entries
+  (setq bibtex-completion-find-additional-pdfs t)                          ; support for multiple pdfs for one %citekey
+  (setq bibtex-completion-pdf-field "File")                                ; in bib entry, file = {/path/to/file.pdf} could be set to locate the accompanying file
+  ;; for multiple files use, file = {:/path/to/file0.pdf:PDF;:/path/to/file1.pdf:PDF}
+  (setq bibtex-completion-library-path '("~/Dropbox/org/roam/ref/documents/"))  ; in this dir, %citekey-name(s).pdf would automatically attach pdf(s) to %citekey
+  ;; if only !exist "file" field in bib entry
+  (setq bibtex-completion-notes-path "~/Dropbox/org/roam/ref/")           ; dir to keep notes for the pdfs
 
-;; BEGIN: Change insert citation (<f3>) behaviour of helm-bibtex for org-mode 
-(defun custom/bibtex-completion-format-citation-org (keys)
-  "Custom cite definition for org-mode"
-  (s-join ", "
-	  (--map (format "cite:&%s" it) keys)))
-
-(setq bibtex-completion-format-citation-functions
-      '((org-mode      . custom/bibtex-completion-format-citation-org)
-	(latex-mode    . bibtex-completion-format-citation-cite)
-	(markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
-	(python-mode   . bibtex-completion-format-citation-sphinxcontrib-bibtex)
-	(rst-mode      . bibtex-completion-format-citation-sphinxcontrib-bibtex)
-	(default       . bibtex-completion-format-citation-default))
-      )
-;; END: Change insert citation (<f3>) behaviour of helm-bibtex for org-mode
+  ;; BEGIN: Change insert citation (<f3>) behaviour of helm-bibtex for org-mode 
+  (defun custom/bibtex-completion-format-citation-org (keys)
+    "Custom cite definition for org-mode"
+    (s-join ", "
+	    (--map (format "cite:&%s" it) keys)))
+  ;; END: Change insert citation (<f3>) behaviour of helm-bibtex for org-mode
 
 (setq bibtex-autokey-year-length 4                          ; customisations for 'bibtex-generate-autokey'
       bibtex-autokey-name-year-separator "-"                ; press C-c C-c (bibtex-clean-entry) on a bib entry w/o %citekey
@@ -561,8 +558,15 @@
       bibtex-autokey-titleword-separator "-"                ; use M-x crossref-add-bibtex-entry <ret>: to add an entry from
       bibtex-autokey-titlewords 2                           ; https://www.crossref.org/
       bibtex-autokey-titlewords-stretch 1
-      bibtex-autokey-titleword-length 5))
+      bibtex-autokey-titleword-length 5)
 
+(setq bibtex-completion-format-citation-functions
+      '((org-mode      . custom/bibtex-completion-format-citation-org)
+	(latex-mode    . bibtex-completion-format-citation-cite)
+	(markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
+	(python-mode   . bibtex-completion-format-citation-sphinxcontrib-bibtex)
+	(rst-mode      . bibtex-completion-format-citation-sphinxcontrib-bibtex)
+	(default       . bibtex-completion-format-citation-default))))
 
 (use-package biblio
   :straight t
@@ -612,6 +616,14 @@
    ("C-c r f" . org-roam-node-find)
    ("C-c r i" . org-roam-node-insert))
   :config
+  (cl-defmethod org-roam-node-type ((node org-roam-node))
+  "Return the TYPE of NODE."
+  (condition-case nil
+      (file-name-nondirectory
+       (directory-file-name
+        (file-name-directory
+         (file-relative-name (org-roam-node-file node) org-roam-directory))))
+    (error "")))
   (setq org-roam-directory "~/Dropbox/org/roam")
   (setq org-roam-dailies-directory "journals/")
   (setq org-roam-file-exclude-regexp "\\.st[^/]*\\|logseq/.*$")
@@ -619,10 +631,15 @@
 ;; bear in mind that it won't be exact mapping due to Logseq's built-in
 ;;    :file/name-format :triple-lowbar
   (setq org-roam-capture-templates '(("d" "default"
-                                     plain
-                                    "%?"
-                                    :target (file+head "pages/${slug}.org" "#+title: ${title}\n")
-                                    :unnarrowed t)))
+                                      plain
+                                      "%?"
+                                      :target (file+head "pages/${slug}.org" "#+title: ${title}\n")
+                                      :unnarrowed t)
+				     ("b" "bibliography notes" plain             ; Org-noter integration
+				      (file "~/Dropbox/org/roam/ref/notes-template.org")
+				      :target (file+head "ref/${citekey}.org"
+							 "#+title: ${title}\n")
+				      :empty-lines 1)))
 
 ;; ensure your org-roam daily template follows the journal settings in Logseq
 ;;    :journal/page-title-format "yyyy-MM-dd"
@@ -633,7 +650,11 @@
                                             :target (file+head "%<%Y_%m_%d>.org" "#+title: %<%Y-%m-%d>\n"))))
 (setq org-roam-node-display-template
       (concat "${title:*} "
-              (propertize "${tags:10}" 'face 'org-tag))))
+              (propertize "${tags:10}" 'face 'org-tag)))
+
+(setq org-roam-node-display-template
+      (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+#("${type:15} ${title:*} ${tags:10}" 22 32 (face org-tag)))
 
 
 (use-package org-roam-ui
@@ -664,7 +685,7 @@
    ("C-c r b" . consult-org-roam-backlinks)
    ("C-c r B" . consult-org-roam-backlinks-recursive)
    ("C-c r l" . consult-org-roam-forward-links)
-   ("C-c r r" . consult-org-roam-search))
+   ("C-c r s" . consult-org-roam-search))
 
 (use-package org-roam-bibtex
   :after org-roam
@@ -674,34 +695,15 @@
   (setq bibtex-completion-edit-notes-function 'orb-bibtex-completion-edit-note) ; use org-roam-capture-templates for notes
   )
 
-;; (use-package org-noter
-;;   :straight t
-;;   (setq org-noter-notes-search-path '("/home/USER/roam/references/notes/")) ; V IMPORTANT: SET FULL PATH!
-
-;;   (setq orb-preformat-keywords '("citekey" "title" "url" "author-or-editor" "keywords" "file") ; customisation for notes, org-noter integration
-;;       orb-process-file-keyword t
-;;       orb-attached-file-extensions '("pdf"))
-;;   )
-
-
-(use-package org-agenda-files-track
+(use-package org-noter
   :straight t
   :config
-  ;; Updated to print ~/ instead of /home/
-(defun org-agenda-files-track-predicate ()
-  "Return non-nil if the current file should be in `org-agenda-files'.  
-Exclude the file if its name is `someday.org` or `archive.org`."
-  (let ((fname (abbreviate-file-name (buffer-file-name))))
-    (and fname
-         (not (member (file-name-nondirectory fname)
-                      '("someday.org" "archive.org")))
-         (org-element-map (org-element-parse-buffer 'headline) 'headline
-           (lambda (h)
-             (eq (org-element-property :todo-type h) 'todo))
-           nil 'first-match))))
-    (setq org-agenda-files
-      (expand-file-name "~/Dropbox/org/agenda-list.txt"))
-  )
+  (setq org-noter-notes-search-path '("~/Dropbox/org/roam/ref/")) ; V IMPORTANT: SET FULL PATH!
+
+  (setq orb-preformat-keywords '("citekey" "title" "url" "author-or-editor" "keywords" "file") ; customisation for notes, org-noter integration
+      orb-process-file-keyword t
+      orb-attached-file-extensions '("pdf")))
+
 
 (use-package prog-mode
   :hook (prog-mode . display-line-numbers-mode))
@@ -814,12 +816,12 @@ Exclude the file if its name is `someday.org` or `archive.org`."
   )
 
 ;; use-package with package.el:
-(use-package dashboard
-  :straight t
-  :config
-  (setq recentf-auto-cleanup 'never) ;; disable before we start recentf!
-  (setq dashboard-match-agenda-entry "-tag")
-  (dashboard-setup-startup-hook))
+;; (use-package dashboard
+;;   :straight t
+;;   :config
+;;   (setq recentf-auto-cleanup 'never) ;; disable before we start recentf!
+;;   (setq dashboard-match-agenda-entry "-tag")
+;;   (dashboard-setup-startup-hook))
 
 (use-package org-gantt
   :straight (:host github :repo "swillner/org-gantt"))

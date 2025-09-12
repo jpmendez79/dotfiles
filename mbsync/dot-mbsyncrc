@@ -32,7 +32,7 @@ Patterns *
 # Automatically create missing mailboxes, both locally and on the server
 Create Both
 # Sync the movement of messages between folders and deletions, add after making sure the sync works
-Expunge Both
+# Expunge Both
 # Save the synchronization state files in the relevant directory
 SyncState *
 

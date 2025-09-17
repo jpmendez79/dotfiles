@@ -413,12 +413,12 @@
   (org-capture-templates
    '(
      ("a" "Capture an Appointment")
-     ("ap" "Appointment" entry (file "~/Dropbox/cal_personal.org")
+     ("ap" "Appointment" entry (file "~/Dropbox/org/roam/cal_personal.org")
         "* %?\n:PROPERTIES:\n:calendar-id:\tjessepmendez79@gmail.com\n:END:\n:org-gcal:\n%^T--%^T\n:END:\n\n" :jump-to-captured t)
-     ("as" "School Calendar Appointment" entry (file  "~/Dropbox/org/cal_school.org" )
+     ("as" "School Calendar Appointment" entry (file  "~/Dropbox/org/roam/cal_school.org" )
       "* %?\n\n:PROPERTIES:\n\n:END:\n\n")
-     ("i" "Capture an idea to inbox" entry (file "~/Dropbox/org/inbox.org") "* %?\n")
-     ("n" "Capture a next item" entry (file+headline "~/Dropbox/org/gtd.org" "Tasks") "* NEXT %?%^G\n")
+     ("i" "Capture an idea to inbox" entry (file "~/Dropbox/org/roam/inbox.org") "* %?\n")
+     ("n" "Capture a next item" entry (file+headline "~/Dropbox/org/roam/gtd.org" "Tasks") "* NEXT %?%^G\n")
      ("j" "Journal" entry (function denote-journal-extras-new-or-existing-entry)
       "\n* %<%I:%M %p>\n%?" :jump-to-captured t :immediate-finish t)))
   (org-directory "~/Dropbox/org")
@@ -448,16 +448,16 @@
        (tags "someday+LEVEL=2")))))
   (org-agenda-files '("~/Dropbox/org/roam/projects/"
 		      "~/Dropbox/org/roam/journals/"
-		      "~/Dropbox/org/project.org"
-		      "~/Dropbox/org/gtd.org"
-		      "~/Dropbox/org/cal_school.org"
-		      "~/Dropbox/org/cal_personal.org"))
+		      "~/Dropbox/org/roam/project.org"
+		      "~/Dropbox/org/roam/gtd.org"
+		      "~/Dropbox/org/roam/cal_school.org"
+		      "~/Dropbox/org/roam/cal_personal.org"))
   :config
   (setq org-refile-targets '((nil :maxlevel . 9)
-			     ("~/Dropbox/org/someday.org" :maxlevel . 9)
-			     ("~/Dropbox/org/gtd.org" :maxlevel . 3)
-			     ("~/Dropbox/org/project.org" :maxlevel . 9)
-			     ("~/Dropbox/org/cal_calendar.org" :maxlevel . 9)))
+			     ("~/Dropbox/org/roam/someday.org" :maxlevel . 9)
+			     ("~/Dropbox/org/roam/gtd.org" :maxlevel . 3)
+			     ("~/Dropbox/org/roam/project.org" :maxlevel . 9)
+			     ("~/Dropbox/org/roam/cal_calendar.org" :maxlevel . 9)))
   ;; Looks
   (setq-default org-startup-indented t
 		org-pretty-entities t

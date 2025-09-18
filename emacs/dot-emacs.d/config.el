@@ -92,37 +92,37 @@
   "to be run as hook for `dired-mode'."
   (dired-hide-details-mode 1))
 
-(defun ews--bibtex-combined-biblio-lookup ()
-  "Combines `biblio-lookup' and `biblio-doi-insert-bibtex'."
-  (require 'biblio)
-  (let* ((dbs (biblio--named-backends))
-         (db-list (append dbs '(("DOI" . biblio-doi-backend))))
-         (db-selected (biblio-completing-read-alist
-                       "Backend:"
-                       db-list)))
-    (if (eq db-selected 'biblio-doi-backend)
-        (let ((doi (read-string "DOI: ")))
-          (biblio-doi-insert-bibtex doi))
-      (biblio-lookup db-selected))))
+;; (defun ews--bibtex-combined-biblio-lookup ()
+;;   "Combines `biblio-lookup' and `biblio-doi-insert-bibtex'."
+;;   (require 'biblio)
+;;   (let* ((dbs (biblio--named-backends))
+;;          (db-list (append dbs '(("DOI" . biblio-doi-backend))))
+;;          (db-selected (biblio-completing-read-alist
+;;                        "Backend:"
+;;                        db-list)))
+;;     (if (eq db-selected 'biblio-doi-backend)
+;;         (let ((doi (read-string "DOI: ")))
+;;           (biblio-doi-insert-bibtex doi))
+;;       (biblio-lookup db-selected))))
 
 
 
-(defun ews-bibtex-biblio-lookup ()
-  "Insert Biblio search results into current buffer or select BibTeX file."
-  (interactive)
-  (if-let ((current-mode major-mode)
-	   org-cite-global-bibliography
-	   (bibfiles (length org-cite-global-bibliography))
-	   (bibfile (cond ((eq bibfiles 1) (car org-cite-global-bibliography))
-			  ((equal major-mode 'bibtex-mode)
-			   (buffer-file-name))
-			  (t (completing-read
-			      "Select BibTeX file:" org-cite-global-bibliography)))))
-      (progn (find-file bibfile)
-	     (goto-char (point-max))
-	     (ews--bibtex-combined-biblio-lookup)
-	     (save-buffer))
-    (message "No BibTeX file(s) defined.")))
+;; (defun ews-bibtex-biblio-lookup ()
+;;   "Insert Biblio search results into current buffer or select BibTeX file."
+;;   (interactive)
+;;   (if-let ((current-mode major-mode)
+;; 	   org-cite-global-bibliography
+;; 	   (bibfiles (length org-cite-global-bibliography))
+;; 	   (bibfile (cond ((eq bibfiles 1) (car org-cite-global-bibliography))
+;; 			  ((equal major-mode 'bibtex-mode)
+;; 			   (buffer-file-name))
+;; 			  (t (completing-read
+;; 			      "Select BibTeX file:" org-cite-global-bibliography)))))
+;;       (progn (find-file bibfile)
+;; 	     (goto-char (point-max))
+;; 	     (ews--bibtex-combined-biblio-lookup)
+;; 	     (save-buffer))
+;;     (message "No BibTeX file(s) defined.")))
 
 (defun kill-src-block-at-point ()
  (interactive)
@@ -420,7 +420,11 @@
      ("i" "Capture an idea to inbox" entry (file "~/Dropbox/org/roam/inbox.org") "* %?\n")
      ("n" "Capture a next item" entry (file+headline "~/Dropbox/org/roam/gtd.org" "Tasks") "* NEXT %?%^G\n")
      ("j" "Journal" entry (function denote-journal-extras-new-or-existing-entry)
-      "\n* %<%I:%M %p>\n%?" :jump-to-captured t :immediate-finish t)))
+      "\n* %<%I:%M %p>\n%?" :jump-to-captured t :immediate-finish t)
+     ("s" "Capture page or selection" entry (file "~/Dropbox/org/roam/inbox.org")
+      "* %:description\n:PROPERTIES:\n:CAPTURED: %U\n:URL: %:link\n:END:\n%i\n%?"
+      :immediate-finish t)))
+     
   (org-directory "~/Dropbox/org")
   (org-agenda-custom-commands 
    '(
@@ -568,11 +572,11 @@
 	(rst-mode      . bibtex-completion-format-citation-sphinxcontrib-bibtex)
 	(default       . bibtex-completion-format-citation-default))))
 
-(use-package biblio
-  :straight t
-  :bind
-  ("C-c b b" . ews-bibtex-biblio-lookup)
-  )
+;; (use-package biblio
+;;   :straight t
+;;   :bind
+;;   ("C-c b b" . ews-bibtex-biblio-lookup)
+;;   )
 
 ;; LaTeX previews
 (use-package org-fragtog
@@ -589,22 +593,22 @@
    (plist-put org-format-latex-options :background 'auto)))
 
 ;; Citar to access bibliographies
-(use-package citar
-  :straight t
-  :custom
-  (org-cite-global-bibliography
-   (directory-files "~/Dropbox/Library/" t
-		    "^[A-Z|a-z|0-9].+.bib$"))
-  (citar-bibliography org-cite-global-bibliography)
-  (citar-library-paths '("~/Dropbox/Library"))
-  (org-cite-insert-processor 'citar)
-  (org-cite-follow-processor 'citar)
-  (org-cite-activate-processor 'citar)
-  :bind
-  (("C-c w b" . citar-open)
-   (:map org-mode-map
-         :package org
-         ("C-c w C". #'org-cite-insert))))
+;; (use-package citar
+;;   :straight t
+;;   :custom
+;;   (org-cite-global-bibliography
+;;    (directory-files "~/Dropbox/Library/" t
+;; 		    "^[A-Z|a-z|0-9].+.bib$"))
+;;   (citar-bibliography org-cite-global-bibliography)
+;;   (citar-library-paths '("~/Dropbox/Library"))
+;;   (org-cite-insert-processor 'citar)
+;;   (org-cite-follow-processor 'citar)
+;;   (org-cite-activate-processor 'citar)
+;;   :bind
+;;   (("C-c w b" . citar-open)
+;;    (:map org-mode-map
+;;          :package org
+;;          ("C-c w C". #'org-cite-insert))))
 
 
 (use-package nov
@@ -648,13 +652,12 @@
                                             entry
                                             "* %?"
                                             :target (file+head "%<%Y_%m_%d>.org" "#+title: %<%Y-%m-%d>\n"))))
-(setq org-roam-node-display-template
-      (concat "${title:*} "
-              (propertize "${tags:10}" 'face 'org-tag)))
-
+;; (setq org-roam-node-display-template
+;;       (concat "${title:*} "
+;;               (propertize "${tags:10}" 'face 'org-tag)))
 (setq org-roam-node-display-template
       (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-#("${type:15} ${title:*} ${tags:10}" 22 32 (face org-tag)))
+ #("${type:15} ${title:*} ${tags:10}" 22 32 (face org-tag)))
 
 
 (use-package org-roam-ui
@@ -691,8 +694,8 @@
   :after org-roam
   :straight t
   :config
-  ;(setq bibtex-completion-edit-notes-function 'bibtex-completion-edit-notes-default) ; default to org-ref for notes
-  (setq bibtex-completion-edit-notes-function 'orb-bibtex-completion-edit-note) ; use org-roam-capture-templates for notes
+  (setq bibtex-completion-edit-notes-function 'bibtex-completion-edit-notes-default) ; default to org-ref for notes
+  ;; (setq bibtex-completion-edit-notes-function 'orb-bibtex-completion-edit-note) ; use org-roam-capture-templates for notes
   )
 
 (use-package org-noter
@@ -722,12 +725,10 @@
 (use-package c-ts-mode
   :hook (c-or-c++-ts-mode . eglot-ensure)
   :config
+  (setq c-ts-mode-indent-style "k&r")
   (setq c-toggle-auto-newline 1)
   (setq c-toggle-electric-state 1)
-  (setq c-default-style '((java-mode . "java")
-			(awk-mode . "awk")
-			(other . "linux")))
-(setq-default c-electric-flag t))
+  (setq-default c-electric-flag t))
 
 ;; Other
 

@@ -27,7 +27,6 @@
 (use-package pass
   :straight t)
 
-
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "/usr/bin/firefox-bin")
 
@@ -49,7 +48,7 @@
   (org-fragtog-mode 1)
   (visual-line-mode 1)
   (fira-code-mode 1)
-   )
+  )
 (defun my-ledger-hook ()
   (setq-local tab-always-indent 'complete)
   (setq-local completion-cycle-threshold t)
@@ -92,41 +91,10 @@
   "to be run as hook for `dired-mode'."
   (dired-hide-details-mode 1))
 
-;; (defun ews--bibtex-combined-biblio-lookup ()
-;;   "Combines `biblio-lookup' and `biblio-doi-insert-bibtex'."
-;;   (require 'biblio)
-;;   (let* ((dbs (biblio--named-backends))
-;;          (db-list (append dbs '(("DOI" . biblio-doi-backend))))
-;;          (db-selected (biblio-completing-read-alist
-;;                        "Backend:"
-;;                        db-list)))
-;;     (if (eq db-selected 'biblio-doi-backend)
-;;         (let ((doi (read-string "DOI: ")))
-;;           (biblio-doi-insert-bibtex doi))
-;;       (biblio-lookup db-selected))))
-
-
-
-;; (defun ews-bibtex-biblio-lookup ()
-;;   "Insert Biblio search results into current buffer or select BibTeX file."
-;;   (interactive)
-;;   (if-let ((current-mode major-mode)
-;; 	   org-cite-global-bibliography
-;; 	   (bibfiles (length org-cite-global-bibliography))
-;; 	   (bibfile (cond ((eq bibfiles 1) (car org-cite-global-bibliography))
-;; 			  ((equal major-mode 'bibtex-mode)
-;; 			   (buffer-file-name))
-;; 			  (t (completing-read
-;; 			      "Select BibTeX file:" org-cite-global-bibliography)))))
-;;       (progn (find-file bibfile)
-;; 	     (goto-char (point-max))
-;; 	     (ews--bibtex-combined-biblio-lookup)
-;; 	     (save-buffer))
-;;     (message "No BibTeX file(s) defined.")))
 
 (defun kill-src-block-at-point ()
- (interactive)
- (kill-new (org-element-property :value (org-element-at-point))))
+  (interactive)
+  (kill-new (org-element-property :value (org-element-at-point))))
 
 ;; Calendar showing org-agenda entries
 (defun my-open-calendar-agenda ()
@@ -136,24 +104,6 @@
    (list
     (cfw:org-create-source "medium purple"))
    :view 'block-week))
-
-;; Calendar showing org entries from files
-(defun my-open-calendar-files ()
-  (interactive)
-  (cfw:open-calendar-buffer
-   :contents-sources
-   (list
-    (cfw:org-create-file-source "Todos" "~/stuff/todos.org" "green")
-    (cfw:org-create-file-source "Events" "~/stuff/events.org" "blue"))
-   :view 'block-3-day))
-
-;; (defun org-gcal-client-sync ()
-;;   "Run on first start to retrieve and set org-gcal client from gpg encrypted authinfo. After use org-gcal-commands as n…"
-;;   (setq org-gcal-client-id (auth-source-pick-first-password
-;;    :user "org-gcal-client-id"))
-;;   (setq org-gcal-client-secret (auth-source-pick-first-password
-;;    :user "org-gcal-client-secret"))
-;;   (org-gcal-reload-client-id-secret))
 
 ;; Look and feel
 (menu-bar-mode -1)
@@ -183,10 +133,8 @@
   :hook prog-mode
   ;; (global-fira-code-mode)
   :custom
-  (fira-code-mode-disabled-ligatures '("[]" "#{" "#(" "#_" "#_(" "x")) ;; List of ligatures to turn off
-  )
-
-
+  (fira-code-mode-disabled-ligatures '("[]" "#{" "#(" "#_" "#_(" "x")))
+  
 ;; Save File
 (setq delete-old-versions t)
 (setq backup-directory-alist
@@ -208,7 +156,7 @@
 (use-package esh-mode
   :ensure nil
   :config
-)
+  )
 (require 'esh-mode)
 (require 'eshell)
 (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
@@ -222,18 +170,11 @@
 (setq eshell-where-to-jump 'begin)
 (setq eshell-review-quick-commands nil)
 (setq eshell-smart-space-goes-to-end t)
-;; (with-eval-after-load 'esh-mode
-;;   ;; Ensure xterm-color is used for processing ANSI sequences
-;;   (add-hook 'eshell-before-prompt-hook
-;;             (lambda ()
-;;               (setq xterm-color-preserve-properties t)))
-;;   (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
-;;   ;; Remove the default ANSI color handler
-;;   (setq eshell-output-filter-functions
-;;         (remove 'eshell-handle-ansi-color eshell-output-filter-functions)))
+
 (use-package vterm
   :straight t
-  )  
+  )
+
 ;; Personal Info and PIM Settings
 (setq user-full-name "Jesse Mendez"
       user-mail-address "jmend46@lsu.edu")
@@ -253,42 +194,42 @@
 (setq epa-pinentry-mode 'loopback)
 
 ;; Tree-sitter
-  (setq treesit-language-source-alist
-   '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
-     (c . ("https://github.com/tree-sitter/tree-sitter-c.git"))
-     (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp.git"))
-     (cmake . ("https://github.com/uyha/tree-sitter-cmake"))
-     (css . ("https://github.com/tree-sitter/tree-sitter-css"))
-     (csv . ("https://github.com/tree-sitter-grammars/tree-sitter-csv" "master" "csv/src"))
-     (elisp . ("https://github.com/Wilfred/tree-sitter-elisp"))
-     (gpg-config . ("https://github.com/tree-sitter-grammars/tree-sitter-gpg-config.git"))
-     (python . ("https://github.com/tree-sitter/tree-sitter-python"))
-     (go . ("https://github.com/tree-sitter/tree-sitter-go"))
-     (html . ("https://github.com/tree-sitter/tree-sitter-html ppp"))
-     (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
-     (json . ("https://github.com/tree-sitter/tree-sitter-json"))
-     (lua . ("https://github.com/tree-sitter-grammars/tree-sitter-lua.git"))
-     (make . ("https://github.com/alemuller/tree-sitter-make"))
-     (markdown . ("https://github.com/ikatyang/tree-sitter-markdown"))
-     (properties . ("https://github.com/tree-sitter-grammars/tree-sitter-properties.git"))
-     (ssh-config . ("https://github.com/tree-sitter-grammars/tree-sitter-ssh-config.git"))
-     (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
-     (udev . ("https://github.com/tree-sitter-grammars/tree-sitter-udev.git"))
-     (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
-     (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
-     (yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))
-     (xml . ("https://github.com/tree-sitter-grammars/tree-sitter-xml.git"))))
+(setq treesit-language-source-alist
+      '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
+	(c . ("https://github.com/tree-sitter/tree-sitter-c.git"))
+	(cpp . ("https://github.com/tree-sitter/tree-sitter-cpp.git"))
+	(cmake . ("https://github.com/uyha/tree-sitter-cmake"))
+	(css . ("https://github.com/tree-sitter/tree-sitter-css"))
+	(csv . ("https://github.com/tree-sitter-grammars/tree-sitter-csv" "master" "csv/src"))
+	(elisp . ("https://github.com/Wilfred/tree-sitter-elisp"))
+	(gpg-config . ("https://github.com/tree-sitter-grammars/tree-sitter-gpg-config.git"))
+	(python . ("https://github.com/tree-sitter/tree-sitter-python"))
+	(go . ("https://github.com/tree-sitter/tree-sitter-go"))
+	(html . ("https://github.com/tree-sitter/tree-sitter-html ppp"))
+	(javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
+	(json . ("https://github.com/tree-sitter/tree-sitter-json"))
+	(lua . ("https://github.com/tree-sitter-grammars/tree-sitter-lua.git"))
+	(make . ("https://github.com/alemuller/tree-sitter-make"))
+	(markdown . ("https://github.com/ikatyang/tree-sitter-markdown"))
+	(properties . ("https://github.com/tree-sitter-grammars/tree-sitter-properties.git"))
+	(ssh-config . ("https://github.com/tree-sitter-grammars/tree-sitter-ssh-config.git"))
+	(toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
+	(udev . ("https://github.com/tree-sitter-grammars/tree-sitter-udev.git"))
+	(tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))
+	(typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))
+	(yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))
+	(xml . ("https://github.com/tree-sitter-grammars/tree-sitter-xml.git"))))
 
 (setq major-mode-remap-alist
- '((yaml-mode . yaml-ts-mode)
-   (bash-mode . bash-ts-mode)
-   (js2-mode . js-ts-mode)
-   (typescript-mode . typescript-ts-mode)
-   (json-mode . json-ts-mode)
-   (css-mode . css-ts-mode)
-   (python-mode . python-ts-mode)
-   (c-mode . c-or-c++-ts-mode)
-   (c++-mode . c-or-c++-ts-mode)))
+      '((yaml-mode . yaml-ts-mode)
+	(bash-mode . bash-ts-mode)
+	(js2-mode . js-ts-mode)
+	(typescript-mode . typescript-ts-mode)
+	(json-mode . json-ts-mode)
+	(css-mode . css-ts-mode)
+	(python-mode . python-ts-mode)
+	(c-mode . c-or-c++-ts-mode)
+	(c++-mode . c-or-c++-ts-mode)))
 
 (use-package rainbow-mode
   :straight t
@@ -346,8 +287,7 @@
 	'((:calendar-id "jmend46@lsu.edu/Calendar"
 			:inbox "~/Dropbox/org/cal_school.org")
 	  (:calendar-id "jmend46@lsu.edu/calendar/Personal"
-			:inbox "~/Dropbox/org/cal_personal.org")) )
-  )
+			:inbox "~/Dropbox/org/cal_personal.org"))))
 
 ;; (use-package org-gcal
 ;;   :straight t
@@ -382,7 +322,7 @@
   :straight t
   :config
   (add-to-list 'load-path
-              "~/.emacs.d/snippets/")
+               "~/.emacs.d/snippets/")
   (yas-global-mode 1)
   )
 ;; Nov.el File associations
@@ -413,18 +353,18 @@
   (org-capture-templates
    '(
      ("a" "Capture an Appointment")
-     ("ap" "Appointment" entry (file "~/Dropbox/org/roam/cal_personal.org")
-        "* %?\n:PROPERTIES:\n:calendar-id:\tjessepmendez79@gmail.com\n:END:\n:org-gcal:\n%^T--%^T\n:END:\n\n" :jump-to-captured t)
-     ("as" "School Calendar Appointment" entry (file  "~/Dropbox/org/roam/cal_school.org" )
+     ("ap" "Appointment" entry (file "~/Dropbox/org/cal_personal.org")
+      "* %?\n:PROPERTIES:\n:calendar-id:\tjessepmendez79@gmail.com\n:END:\n:org-gcal:\n%^T--%^T\n:END:\n\n" :jump-to-captured t)
+     ("as" "School Calendar Appointment" entry (file  "~/Dropbox/org/cal_school.org" )
       "* %?\n\n:PROPERTIES:\n\n:END:\n\n")
-     ("i" "Capture an idea to inbox" entry (file "~/Dropbox/org/roam/inbox.org") "* %?\n")
-     ("n" "Capture a next item" entry (file+headline "~/Dropbox/org/roam/gtd.org" "Tasks") "* NEXT %?%^G\n")
+     ("i" "Capture an idea to inbox" entry (file "~/Dropbox/org/inbox.org") "* %?\n")
+     ("n" "Capture a next item" entry (file+headline "~/Dropbox/org/gtd.org" "Tasks") "* NEXT %?%^G\n")
      ("j" "Journal" entry (function denote-journal-extras-new-or-existing-entry)
       "\n* %<%I:%M %p>\n%?" :jump-to-captured t :immediate-finish t)
-     ("s" "Capture page or selection" entry (file "~/Dropbox/org/roam/inbox.org")
+     ("s" "Capture page or selection" entry (file "~/Dropbox/org/inbox.org")
       "* %:description\n:PROPERTIES:\n:CAPTURED: %U\n:URL: %:link\n:END:\n%i\n%?"
       :immediate-finish t)))
-     
+  
   (org-directory "~/Dropbox/org")
   (org-agenda-custom-commands 
    '(
@@ -450,18 +390,19 @@
        (tags-todo "-someday+TODO=\"WAITING\"")
 
        (tags "someday+LEVEL=2")))))
-  (org-agenda-files '("~/Dropbox/org/roam/projects/"
-		      "~/Dropbox/org/roam/journals/"
-		      "~/Dropbox/org/roam/project.org"
-		      "~/Dropbox/org/roam/gtd.org"
-		      "~/Dropbox/org/roam/cal_school.org"
-		      "~/Dropbox/org/roam/cal_personal.org"))
+  (org-agenda-files '("~/Dropbox/org/projects/"
+		      "~/Dropbox/org/journals/"
+		      "~/Dropbox/org/project.org"
+		      "~/Dropbox/org/gtd.org"
+		      "~/Dropbox/org/cal_school.org"
+		      "~/Dropbox/org/cal_calendar.org"
+		      "~/Dropbox/org/cal_personal.org"))
   :config
   (setq org-refile-targets '((nil :maxlevel . 9)
-			     ("~/Dropbox/org/roam/someday.org" :maxlevel . 9)
-			     ("~/Dropbox/org/roam/gtd.org" :maxlevel . 3)
-			     ("~/Dropbox/org/roam/project.org" :maxlevel . 9)
-			     ("~/Dropbox/org/roam/cal_calendar.org" :maxlevel . 9)))
+			     ("~/Dropbox/org/someday.org" :maxlevel . 9)
+			     ("~/Dropbox/org/gtd.org" :maxlevel . 3)
+			     ("~/Dropbox/org/project.org" :maxlevel . 9)
+			     ("~/Dropbox/org/cal_calendar.org" :maxlevel . 9)))
   ;; Looks
   (setq-default org-startup-indented t
 		org-pretty-entities t
@@ -470,7 +411,7 @@
 		org-startup-with-inline-images t
 		org-image-actual-width '(300))
   (add-to-list 'org-entities-user
-      '(("nubar" "\\bar{\\nu}" nil "ν̅" "ν̅" "ν̅" "ν̅")))
+	       '(("nubar" "\\bar{\\nu}" nil "ν̅" "ν̅" "ν̅" "ν̅")))
   (setq org-refile-use-outline-path 'file)
   (setq org-refile-allow-creating-parent-nodes t)					; Show full paths for refiling
   (setq org-outline-path-complete-in-steps nil)
@@ -497,8 +438,8 @@
   (setq org-export-allow-bind-keywords t)
   (setq org-latex-listings 'minted)
   ;; (add-to-list 'org-latex-packages-alist '(("" "minted")))
-					   
-	       
+  
+  
   (setq org-latex-pdf-process
 	'("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
 	  "bibtex %b"
@@ -512,9 +453,7 @@
 	(mapcar
 	 (lambda (s)
 	   (replace-regexp-in-string "%latex " "%latex -shell-escape " s))
-	 org-latex-pdf-process))
-  )
-
+	 org-latex-pdf-process)))
 
 (use-package org-crypt
   :ensure nil
@@ -533,13 +472,11 @@
      ("file" "Link to a document file." "" )))
   (bibtex-align-at-equal-sign t))
 
-
-
 (use-package helm-bibtex
   :straight t
   :config
   (global-set-key (kbd "C-c r r") 'helm-bibtex)
-    ;; IMP: Ensure 'latexmk' installed as a system package!
+  ;; IMP: Ensure 'latexmk' installed as a system package!
   ;; see also: http://www.jonathanleroux.org/bibtex-mode.html
   (setq bibtex-completion-bibliography '("~/Dropbox/org/roam/ref/main.bib"))  ; location of .bib file containing bibliography entries
   (setq bibtex-completion-find-additional-pdfs t)                          ; support for multiple pdfs for one %citekey
@@ -556,27 +493,21 @@
 	    (--map (format "cite:&%s" it) keys)))
   ;; END: Change insert citation (<f3>) behaviour of helm-bibtex for org-mode
 
-(setq bibtex-autokey-year-length 4                          ; customisations for 'bibtex-generate-autokey'
-      bibtex-autokey-name-year-separator "-"                ; press C-c C-c (bibtex-clean-entry) on a bib entry w/o %citekey
-      bibtex-autokey-year-title-separator "-"               ; to automatically insert a %citekey based on meta data
-      bibtex-autokey-titleword-separator "-"                ; use M-x crossref-add-bibtex-entry <ret>: to add an entry from
-      bibtex-autokey-titlewords 2                           ; https://www.crossref.org/
-      bibtex-autokey-titlewords-stretch 1
-      bibtex-autokey-titleword-length 5)
+  (setq bibtex-autokey-year-length 4                          ; customisations for 'bibtex-generate-autokey'
+	bibtex-autokey-name-year-separator "-"                ; press C-c C-c (bibtex-clean-entry) on a bib entry w/o %citekey
+	bibtex-autokey-year-title-separator "-"               ; to automatically insert a %citekey based on meta data
+	bibtex-autokey-titleword-separator "-"                ; use M-x crossref-add-bibtex-entry <ret>: to add an entry from
+	bibtex-autokey-titlewords 2                           ; https://www.crossref.org/
+	bibtex-autokey-titlewords-stretch 1
+	bibtex-autokey-titleword-length 5)
 
-(setq bibtex-completion-format-citation-functions
-      '((org-mode      . custom/bibtex-completion-format-citation-org)
-	(latex-mode    . bibtex-completion-format-citation-cite)
-	(markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
-	(python-mode   . bibtex-completion-format-citation-sphinxcontrib-bibtex)
-	(rst-mode      . bibtex-completion-format-citation-sphinxcontrib-bibtex)
-	(default       . bibtex-completion-format-citation-default))))
-
-;; (use-package biblio
-;;   :straight t
-;;   :bind
-;;   ("C-c b b" . ews-bibtex-biblio-lookup)
-;;   )
+  (setq bibtex-completion-format-citation-functions
+	'((org-mode      . custom/bibtex-completion-format-citation-org)
+	  (latex-mode    . bibtex-completion-format-citation-cite)
+	  (markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
+	  (python-mode   . bibtex-completion-format-citation-sphinxcontrib-bibtex)
+	  (rst-mode      . bibtex-completion-format-citation-sphinxcontrib-bibtex)
+	  (default       . bibtex-completion-format-citation-default))))
 
 ;; LaTeX previews
 (use-package org-fragtog
@@ -592,27 +523,9 @@
    (plist-put org-format-latex-options :foreground 'auto)
    (plist-put org-format-latex-options :background 'auto)))
 
-;; Citar to access bibliographies
-;; (use-package citar
-;;   :straight t
-;;   :custom
-;;   (org-cite-global-bibliography
-;;    (directory-files "~/Dropbox/Library/" t
-;; 		    "^[A-Z|a-z|0-9].+.bib$"))
-;;   (citar-bibliography org-cite-global-bibliography)
-;;   (citar-library-paths '("~/Dropbox/Library"))
-;;   (org-cite-insert-processor 'citar)
-;;   (org-cite-follow-processor 'citar)
-;;   (org-cite-activate-processor 'citar)
-;;   :bind
-;;   (("C-c w b" . citar-open)
-;;    (:map org-mode-map
-;;          :package org
-;;          ("C-c w C". #'org-cite-insert))))
-
-
 (use-package nov
   :straight t)
+
 (use-package org-roam
   :straight t
   :bind
@@ -621,23 +534,29 @@
    ("C-c r i" . org-roam-node-insert))
   :config
   (cl-defmethod org-roam-node-type ((node org-roam-node))
-  "Return the TYPE of NODE."
-  (condition-case nil
-      (file-name-nondirectory
-       (directory-file-name
-        (file-name-directory
-         (file-relative-name (org-roam-node-file node) org-roam-directory))))
-    (error "")))
+    "Return the TYPE of NODE."
+    (condition-case nil
+	(file-name-nondirectory
+	 (directory-file-name
+          (file-name-directory
+           (file-relative-name (org-roam-node-file node) org-roam-directory))))
+      (error "")))
   (setq org-roam-directory "~/Dropbox/org/roam")
   (setq org-roam-dailies-directory "journals/")
-  (setq org-roam-file-exclude-regexp "\\.st[^/]*\\|logseq/.*$")
-  ;; ensure org-roam is creating nodes similarly to Logseq
-;; bear in mind that it won't be exact mapping due to Logseq's built-in
-;;    :file/name-format :triple-lowbar
   (setq org-roam-capture-templates '(("d" "default"
                                       plain
                                       "%?"
-                                      :target (file+head "pages/${slug}.org" "#+title: ${title}\n")
+                                      :target (file+head "resources/${slug}.org" "#+title: ${title}\n")
+                                      :unnarrowed t)
+				     ("a" "area"
+                                      plain
+                                      "%?"
+                                      :target (file+head "areas/${slug}.org" "#+title: ${title}\n")
+                                      :unnarrowed t)
+				     ("p" "project"
+                                      plain
+                                      "%?"
+                                      :target (file+head "project/${slug}.org" "#+title: ${title}\n")
                                       :unnarrowed t)
 				     ("b" "bibliography notes" plain             ; Org-noter integration
 				      (file "~/Dropbox/org/roam/ref/notes-template.org")
@@ -645,67 +564,61 @@
 							 "#+title: ${title}\n")
 				      :empty-lines 1)))
 
-;; ensure your org-roam daily template follows the journal settings in Logseq
-;;    :journal/page-title-format "yyyy-MM-dd"
-;;    :journal/file-name-format "yyyy_MM_dd"
-(setq org-roam-dailies-capture-templates '(("d" "default"
-                                            entry
-                                            "* %?"
-                                            :target (file+head "%<%Y_%m_%d>.org" "#+title: %<%Y-%m-%d>\n"))))
-;; (setq org-roam-node-display-template
-;;       (concat "${title:*} "
-;;               (propertize "${tags:10}" 'face 'org-tag)))
-(setq org-roam-node-display-template
-      (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
- #("${type:15} ${title:*} ${tags:10}" 22 32 (face org-tag)))
+  (setq org-roam-dailies-capture-templates '(("d" "default"
+                                              entry
+                                              "* %?"
+                                              :target (file+head "%<%Y_%m_%d>.org" "#+title: %<%Y-%m-%d>\n"))))
+  (setq org-roam-node-display-template
+	(concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  #("${type:15} ${title:*} ${tags:10}" 22 32 (face org-tag)))
 
 
 (use-package org-roam-ui
   :straight t)
+
 (use-package consult-org-roam
-   :straight t
-   :after org-roam
-   :init
-   (require 'consult-org-roam)
-   ;; Activate the minor mode
-   (consult-org-roam-mode 1)
-   :custom
-   ;; Use `ripgrep' for searching with `consult-org-roam-search'
-   (consult-org-roam-grep-func #'consult-ripgrep)
-   ;; Configure a custom narrow key for `consult-buffer'
-   (consult-org-roam-buffer-narrow-key ?r)
-   ;; Display org-roam buffers right after non-org-roam buffers
-   ;; in consult-buffer (and not down at the bottom)
-   (consult-org-roam-buffer-after-buffers t)
-   :config
-   ;; Eventually suppress previewing for certain functions
-   (consult-customize
-    consult-org-roam-forward-links
-    :preview-key "M-.")
-   :bind
-   ;; Define some convenient keybindings as an addition
-   ("C-c r e" . consult-org-roam-file-find)
-   ("C-c r b" . consult-org-roam-backlinks)
-   ("C-c r B" . consult-org-roam-backlinks-recursive)
-   ("C-c r l" . consult-org-roam-forward-links)
-   ("C-c r s" . consult-org-roam-search))
+  :straight t
+  :after org-roam
+  :init
+  (require 'consult-org-roam)
+  ;; Activate the minor mode
+  (consult-org-roam-mode 1)
+  :custom
+  ;; Use `ripgrep' for searching with `consult-org-roam-search'
+  (consult-org-roam-grep-func #'consult-ripgrep)
+  ;; Configure a custom narrow key for `consult-buffer'
+  (consult-org-roam-buffer-narrow-key ?r)
+  ;; Display org-roam buffers right after non-org-roam buffers
+  ;; in consult-buffer (and not down at the bottom)
+  (consult-org-roam-buffer-after-buffers t)
+  :config
+  ;; Eventually suppress previewing for certain functions
+  (consult-customize
+   consult-org-roam-forward-links
+   :preview-key "M-.")
+  :bind
+  ;; Define some convenient keybindings as an addition
+  ("C-c r e" . consult-org-roam-file-find)
+  ("C-c r b" . consult-org-roam-backlinks)
+  ("C-c r B" . consult-org-roam-backlinks-recursive)
+  ("C-c r l" . consult-org-roam-forward-links)
+  ("C-c r s" . consult-org-roam-search))
 
 (use-package org-roam-bibtex
   :after org-roam
   :straight t
   :config
-  (setq bibtex-completion-edit-notes-function 'bibtex-completion-edit-notes-default) ; default to org-ref for notes
-  ;; (setq bibtex-completion-edit-notes-function 'orb-bibtex-completion-edit-note) ; use org-roam-capture-templates for notes
-  )
+  ;; (setq bibtex-completion-edit-notes-function 'bibtex-completion-edit-notes-default) ; default to org-ref for notes
+  (setq bibtex-completion-edit-notes-function 'orb-bibtex-completion-edit-note)) ; use org-roam-capture-templates for notes
+
 
 (use-package org-noter
   :straight t
   :config
-  (setq org-noter-notes-search-path '("~/Dropbox/org/roam/ref/")) ; V IMPORTANT: SET FULL PATH!
-
-  (setq orb-preformat-keywords '("citekey" "title" "url" "author-or-editor" "keywords" "file") ; customisation for notes, org-noter integration
-      orb-process-file-keyword t
-      orb-attached-file-extensions '("pdf")))
+  (setq org-noter-notes-search-path '("~/Dropbox/org/roam/ref/"))
+  (setq orb-preformat-keywords '("citekey" "title" "url" "author-or-editor" "keywords" "file")
+	orb-process-file-keyword t
+	orb-attached-file-extensions '("pdf")))
 
 
 (use-package prog-mode
@@ -730,25 +643,12 @@
   (setq c-toggle-electric-state 1)
   (setq-default c-electric-flag t))
 
-;; Other
-
 (use-package yaml-ts-mode
-    :mode "\\.yaml\\'")
+  :mode "\\.yaml\\'")
 
 
 (use-package lisp-mode
   :hook (lisp-mode . electric-pair-mode))
-
-
-;; (add-hook '
-
-;; (use-package weechat
-;;   :straight t
-;;   :config
-;;   (require 'rx)
-;;   )
-
-
 
 (use-package slack
   :straight (:host github :repo "emacs-slack/emacs-slack")
@@ -797,7 +697,7 @@
    :default t
    :subscribed-channels '((wirecell_elee general "DM: Hanyu Wei" dm_team))
    ) ;; using slack-extra-subscribed-channels because I can change it dynamically
-   (slack-register-team
+  (slack-register-team
    :name "LSU Neutrino Group"
    :token (auth-source-pick-first-password
            :host "lsuneutrinophysics.slack.com"
@@ -816,61 +716,13 @@
   :hook (ledger-mode . my-ledger-hook)
   )
 
-;; use-package with package.el:
-;; (use-package dashboard
-;;   :straight t
-;;   :config
-;;   (setq recentf-auto-cleanup 'never) ;; disable before we start recentf!
-;;   (setq dashboard-match-agenda-entry "-tag")
-;;   (dashboard-setup-startup-hook))
-
 (use-package org-gantt
   :straight (:host github :repo "swillner/org-gantt"))
-
-;; (use-package calfw
-;;   :straight (:host github :repo "kiwanami/emacs-calfw" :includes calfw-org)
-;;   :config
-;;   (require 'calfw-org))
-(use-package calfw
-  :straight t
-  :config
-  ;; hotfix: incorrect time range display
-  ;; source: https://github.com/zemaye/emacs-calfw/commit/3d17649c545423d919fd3bb9de2efe6dfff210fe
-  (defun cfw:org-get-timerange (text)
-  "Return a range object (begin end text).
-If TEXT does not have a range, return nil."
-  (let* ((dotime (cfw:org-tp text 'dotime)))
-    (and (stringp dotime) (string-match org-ts-regexp dotime)
-	 (let* ((matches  (s-match-strings-all org-ts-regexp dotime))
-           (start-date (nth 1 (car matches)))
-           (end-date (nth 1 (nth 1 matches)))
-	       (extra (cfw:org-tp text 'extra)))
-	   (if (string-match "(\\([0-9]+\\)/\\([0-9]+\\)): " extra)
-       ( list( calendar-gregorian-from-absolute
-       (time-to-days
-       (org-read-date nil t start-date))
-       )
-       (calendar-gregorian-from-absolute
-       (time-to-days
-       (org-read-date nil t end-date))) text)))))))
-
-
-(use-package calfw-org
-  :after (calfw org)
-  :straight t)
-
-(use-package calfw-blocks
-  :straight (:host github :repo "ml729/calfw-blocks")
-  :config
-  (setq calfw-blocks-earliest-visible-time '(8 0)))
-
 
 (use-package htmlize
   :straight t
   )
-;; Remote Profile variables
-;; Remote Tramp PATH
-;; (add-to-list 'tramp-default-remote-path 'tramp-own-remote-path)
+
 (use-package tramp
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
@@ -878,7 +730,7 @@ If TEXT does not have a range, return nil."
   (setopt tramp-remote-path '(tramp-own-remote-path))
   (setq tramp-default-method "ssh")
   (setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
-)
+  )
 
 (use-package moe-theme
   :straight t
@@ -888,4 +740,3 @@ If TEXT does not have a range, return nil."
 ;; Global startup commands
 (org-roam-db-autosync-mode)
 (server-start)
-

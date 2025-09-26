@@ -47,6 +47,10 @@
       message-sendmail-envelope-from 'header
       mail-envelope-from 'header)
 
+;; Auth-source pass
+(auth-source-pass-enable)
+(setq auth-sources '(password-store))
+(setq auth-source-do-cache nil)
 ;; Gnus Register
 (setq gnus-registry-max-entries 2500)
 (setq gnus-refer-article-method

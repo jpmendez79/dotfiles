@@ -24,8 +24,14 @@
 
 (require 'plstore)
 
+;; Auth-source pass
 (use-package pass
-  :straight t)
+  :straight t
+  :config
+  (auth-source-pass-enable)
+  (setq auth-sources '(password-store))
+  (setq auth-source-do-cache nil))
+
 
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "/usr/bin/firefox-bin")
@@ -570,7 +576,10 @@
                                               :target (file+head "%<%Y_%m_%d>.org" "#+title: %<%Y-%m-%d>\n"))))
   (setq org-roam-node-display-template
 	(concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  #("${type:15} ${title:*} ${tags:10}" 22 32 (face org-tag)))
+  #("${type:15} ${title:*} ${tags:10}" 22 32 (face org-tag))
+  (setq org-roam-db-node-include-function
+	(lambda ()
+          (not (member "ATTACH" (org-get-tags))))))
 
 
 (use-package org-roam-ui
@@ -609,7 +618,9 @@
   :straight t
   :config
   ;; (setq bibtex-completion-edit-notes-function 'bibtex-completion-edit-notes-default) ; default to org-ref for notes
-  (setq bibtex-completion-edit-notes-function 'orb-bibtex-completion-edit-note)) ; use org-roam-capture-templates for notes
+  (setq bibtex-completion-edit-notes-function 'orb-bibtex-completion-edit-note)
+  (setq org-cite-global-bibliography '("~/Dropbox/org/roam/ref/main.bib"))) ; use org-roam-capture-templates for notes
+
 
 
 (use-package org-noter
@@ -692,7 +703,7 @@
            :user "jmend46@lsu.edu")
    :cookie (auth-source-pick-first-password
             :host "microboone.slack.com"
-            :user "jmend46@lsu.edu^cookie")
+            :user "cookie")
    :full-and-display-names t
    :default t
    :subscribed-channels '((wirecell_elee general "DM: Hanyu Wei" dm_team))
@@ -704,7 +715,7 @@
            :user "jmend46@lsu.edu")
    :cookie (auth-source-pick-first-password
             :host "lsuneutrinophysics.slack.com"
-            :user "jmend46@lsu.edu^cookie")
+            :user "cookie")
    :full-and-display-names t
    :default t
    :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically

@@ -346,6 +346,7 @@
      (calc . t)
      ))
   (add-to-list 'org-modules 'org-habit)
+  (require 'org-protocol)
   :hook ((org-mode . my-org-hook)
 	 (org-agenda-mode . hl-line-mode))
   :custom
@@ -367,9 +368,13 @@
      ("n" "Capture a next item" entry (file+headline "~/Dropbox/org/gtd.org" "Tasks") "* NEXT %?%^G\n")
      ("j" "Journal" entry (function denote-journal-extras-new-or-existing-entry)
       "\n* %<%I:%M %p>\n%?" :jump-to-captured t :immediate-finish t)
-     ("s" "Capture page or selection" entry (file "~/Dropbox/org/inbox.org")
+     ("s" "Capture selection" entry (file "~/Dropbox/org/inbox.org")
       "* %:description\n:PROPERTIES:\n:CAPTURED: %U\n:URL: %:link\n:END:\n%i\n%?"
-      :immediate-finish t)))
+      :immediate-finish t)
+     ("l" "Capture link" entry (file "~/Dropbox/org/inbox.org")
+      "* %? [[%:link][%:description]] \nCaptured On: %U"
+      :immediate-finish t)
+     ))
   
   (org-directory "~/Dropbox/org")
   (org-agenda-custom-commands 

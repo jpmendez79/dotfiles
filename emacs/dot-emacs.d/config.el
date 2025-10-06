@@ -385,6 +385,7 @@
      ("e" "Errand" tags-todo "@errand-someday")
      ("h" "Home" tags-todo "@home-someday")
      ("l" "Lab" tags-todo "@lab-someday")
+     ("u" "Lab" tags-todo "@campus-someday")
      ("m" "Personal Computer milo" tags-todo "@milo-someday")
      ("n" "Administrative Tasks" tags-todo "@admin-someday")
      ("o" "Office" tags-todo "@office-someday")

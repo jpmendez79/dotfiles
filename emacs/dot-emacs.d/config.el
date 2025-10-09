@@ -331,16 +331,17 @@ and assumes the default Org-roam naming scheme."
   (setq org-icalendar-timezone "UTC")
   (setq org-caldav-calendars
 	'((:calendar-id "jmend46@lsu.edu/Calendar"
-			:inbox "~/Dropbox/org/cal_school.org")
-	  (:calendar-id "jmend46@lsu.edu/calendar/Personal"
-			:inbox "~/Dropbox/org/cal_personal.org"))))
+			:inbox "~/Dropbox/org/cal_school.org"))))
 
-;; (use-package org-gcal
-;;   :straight t
-;;   ;; :init (org-gcal-client-sync)
-;;   :config
-;;   (setq org-gcal-fetch-file-alist '(("jessepmendez79@gmail.com" .  "~/Dropbox/org/cal_personal.org")))
-;; 	)
+(use-package org-gcal
+  :straight t
+  ;; :init (org-gcal-client-sync)
+  :config
+  (setq org-gcal-fetch-file-alist '(("jessepmendez79@gmail.com" .  "~/Dropbox/org/cal_share.org"))))
+
+
+
+
 
 ;; Tex and Latex Settings
 (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
@@ -480,7 +481,7 @@ and assumes the default Org-roam naming scheme."
   (global-set-key "\C-cu" 'org-reset-checkbox-state-subtree)
 
   (setq org-tags-exclude-from-inheritance "project")
-  (setq org-attach-id-dir "~/org/roam/assets/")
+  (setq org-attach-id-dir "~/Dropbox/org/roam/assets/")
   (setq org-todo-keywords
 	'((sequence "NEXT(n)" "|" "DONE(d)" "Delegated(D)")
 	  (sequence "WAITING(w)" "APPT(a)" )

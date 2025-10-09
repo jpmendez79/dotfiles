@@ -102,6 +102,46 @@
   (interactive)
   (kill-new (org-element-property :value (org-element-at-point))))
 
+(defun org-roam-insert-created-property ()
+  "Insert :created: property for an Org-roam node.
+
+Does not override the property if it already exists.
+
+Calculation of the creation date is based on the filename of the note,
+and assumes the default Org-roam naming scheme."
+  (interactive)
+  (when (org-roam-file-p)
+    ;; Don't update if the created property already exists
+    (unless (org-entry-get (point-min) "created" t)
+      (let ((creation-time (org-roam-extract-timestamp-from-filepath
+                            (buffer-file-name))))
+        ;; Don't error if the filename doesn't contain a timestamp
+        (when creation-time
+          (save-excursion
+            ;; Ensure point is at the beginning of the buffer
+            (goto-char (point-min))
+            (org-set-property "created" creation-time)))))))
+
+(defun org-roam-extract-timestamp-from-filepath (filepath)
+  "Extract timestamp from the Org-roam FILEPATH assuming it follows the default naming scheme."
+  (let ((filename (file-name-nondirectory filepath)))
+    (when (string-match "\\([0-9]\\{8\\}\\)\\([0-9]\\{4\\}\\)" filename)
+      (let ((year (substring filename (match-beginning 1) (+ (match-beginning 1) 4)))
+            (month (substring filename (+ (match-beginning 1) 4) (+ (match-beginning 1) 6)))
+            (day (substring filename (+ (match-beginning 1) 6) (+ (match-beginning 1) 8)))
+            (hour (substring filename (match-beginning 2) (+ (match-beginning 2) 2)))
+            (minute (substring filename (+ (match-beginning 2) 2) (+ (match-beginning 2) 4))))
+        (format "[%s-%s-%s %s:%s]" year month day hour minute)))))
+
+(defun org-roam-insert-modified-property ()
+  "Update the :modified: property for an Org-roam node upon saving."
+  (when (org-roam-file-p)
+    (save-excursion
+      ;; Ensure property is applied to the whole file
+      (goto-char (point-min))
+      (org-set-property
+       "modified" (format-time-string "[%Y-%m-%d %a %H:%M]")))))
+
 ;; Calendar showing org-agenda entries
 (defun my-open-calendar-agenda ()
   (interactive)
@@ -440,7 +480,7 @@
   (global-set-key "\C-cu" 'org-reset-checkbox-state-subtree)
 
   (setq org-tags-exclude-from-inheritance "project")
-
+  (setq org-attach-id-dir "~/org/roam/assets/")
   (setq org-todo-keywords
 	'((sequence "NEXT(n)" "|" "DONE(d)" "Delegated(D)")
 	  (sequence "WAITING(w)" "APPT(a)" )
@@ -545,6 +585,8 @@
    ("C-c r f" . org-roam-node-find)
    ("C-c r i" . org-roam-node-insert))
   :config
+  (add-hook 'before-save-hook #'org-roam-insert-created-property)
+  (add-hook 'before-save-hook #'org-roam-insert-modified-property)
   (cl-defmethod org-roam-node-type ((node org-roam-node))
     "Return the TYPE of NODE."
     (condition-case nil
@@ -558,17 +600,17 @@
   (setq org-roam-capture-templates '(("d" "default"
                                       plain
                                       "%?"
-                                      :target (file+head "resources/${slug}.org" "#+title: ${title}\n")
+                                      :target (file+head "resources/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
                                       :unnarrowed t)
 				     ("a" "area"
                                       plain
                                       "%?"
-                                      :target (file+head "areas/${slug}.org" "#+title: ${title}\n")
+                                      :target (file+head "areas/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
                                       :unnarrowed t)
 				     ("p" "project"
                                       plain
                                       "%?"
-                                      :target (file+head "project/${slug}.org" "#+title: ${title}\n")
+                                      :target (file+head "project/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
                                       :unnarrowed t)
 				     ("b" "bibliography notes" plain             ; Org-noter integration
 				      (file "~/Dropbox/org/roam/ref/notes-template.org")
@@ -579,7 +621,7 @@
   (setq org-roam-dailies-capture-templates '(("d" "default"
                                               entry
                                               "* %?"
-                                              :target (file+head "%<%Y_%m_%d>.org" "#+title: %<%Y-%m-%d>\n"))))
+                                              :target (file+head "%<%Y%m%d%H%M%S>.org" "#+title: %<%Y-%m-%d>\n"))))
   (setq org-roam-node-display-template
 	(concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   #("${type:15} ${title:*} ${tags:10}" 22 32 (face org-tag))
@@ -735,6 +777,11 @@
 
 (use-package org-gantt
   :straight (:host github :repo "swillner/org-gantt"))
+
+(use-package org-attach-screenshot
+  :straight t
+  :bind
+  (("C-c i" . org-attach-screenshot)))
 
 (use-package htmlize
   :straight t

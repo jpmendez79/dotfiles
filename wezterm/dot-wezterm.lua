@@ -15,6 +15,8 @@ config.ssh_domains = {
     username = "jpmendez"
   },
 }
+-- How many lines of scrollback you want to retain per tab
+config.scrollback_lines = 3500
 config.window_background_opacity = 0.60
 config.enable_tab_bar = false
 -- and finally, return the configuration to wezterm

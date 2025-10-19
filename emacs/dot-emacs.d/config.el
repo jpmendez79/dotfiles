@@ -543,7 +543,7 @@ and assumes the default Org-roam naming scheme."
   (defun custom/bibtex-completion-format-citation-org (keys)
     "Custom cite definition for org-mode"
     (s-join ", "
-	    (--map (format "cite:&%s" it) keys)))
+	    (--map (format "[cite:@%s]" it) keys)))
   ;; END: Change insert citation (<f3>) behaviour of helm-bibtex for org-mode
 
   (setq bibtex-autokey-year-length 4                          ; customisations for 'bibtex-generate-autokey'
@@ -622,7 +622,7 @@ and assumes the default Org-roam naming scheme."
   (setq org-roam-dailies-capture-templates '(("d" "default"
                                               entry
                                               "* %?"
-                                              :target (file+head "%<%Y%m%d%H%M%S>.org" "#+title: %<%Y-%m-%d>\n"))))
+                                              :target (file+head "%<%Y%m%d>.org" "#+title: %<%Y-%m-%d>\n"))))
   (setq org-roam-node-display-template
 	(concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   #("${type:15} ${title:*} ${tags:10}" 22 32 (face org-tag))

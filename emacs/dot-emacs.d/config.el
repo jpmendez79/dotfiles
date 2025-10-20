@@ -601,7 +601,7 @@ and assumes the default Org-roam naming scheme."
   (setq org-roam-capture-templates '(("d" "default"
                                       plain
                                       "%?"
-                                      :target (file+head "resources/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+                                      :target (file+head "resources/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n -sequence :: ")
                                       :unnarrowed t)
 				     ("a" "area"
                                       plain

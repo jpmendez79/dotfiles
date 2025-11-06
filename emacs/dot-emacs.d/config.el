@@ -3,6 +3,7 @@
 ;; (load-file "~/.emacs.d/config.el")
 
 ;; Package Manager and Use package setup
+(setq package-enable-at-startup nil)
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name
@@ -51,7 +52,7 @@
 ;; Defun Section
 (defun my-org-hook ()
   (flyspell-mode 1)
-  (org-fragtog-mode 1)
+  ;; (org-fragtog-mode 1)
   (visual-line-mode 1)
   (fira-code-mode 1)
   )
@@ -313,7 +314,7 @@ and assumes the default Org-roam naming scheme."
   (setq ebdb-mua-auto-update-p 'query)
   (setq ebdb-gnus-auto-update-p 'query)
   (setq edbd-default-window-size 0.2)
-  (setq ebdb-sources "~/Dropbox/org/ebdb")
+  (setq ebdb-sources "~/Sync/org/ebdb")
   (require 'ebdb-message)
   (require 'ebdb-gnus)
   (require 'ebdb-org))
@@ -325,19 +326,19 @@ and assumes the default Org-roam naming scheme."
   (setq org-caldav-url "http://localhost:1080/users")
   (setq org-caldav-calendar-id "jmend46@lsu.edu/Calendar")
   (setq org-caldav-files nil)
-  (setq org-caldav-inbox "~/Dropbox/org/cal_caldav.org")
+  (setq org-caldav-inbox "~/Sync/org/cal_caldav.org")
   (setq org-caldav-uuid-extension ".EML")
-  (setq org-caldav-save-directory "~/Dropbox/org/org-caldav/")
+  (setq org-caldav-save-directory "~/Sync/org/org-caldav/")
   (setq org-icalendar-timezone "UTC")
   (setq org-caldav-calendars
 	'((:calendar-id "jmend46@lsu.edu/Calendar"
-			:inbox "~/Dropbox/org/cal_school.org"))))
+			:inbox "~/Sync/org/cal_school.org"))))
 
 (use-package org-gcal
   :straight t
   ;; :init (org-gcal-client-sync)
   :config
-  (setq org-gcal-fetch-file-alist '(("jessepmendez79@gmail.com" .  "~/Dropbox/org/cal_share.org"))))
+  (setq org-gcal-fetch-file-alist '(("jessepmendez79@gmail.com" .  "~/Sync/org/cal_share.org"))))
 
 
 
@@ -401,23 +402,21 @@ and assumes the default Org-roam naming scheme."
   (org-capture-templates
    '(
      ("a" "Capture an Appointment")
-     ("ap" "Appointment" entry (file "~/Dropbox/org/cal_personal.org")
+     ("ap" "Appointment" entry (file "~/Sync/org/cal_personal.org")
       "* %?\n:PROPERTIES:\n:calendar-id:\tjessepmendez79@gmail.com\n:END:\n:org-gcal:\n%^T--%^T\n:END:\n\n" :jump-to-captured t)
-     ("as" "School Calendar Appointment" entry (file  "~/Dropbox/org/cal_school.org" )
+     ("as" "School Calendar Appointment" entry (file  "~/Sync/org/cal_school.org" )
       "* %?\n\n:PROPERTIES:\n\n:END:\n\n")
-     ("i" "Capture an idea to inbox" entry (file "~/Dropbox/org/inbox.org") "* %?\n")
-     ("n" "Capture a next item" entry (file+headline "~/Dropbox/org/gtd.org" "Tasks") "* NEXT %?%^G\n")
-     ("j" "Journal" entry (function denote-journal-extras-new-or-existing-entry)
-      "\n* %<%I:%M %p>\n%?" :jump-to-captured t :immediate-finish t)
-     ("s" "Capture selection" entry (file "~/Dropbox/org/inbox.org")
+     ("i" "Capture an idea to inbox" entry (file "~/Sync/org/inbox.org") "* %?\n")
+     ("n" "Capture a next item" entry (file+headline "~/Sync/org/gtd.org" "Tasks") "* NEXT %?%^G\n")
+     ("s" "Capture selection" entry (file "~/Sync/org/inbox.org")
       "* %:description\n:PROPERTIES:\n:CAPTURED: %U\n:URL: %:link\n:END:\n%i\n%?"
       :immediate-finish t)
-     ("l" "Capture link" entry (file "~/Dropbox/org/inbox.org")
+     ("l" "Capture link" entry (file "~/Sync/org/inbox.org")
       "* %? [[%:link][%:description]] \nCaptured On: %U"
       :immediate-finish t)
      ))
   
-  (org-directory "~/Dropbox/org")
+  (org-directory "~/Sync/org")
   (org-agenda-custom-commands 
    '(
      ("b" "Work Computer bortan" tags-todo "@bortan-someday")
@@ -443,19 +442,19 @@ and assumes the default Org-roam naming scheme."
        (tags-todo "-someday+TODO=\"WAITING\"")
 
        (tags "someday+LEVEL=2")))))
-  (org-agenda-files '("~/Dropbox/org/projects/"
-		      "~/Dropbox/org/journals/"
-		      "~/Dropbox/org/project.org"
-		      "~/Dropbox/org/gtd.org"
-		      "~/Dropbox/org/cal_school.org"
-		      "~/Dropbox/org/cal_calendar.org"
-		      "~/Dropbox/org/cal_personal.org"))
+  (org-agenda-files '("~/Sync/org/projects/"
+		      "~/Sync/org/journals/"
+		      "~/Sync/org/project.org"
+		      "~/Sync/org/gtd.org"
+		      "~/Sync/org/cal_school.org"
+		      "~/Sync/org/cal_calendar.org"
+		      "~/Sync/org/cal_personal.org"))
   :config
   (setq org-refile-targets '((nil :maxlevel . 9)
-			     ("~/Dropbox/org/someday.org" :maxlevel . 9)
-			     ("~/Dropbox/org/gtd.org" :maxlevel . 3)
-			     ("~/Dropbox/org/project.org" :maxlevel . 9)
-			     ("~/Dropbox/org/cal_calendar.org" :maxlevel . 9)))
+			     ("~/Sync/org/someday.org" :maxlevel . 9)
+			     ("~/Sync/org/gtd.org" :maxlevel . 3)
+			     ("~/Sync/org/project.org" :maxlevel . 9)
+			     ("~/Sync/org/cal_calendar.org" :maxlevel . 9)))
   ;; Looks
   (setq-default org-startup-indented t
 		org-pretty-entities t
@@ -481,7 +480,7 @@ and assumes the default Org-roam naming scheme."
   (global-set-key "\C-cu" 'org-reset-checkbox-state-subtree)
 
   (setq org-tags-exclude-from-inheritance "project")
-  (setq org-attach-id-dir "~/Dropbox/org/roam/assets/")
+  (setq org-attach-id-dir "~/Sync/org/roam/assets/")
   (setq org-todo-keywords
 	'((sequence "NEXT(n)" "|" "DONE(d)" "Delegated(D)")
 	  (sequence "WAITING(w)" "APPT(a)" )
@@ -531,13 +530,13 @@ and assumes the default Org-roam naming scheme."
   (global-set-key (kbd "C-c r r") 'helm-bibtex)
   ;; IMP: Ensure 'latexmk' installed as a system package!
   ;; see also: http://www.jonathanleroux.org/bibtex-mode.html
-  (setq bibtex-completion-bibliography '("~/Dropbox/org/roam/ref/main.bib"))  ; location of .bib file containing bibliography entries
+  (setq bibtex-completion-bibliography '("~/Sync/org/roam/ref/main.bib"))  ; location of .bib file containing bibliography entries
   (setq bibtex-completion-find-additional-pdfs t)                          ; support for multiple pdfs for one %citekey
   (setq bibtex-completion-pdf-field "File")                                ; in bib entry, file = {/path/to/file.pdf} could be set to locate the accompanying file
   ;; for multiple files use, file = {:/path/to/file0.pdf:PDF;:/path/to/file1.pdf:PDF}
-  (setq bibtex-completion-library-path '("~/Dropbox/org/roam/ref/documents/"))  ; in this dir, %citekey-name(s).pdf would automatically attach pdf(s) to %citekey
+  (setq bibtex-completion-library-path '("~/Sync/org/roam/ref/documents/"))  ; in this dir, %citekey-name(s).pdf would automatically attach pdf(s) to %citekey
   ;; if only !exist "file" field in bib entry
-  (setq bibtex-completion-notes-path "~/Dropbox/org/roam/ref/")           ; dir to keep notes for the pdfs
+  (setq bibtex-completion-notes-path "~/Sync/org/roam/ref/")           ; dir to keep notes for the pdfs
 
   ;; BEGIN: Change insert citation (<f3>) behaviour of helm-bibtex for org-mode 
   (defun custom/bibtex-completion-format-citation-org (keys)
@@ -563,18 +562,18 @@ and assumes the default Org-roam naming scheme."
 	  (default       . bibtex-completion-format-citation-default))))
 
 ;; LaTeX previews
-(use-package org-fragtog
-  :straight t
-  :after org
-  :custom
-  (org-startup-with-latex-preview t)
-  :hook
-  (org-mode . org-fragtog-mode)
-  :custom
-  (org-format-latex-options
-   (plist-put org-format-latex-options :scale 2)
-   (plist-put org-format-latex-options :foreground 'auto)
-   (plist-put org-format-latex-options :background 'auto)))
+;; (use-package org-fragtog
+;;   :straight t
+;;   :after org
+;;   :custom
+;;   (org-startup-with-latex-preview t)
+;;   (org-format-latex-options
+;;    (plist-put org-format-latex-options :scale 1)
+;;    (plist-put org-format-latex-options :foreground 'auto)
+;;    (plist-put org-format-latex-options :background 'auto)
+;;    )
+;;   :hook
+;;   (org-mode . org-fragtog-mode))
 
 (use-package nov
   :straight t)
@@ -596,12 +595,12 @@ and assumes the default Org-roam naming scheme."
           (file-name-directory
            (file-relative-name (org-roam-node-file node) org-roam-directory))))
       (error "")))
-  (setq org-roam-directory "~/Dropbox/org/roam")
+  (setq org-roam-directory "~/Sync/org/roam")
   (setq org-roam-dailies-directory "journals/")
   (setq org-roam-capture-templates '(("d" "default"
                                       plain
                                       "%?"
-                                      :target (file+head "resources/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n -sequence :: ")
+                                      :target (file+head "resources/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n - sequence :: ")
                                       :unnarrowed t)
 				     ("a" "area"
                                       plain
@@ -614,13 +613,13 @@ and assumes the default Org-roam naming scheme."
                                       :target (file+head "project/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
                                       :unnarrowed t)
 				     ("b" "bibliography notes" plain             ; Org-noter integration
-				      (file "~/Dropbox/org/roam/ref/notes-template.org")
+				      (file "~/Sync/org/roam/ref/notes-template.org")
 				      :target (file+head "ref/${citekey}.org"
 							 "#+title: ${title}\n")
 				      :empty-lines 1)))
 
   (setq org-roam-dailies-capture-templates '(("d" "default"
-                                              entry
+                                              plain
                                               "* %?"
                                               :target (file+head "%<%Y%m%d>.org" "#+title: %<%Y-%m-%d>\n"))))
   (setq org-roam-node-display-template
@@ -668,14 +667,14 @@ and assumes the default Org-roam naming scheme."
   :config
   ;; (setq bibtex-completion-edit-notes-function 'bibtex-completion-edit-notes-default) ; default to org-ref for notes
   (setq bibtex-completion-edit-notes-function 'orb-bibtex-completion-edit-note)
-  (setq org-cite-global-bibliography '("~/Dropbox/org/roam/ref/main.bib"))) ; use org-roam-capture-templates for notes
+  (setq org-cite-global-bibliography '("~/Sync/org/roam/ref/main.bib"))) ; use org-roam-capture-templates for notes
 
 
 
 (use-package org-noter
   :straight t
   :config
-  (setq org-noter-notes-search-path '("~/Dropbox/org/roam/ref/"))
+  (setq org-noter-notes-search-path '("~/Sync/org/roam/ref/"))
   (setq orb-preformat-keywords '("citekey" "title" "url" "author-or-editor" "keywords" "file")
 	orb-process-file-keyword t
 	orb-attached-file-extensions '("pdf")))

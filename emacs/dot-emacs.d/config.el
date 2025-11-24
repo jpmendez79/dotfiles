@@ -267,6 +267,10 @@ and assumes the default Org-roam naming scheme."
 	(yaml . ("https://github.com/ikatyang/tree-sitter-yaml"))
 	(xml . ("https://github.com/tree-sitter-grammars/tree-sitter-xml.git"))))
 
+(use-package virtualenvwrapper
+  :straight t
+  )
+
 (setq major-mode-remap-alist
       '((yaml-mode . yaml-ts-mode)
 	(bash-mode . bash-ts-mode)
@@ -386,6 +390,7 @@ and assumes the default Org-roam naming scheme."
      (python . t)
      (plantuml . t)
      (calc . t)
+     (shell . t)
      ))
   (add-to-list 'org-modules 'org-habit)
   (require 'org-protocol)
@@ -794,6 +799,10 @@ and assumes the default Org-roam naming scheme."
   (setopt tramp-remote-path '(tramp-own-remote-path))
   (setq tramp-default-method "ssh")
   (setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+  )
+
+(use-package gnuplot
+  :straight t
   )
 
 (use-package moe-theme

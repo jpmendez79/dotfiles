@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sin2_2theta_ee
+# key: sin22ee
+# --
+sin^{2}(\theta_{ee})

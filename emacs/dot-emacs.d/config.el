@@ -512,6 +512,12 @@ and assumes the default Org-roam naming scheme."
 	   (replace-regexp-in-string "%latex " "%latex -shell-escape " s))
 	 org-latex-pdf-process)))
 
+(use-package calfw
+  :straight (:host github :repo "kiwanami/emacs-calfw")
+  :config
+  (require 'calfw-org)
+  )
+
 (use-package org-crypt
   :ensure nil
   :config

@@ -138,7 +138,12 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
-
+workspace $ws1 output DVI-I-3-2 eDP-1
+workspace $ws2 output DVI-I-3-2 eDP-1
+workspace $ws3 output DVI-I-2-1 eDP-1
+workspace $ws4 output DVI-I-2-1 eDP-1
+workspace $ws5 output eDP-1
+workspace $ws6 output eDP-1
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2

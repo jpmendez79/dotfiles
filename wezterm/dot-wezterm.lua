@@ -17,7 +17,8 @@ config.ssh_domains = {
 }
 -- How many lines of scrollback you want to retain per tab
 config.scrollback_lines = 3500
-config.window_background_opacity = 0.60
 config.enable_tab_bar = false
+--- config.color_scheme = 'Windows 95 Light (base16)'
+config.color_scheme = 'Ivory Light (terminal.sexy)'
 -- and finally, return the configuration to wezterm
 return config

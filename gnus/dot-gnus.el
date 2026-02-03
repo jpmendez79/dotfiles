@@ -15,14 +15,40 @@
 (setq gnus-select-method '(nnnil ""))
 (setq gnus-desktop-notify-groups 'gnus-desktop-notify-explicit)
 
-(setq gnus-select-method '(nnimap "Mail"
-                              (nnimap-stream shell)
-                              (nnimap-shell-program "/usr/libexec/dovecot/imap -o mail_location=maildir:~//Mail:LAYOUT=fs")))
+;; (setq gnus-select-method '(nnimap "Mail"
+;;                               (nnimap-stream shell)
+;;                               (nnimap-shell-program "/usr/libexec/dovecot/imap -o mail_location=maildir:~/Mail:LAYOUT=fs")))
 
-(setq nnmail-expiry-target 'nnmail-fancy-expiry-target
-       nnmail-fancy-expiry-targets
-       '((to-from "jmend46@lsu.edu" "nnimap:Mail/lsu/Trash")
-         (to-from "jessepmendez79@gmail.com" "nnimap:Mail/personal/[Gmail]/Trash")))
+;; (add-to-list 'gnus-secondary-select-methods
+;;              '(nnimap "gmail"
+;;                       (nnimap-address "imap.gmail.com")
+;;                       (nnimap-server-port 993)
+;;                       (nnimap-stream ssl)
+;;                       (nnir-search-engine imap)
+;;                       ; @see http://www.gnu.org/software/emacs/manual/html_node/gnus/Expiring-Mail.html
+;;                       ;; press 'E' to expire email
+;;                       (nnmail-expiry-target "nnimap+gmail:[Gmail]/Trash")
+;;                       (nnmail-expiry-wait 90)))
+(setq gnus-verbose 9)
+(setq nnimap-record-commands t)
+;; OPTIONAL, the setup for Microsoft Hotmail
+(add-to-list 'gnus-secondary-select-methods
+             '(nnimap "lsu"
+                      (nnimap-address "127.0.0.1")
+                      (nnimap-server-port 1143)
+                      (nnimap-stream plain)
+		      (nnimap-user "jmend46@lsu.edu")
+		      (nnimap-record-commands t)
+		      (nnimap-authenticator login)))
+
+
+(setq gnus-verbose 10
+      nnimap-debug t)
+
+;; (setq nnmail-expiry-target 'nnmail-fancy-expiry-target
+;;        nnmail-fancy-expiry-targets
+;;        '((to-from "jmend46@lsu.edu" "nnimap:Mail/lsu/Trash")
+;;          (to-from "jessepmendez79@gmail.com" "nnimap:Mail/personal/[Gmail]/Trash")))
 ;; Posting Styles and Replies         
 (setq gnus-posting-styles
       '(("Personal" ; Matches Gnus group called "Personal"

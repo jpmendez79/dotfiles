@@ -2,11 +2,25 @@
 ;; Personal Information
 (setq user-full-name "Jesse Mendez")
 (setq user-mail-address "jmend46@lsu.edu")
-(require 'ebdb-gnus)
-(require 'ebdb-message)
-(setq ebdb-message-auto-update-p 'query)
-(setq ebdb-gnus-auto-update-p 'query)
+;; (require 'ebdb-gnus)
+;; (require 'ebdb-message)
+;; (setq ebdb-message-auto-update-p 'query)
+;; (setq ebdb-gnus-auto-update-p 'query)
+;; (gnus-add-configuration
+;;  '(article
+;;    (vertical 1.0
+;;      (summary 0.25 point)
+;;      (horizontal 1.0
+;;        (article 1.0)
+;;        (buffer 0.4)))))
 
+;; (gnus-add-configuration
+;;  '(article
+;;    (vertical 1.0
+;;              (summary 0.25 point)
+;;              (horizontal 1.0
+;;                          (article 1.0)
+;;                          (ebdb-message 0.4)))))
 ;; Gnus Servers
 ;; (require 'gnus-desktop-notify)
 ;; (gnus-desktop-notify-mode)
@@ -19,16 +33,16 @@
 ;;                               (nnimap-stream shell)
 ;;                               (nnimap-shell-program "/usr/libexec/dovecot/imap -o mail_location=maildir:~/Mail:LAYOUT=fs")))
 
-;; (add-to-list 'gnus-secondary-select-methods
-;;              '(nnimap "gmail"
-;;                       (nnimap-address "imap.gmail.com")
-;;                       (nnimap-server-port 993)
-;;                       (nnimap-stream ssl)
-;;                       (nnir-search-engine imap)
-;;                       ; @see http://www.gnu.org/software/emacs/manual/html_node/gnus/Expiring-Mail.html
-;;                       ;; press 'E' to expire email
-;;                       (nnmail-expiry-target "nnimap+gmail:[Gmail]/Trash")
-;;                       (nnmail-expiry-wait 90)))
+(add-to-list 'gnus-secondary-select-methods
+             '(nnimap "gmail"
+                      (nnimap-address "imap.gmail.com")
+                      (nnimap-server-port 993)
+                      (nnimap-stream ssl)
+                      (nnir-search-engine imap)
+                      ; @see http://www.gnu.org/software/emacs/manual/html_node/gnus/Expiring-Mail.html
+                      ;; press 'E' to expire email
+                      (nnmail-expiry-target "nnimap+gmail:[Gmail]/Trash")
+                      (nnmail-expiry-wait 90)))
 (setq gnus-verbose 9)
 (setq nnimap-record-commands t)
 ;; OPTIONAL, the setup for Microsoft Hotmail
@@ -38,7 +52,7 @@
                       (nnimap-server-port 1143)
                       (nnimap-stream plain)
 		      (nnimap-user "jmend46@lsu.edu")
-		      (nnimap-record-commands t)
+		      (nnmail-expiry-target "nnimap+lsu:Trash")
 		      (nnimap-authenticator login)))
 
 
@@ -92,3 +106,18 @@
       '("text/html" "text/richtext"))
 
 ;; EBDB Popup Window
+(gnus-add-configuration
+ '(article
+   (horizontal 1.0
+	       (vertical 25
+			 (group 1.0))
+	       (vertical 1.0
+			 (summary 0.25 point)
+			 (article 1.0)))))
+(gnus-add-configuration
+ '(summary
+   (horizontal 1.0
+	       (vertical 25
+			 (group 1.0))
+	       (vertical 1.0
+			 (summary 1.0 point)))))

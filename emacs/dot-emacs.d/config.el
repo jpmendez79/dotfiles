@@ -559,20 +559,18 @@ and assumes the default Org-roam naming scheme."
   (org-directory "~/Sync/org")
   (org-agenda-custom-commands 
    '(
-     ("b" "Work Computer bortan" tags-todo "@bortan-someday")
-     ("c" "Computer (any)" tags-todo "@computer-someday")
-     ("d" "Reading List" tags-todo "@read-someday")
-     ("e" "Errand" tags-todo "@errand-someday")
-     ("h" "Home" tags-todo "@home-someday")
-     ("l" "Lab" tags-todo "@lab-someday")
-     ("u" "Lab" tags-todo "@campus-someday")
-     ("m" "Personal Computer milo" tags-todo "@milo-someday")
-     ("n" "Administrative Tasks" tags-todo "@admin-someday")
-     ("o" "Office" tags-todo "@office-someday")
-     ("p" "Phone" tags-todo "@phone-someday")
-     ("r" "Research" tags-todo "@research-someday")
-     ("s" "Brainstorm" tags-todo "@brainstorm-someday")
-     ("f" "Offline" tags-todo "@offline-someday")
+     ("b" "Work Computer [b]ortan" tags-todo "@bortan-someday")
+     ("c" "[C]omputer (any)" tags-todo "@computer-someday")
+     ("d" "Rea[d]ing List" tags-todo "@read-someday")
+     ("e" "[E]rrand" tags-todo "@errand-someday")
+     ("h" "[H]ome" tags-todo "@home-someday")
+     ("l" "[L]ab" tags-todo "@lab-someday")
+     ("u" "Camp[u]s" tags-todo "@campus-someday")
+     ("m" "Personal Computer [m]ilo" tags-todo "@milo-someday")
+     ("o" "[O]ffice" tags-todo "@office-someday")
+     ("p" "[P]hone" tags-todo "@phone-someday")
+     ("r" "[R]esearch" tags-todo "@research-someday")
+     ("s" "Brain[s]torm" tags-todo "@brainstorm-someday")
      ("W" "Weekly Review"
       ((agenda "" ((org-agenda-span 7))); review upcoming deadlines and appointments
        (tags "inbox")
@@ -764,7 +762,7 @@ and assumes the default Org-roam naming scheme."
 							 "#+title: ${title}\n")
 				      :empty-lines 1))
 
-)
+	)
 
   (setq org-roam-node-display-template
 	(concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
@@ -948,6 +946,9 @@ and assumes the default Org-roam naming scheme."
   :straight t
   :config
   (moe-light))
+
+(use-package gnus-desktop-notify
+  :straight (:host gitlab :repo "wavexx/gnus-desktop-notify.el"))
 
 ;; Global startup commands
 (org-roam-db-autosync-mode)

@@ -22,13 +22,7 @@
 ;;                          (article 1.0)
 ;;                          (ebdb-message 0.4)))))
 ;; Gnus Servers
-;; (require 'gnus-desktop-notify)
-;; (gnus-desktop-notify-mode)
-;; (require 'gnus-demon)
-;; (gnus-demon-add-handler 'gnus-demon-scan-news 1 t)
 (setq gnus-select-method '(nnnil ""))
-(setq gnus-desktop-notify-groups 'gnus-desktop-notify-explicit)
-
 ;; (setq gnus-select-method '(nnimap "Mail"
 ;;                               (nnimap-stream shell)
 ;;                               (nnimap-shell-program "/usr/libexec/dovecot/imap -o mail_location=maildir:~/Mail:LAYOUT=fs")))
@@ -121,3 +115,7 @@
 			 (group 1.0))
 	       (vertical 1.0
 			 (summary 1.0 point)))))
+(require 'gnus-desktop-notify)
+(gnus-desktop-notify-mode)
+(gnus-demon-add-rescan)
+(setq gnus-desktop-notify-groups 'gnus-desktop-notify-explicit)

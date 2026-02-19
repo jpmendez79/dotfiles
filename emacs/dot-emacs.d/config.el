@@ -606,8 +606,10 @@ and assumes the default Org-roam naming scheme."
   (setq org-refile-use-outline-path 'file)
   (setq org-refile-allow-creating-parent-nodes t)					; Show full paths for refiling
   (setq org-outline-path-complete-in-steps nil)
-  (setq org-plantuml-exec-mode 'plantuml)
-  (setq org-plantuml-executable-path "/usr/bin/plantuml")
+  (setq org-plantuml-exec-mode 'jar)
+  (setq org-plantuml-jar-path (expand-file-name "~/.bin/plantuml-1.2026.1.jar"))
+  ;; (setq org-plantuml-exec-mode 'plantuml)
+  ;; (setq org-plantuml-executable-path "/usr/bin/plantuml")
 
   (global-set-key "\C-cl" 'org-store-link)
   (global-set-key "\C-cc" 'org-capture)

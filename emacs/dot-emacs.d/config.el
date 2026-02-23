@@ -421,6 +421,11 @@ and assumes the default Org-roam naming scheme."
   :straight t
   )
 
+(use-package rainbow-delimiters
+  :straight t
+  )
+
+
 (use-package vertico
   :straight t
   :init

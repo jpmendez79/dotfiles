@@ -537,6 +537,7 @@ and assumes the default Org-roam naming scheme."
   :hook ((org-mode . my-org-hook)
 	 (org-agenda-mode . hl-line-mode))
   :custom
+  (org-agenda-files "~/Sync/org/agenda-list.txt")
   (org-agenda-timegrid-use-ampm t)
   (org-agenda-include-diary t)
   (calendar-mark-diary-entries-flag t)
@@ -585,13 +586,6 @@ and assumes the default Org-roam naming scheme."
        (tags-todo "-someday+TODO=\"WAITING\"")
 
        (tags "someday+LEVEL=2")))))
-  (org-agenda-files '("~/Sync/org/projects/"
-		      "~/Sync/org/journals/"
-		      "~/Sync/org/project.org"
-		      "~/Sync/org/gtd.org"
-		      "~/Sync/org/cal_school.org"
-		      "~/Sync/org/cal_calendar.org"
-		      "~/Sync/org/cal_personal.org"))
   :config
   (setq org-refile-targets '((nil :maxlevel . 9)
 			     ("~/Sync/org/someday.org" :maxlevel . 9)

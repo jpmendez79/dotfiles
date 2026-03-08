@@ -463,6 +463,64 @@ and assumes the default Org-roam naming scheme."
   (require 'ebdb-gnus)
   (require 'ebdb-org))
 
+
+(use-package calfw
+  :straight t
+  :config
+  (require 'calfw)
+  (load-file "~/.emacs.d/straight/repos/emacs-calfw/calfw-org.el")
+
+  (defun cal-all ()
+  (interactive)
+  (calfw-open-calendar-buffer
+   :contents-sources
+   (list
+    (calfw-org-create-source nil "org-agenda" "Green")  ; orgmode source from org-agenda files
+   )))
+  (defun cal-ana-jesse ()
+    (interactive)
+    (calfw-open-calendar-buffer
+     :contents-sources
+     (list
+      (calfw-org-create-source '("~/Sync/org/cal_personal.org" "~/Sync/org/calendar-beorg.org" "~/Sync/org/cal_work.org" "~/Sync/org/cal_work-meetings.org") "Ana+Jesse" "DarkGreen")  ; orgmode source from org-agenda files
+      )))
+    (defun cal-ana ()
+    (interactive)
+    (calfw-open-calendar-buffer
+     :contents-sources
+     (list
+      (calfw-org-create-source '("~/Sync/org/calendar-beorg.org") "Ana" "DeepPink")
+      )))
+  (defun cal-all-work ()
+    (interactive)
+    (calfw-open-calendar-buffer
+     :contents-sources
+     (list
+      (calfw-org-create-source '("~/Sync/org/cal_work-meetings.org" "~/Sync/org/cal_work.org") "Work" "MediumBlue")
+  
+      )))
+  (defun cal-work-meetings ()
+    (interactive)
+    (calfw-open-calendar-buffer
+     :contents-sources
+     (list
+      (calfw-org-create-source '("~/Sync/org/cal_work-meetings.org") "Work" "MediumBlue")
+      )))
+    (defun cal-work-event ()
+    (interactive)
+    (calfw-open-calendar-buffer
+     :contents-sources
+     (list
+      (calfw-org-create-source '("~/Sync/org/cal_work.org") "Work" "MediumBlue")
+      )))
+      (defun cal-lab ()
+    (interactive)
+    (calfw-open-calendar-buffer
+     :contents-sources
+     (list
+      (calfw-org-create-source '("~/Sync/org/cal_work-meetings.org") "Work" "DarkOrange")
+      ))))
+
 (use-package org-caldav
   :straight t
   :config

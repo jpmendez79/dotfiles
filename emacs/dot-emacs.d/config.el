@@ -648,6 +648,7 @@ and assumes the default Org-roam naming scheme."
   (setq org-refile-targets '((nil :maxlevel . 9)
 			     ("~/Sync/org/someday.org" :maxlevel . 9)
 			     ("~/Sync/org/gtd.org" :maxlevel . 3)
+			     ("~/Sync/org/research.org" :maxlevel . 3)
 			     ("~/Sync/org/todo.org" :maxlevel . 2)
 			     ("~/Sync/org/project.org" :maxlevel . 9)
 			     ("~/Sync/org/cal_calendar.org" :maxlevel . 9)))

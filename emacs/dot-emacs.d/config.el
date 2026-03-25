@@ -476,7 +476,14 @@ and assumes the default Org-roam naming scheme."
    :contents-sources
    (list
     (calfw-org-create-source nil "org-agenda" "Green")  ; orgmode source from org-agenda files
-   )))
+    )))
+  (defun cal-all-jesse ()
+    (interactive)
+    (calfw-open-calendar-buffer
+     :contents-sources
+     (list
+      (calfw-org-create-source '("~/Sync/org/cal_personal.org" "~/Sync/org/cal_work.org" "~/Sync/org/cal_work-meetings.org") "Jesse" "SteelBlue")  ; orgmode source from org-agenda files
+      )))
   (defun cal-ana-jesse ()
     (interactive)
     (calfw-open-calendar-buffer

@@ -543,14 +543,6 @@
   :mode
   ("\\.org\\'" . org-mode)
   :custom
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((ditaa . t)
-     (python . t)
-     (plantuml . t)
-     (calc . t)
-     (shell . t)
-     ))
   (org-hide-leading-stars t)
   (org-startup-indented t)
   (org-adapt-indentation nil)
@@ -567,7 +559,7 @@
   (org-refile-allow-creating-parent-nodes t)					; Show full paths for refiling
   (org-outline-path-complete-in-steps nil)
   (org-plantuml-exec-mode 'jar)
-  (org-plantuml-jar-path (expand-file-name "~/.bin/plantuml-1.2026.1.jar"))
+  (org-plantuml-jar-path (expand-file-name "~/Sync/bin/plantuml-1.2026.1.jar"))
   ;; (org-tags-exclude-from-inheritance "project")
   (org-attach-id-dir "~/Sync/org/roam/assets/")
   (org-agenda-files "~/Sync/org/agenda-list.txt")
@@ -613,6 +605,33 @@
 			            ("~/Sync/org/cal_calendar.org" :maxlevel . 9)))
 
   )
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((ditaa . t)
+   (python . t)
+   (plantuml . t)
+   (calc . t)
+   (shell . t)
+   ))
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-c." 'org-time-stamp)
+(global-set-key "\C-cp" 'org-pomodoro)
+(global-set-key "\C-co" 'org-noter)
+(global-set-key "\C-ck" 'kill-src-block-at-point)
+(global-set-key "\C-cu" 'org-reset-checkbox-state-subtree)
+(setq org-tags-exclude-from-inheritance "project")
+(setq org-attach-id-dir "~/Sync/org/roam/assets/")
+(setq org-todo-keywords
+	  '((sequence "NEXT(n)" "|" "DONE(d)" "Delegated(D)")
+	    (sequence "WAITING(w)" "APPT(a)" )
+	    (sequence "|" "CANCELED(c)")))
+(require 'ox-beamer)
+(require 'ox-latex)
+(setq org-export-allow-bind-keywords t)
+(setq org-latex-listings 'minted)
+
 
 ;; Managing Bibliographies
 (use-package bibtex
@@ -806,12 +825,49 @@ and assumes the default Org-roam naming scheme."
    :subscribed-channels nil ;; using slack-extra-subscribed-channels because I can change it dynamically
    ))
 
+(use-package emojify)
+
 ;; Set up the Language Server Protocol (LSP) servers using Eglot.
 (use-package eglot
   :ensure nil
   :commands (eglot-ensure
              eglot-rename
              eglot-format-buffer))
+
+;; Treesitter Grammars
+(setq treesit-language-source-alist
+      '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
+        (c . ("https://github.com/tree-sitter/tree-sitter-c.git"))
+	    (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp.git"))
+        (make . ("https://github.com/alemuller/tree-sitter-make"))
+        (python . ("https://github.com/tree-sitter/tree-sitter-python"))))
+(setq major-mode-remap-alist
+      '((bash-mode . bash-ts-mode)
+	    (python-mode . python-ts-mode)
+	    (c-mode . c-ts-mode)
+        (c++-mode . c++-ts-mode)
+        (c-or-c++-mode . c-or-c++-ts-mode)
+	    ))
+
+(use-package c-ts-mode
+  :hook (c-or-c++-ts-mode . eglot-ensure)
+  :config
+  (setq c-ts-mode-indent-style "k&r")
+  (setq c++-ts-mode-indent-style "k&r")
+  (setq c-or-c++-ts-mode-indent-style "k&r")
+  (setq c-toggle-auto-newline 1)
+  (setq c-toggle-electric-state 1)
+  (setq-default c-electric-flag t))
+
+(use-package tramp
+  :config
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+  ;; required to make tramp directory tracking work correctly
+  (setopt tramp-remote-path '(tramp-own-remote-path))
+  (setq tramp-default-method "ssh")
+  (setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+  )
+
 
 ;; This automates the process of updating installed packages
 (use-package auto-package-update

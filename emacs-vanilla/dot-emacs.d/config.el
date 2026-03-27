@@ -27,137 +27,137 @@
 
 
     ;;; Fira code
-    ;; This works when using emacs --daemon + emacsclient
-    (add-hook 'after-make-frame-functions (lambda (frame) (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")))
-    ;; This works when using emacs without server/client
-    (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")
-    ;; I haven't found one statement that makes both of the above situations work, so I use both for now
-     
-    (defconst fira-code-font-lock-keywords-alist
-      (mapcar (lambda (regex-char-pair)
-                `(,(car regex-char-pair)
-                  (0 (prog1 ()
-                       (compose-region (match-beginning 1)
-                                       (match-end 1)
-                                       ;; The first argument to concat is a string containing a literal tab
-                                       ,(concat "	" (list (decode-char 'ucs (cadr regex-char-pair)))))))))
-              '(("\\(www\\)"                   #Xe100)
-                ("[^/]\\(\\*\\*\\)[^/]"        #Xe101)
-                ("\\(\\*\\*\\*\\)"             #Xe102)
-                ("\\(\\*\\*/\\)"               #Xe103)
-                ("\\(\\*>\\)"                  #Xe104)
-                ("[^*]\\(\\*/\\)"              #Xe105)
-                ("\\(\\\\\\\\\\)"              #Xe106)
-                ("\\(\\\\\\\\\\\\\\)"          #Xe107)
-                ("\\({-\\)"                    #Xe108)
-                ("\\(\\[\\]\\)"                #Xe109)
-                ("\\(::\\)"                    #Xe10a)
-                ("\\(:::\\)"                   #Xe10b)
-                ("[^=]\\(:=\\)"                #Xe10c)
-                ("\\(!!\\)"                    #Xe10d)
-                ("\\(!=\\)"                    #Xe10e)
-                ("\\(!==\\)"                   #Xe10f)
-                ("\\(-}\\)"                    #Xe110)
-                ("\\(--\\)"                    #Xe111)
-                ("\\(---\\)"                   #Xe112)
-                ("\\(-->\\)"                   #Xe113)
-                ("[^-]\\(->\\)"                #Xe114)
-                ("\\(->>\\)"                   #Xe115)
-                ("\\(-<\\)"                    #Xe116)
-                ("\\(-<<\\)"                   #Xe117)
-                ("\\(-~\\)"                    #Xe118)
-                ("\\(#{\\)"                    #Xe119)
-                ("\\(#\\[\\)"                  #Xe11a)
-                ("\\(##\\)"                    #Xe11b)
-                ("\\(###\\)"                   #Xe11c)
-                ("\\(####\\)"                  #Xe11d)
-                ("\\(#(\\)"                    #Xe11e)
-                ("\\(#\\?\\)"                  #Xe11f)
-                ("\\(#_\\)"                    #Xe120)
-                ("\\(#_(\\)"                   #Xe121)
-                ("\\(\\.-\\)"                  #Xe122)
-                ("\\(\\.=\\)"                  #Xe123)
-                ("\\(\\.\\.\\)"                #Xe124)
-                ("\\(\\.\\.<\\)"               #Xe125)
-                ("\\(\\.\\.\\.\\)"             #Xe126)
-                ("\\(\\?=\\)"                  #Xe127)
-                ("\\(\\?\\?\\)"                #Xe128)
-                ("\\(;;\\)"                    #Xe129)
-                ("\\(/\\*\\)"                  #Xe12a)
-                ("\\(/\\*\\*\\)"               #Xe12b)
-                ("\\(/=\\)"                    #Xe12c)
-                ("\\(/==\\)"                   #Xe12d)
-                ("\\(/>\\)"                    #Xe12e)
-                ("\\(//\\)"                    #Xe12f)
-                ("\\(///\\)"                   #Xe130)
-                ("\\(&&\\)"                    #Xe131)
-                ("\\(||\\)"                    #Xe132)
-                ("\\(||=\\)"                   #Xe133)
-                ("[^|]\\(|=\\)"                #Xe134)
-                ("\\(|>\\)"                    #Xe135)
-                ("\\(\\^=\\)"                  #Xe136)
-                ("\\(\\$>\\)"                  #Xe137)
-                ("\\(\\+\\+\\)"                #Xe138)
-                ("\\(\\+\\+\\+\\)"             #Xe139)
-                ("\\(\\+>\\)"                  #Xe13a)
-                ("\\(=:=\\)"                   #Xe13b)
-                ("[^!/]\\(==\\)[^>]"           #Xe13c)
-                ("\\(===\\)"                   #Xe13d)
-                ("\\(==>\\)"                   #Xe13e)
-                ("[^=]\\(=>\\)"                #Xe13f)
-                ("\\(=>>\\)"                   #Xe140)
-                ("\\(<=\\)"                    #Xe141)
-                ("\\(=<<\\)"                   #Xe142)
-                ("\\(=/=\\)"                   #Xe143)
-                ("\\(>-\\)"                    #Xe144)
-                ("\\(>=\\)"                    #Xe145)
-                ("\\(>=>\\)"                   #Xe146)
-                ("[^-=]\\(>>\\)"               #Xe147)
-                ("\\(>>-\\)"                   #Xe148)
-                ("\\(>>=\\)"                   #Xe149)
-                ("\\(>>>\\)"                   #Xe14a)
-                ("\\(<\\*\\)"                  #Xe14b)
-                ("\\(<\\*>\\)"                 #Xe14c)
-                ("\\(<|\\)"                    #Xe14d)
-                ("\\(<|>\\)"                   #Xe14e)
-                ("\\(<\\$\\)"                  #Xe14f)
-                ("\\(<\\$>\\)"                 #Xe150)
-                ("\\(<!--\\)"                  #Xe151)
-                ("\\(<-\\)"                    #Xe152)
-                ("\\(<--\\)"                   #Xe153)
-                ("\\(<->\\)"                   #Xe154)
-                ("\\(<\\+\\)"                  #Xe155)
-                ("\\(<\\+>\\)"                 #Xe156)
-                ("\\(<=\\)"                    #Xe157)
-                ("\\(<==\\)"                   #Xe158)
-                ("\\(<=>\\)"                   #Xe159)
-                ("\\(<=<\\)"                   #Xe15a)
-                ("\\(<>\\)"                    #Xe15b)
-                ("[^-=]\\(<<\\)"               #Xe15c)
-                ("\\(<<-\\)"                   #Xe15d)
-                ("\\(<<=\\)"                   #Xe15e)
-                ("\\(<<<\\)"                   #Xe15f)
-                ("\\(<~\\)"                    #Xe160)
-                ("\\(<~~\\)"                   #Xe161)
-                ("\\(</\\)"                    #Xe162)
-                ("\\(</>\\)"                   #Xe163)
-                ("\\(~@\\)"                    #Xe164)
-                ("\\(~-\\)"                    #Xe165)
-                ("\\(~=\\)"                    #Xe166)
-                ("\\(~>\\)"                    #Xe167)
-                ("[^<]\\(~~\\)"                #Xe168)
-                ("\\(~~>\\)"                   #Xe169)
-                ("\\(%%\\)"                    #Xe16a)
-                ;;("\\(x\\)"                     #Xe16b)
-                ("[^:=]\\(:\\)[^:=]"           #Xe16c)
-                ("[^\\+<>]\\(\\+\\)[^\\+<>]"   #Xe16d)
-                ("[^\\*/<>]\\(\\*\\)[^\\*/<>]" #Xe16f))))
-     
-    (defun add-fira-code-symbol-keywords ()
-      (font-lock-add-keywords nil fira-code-font-lock-keywords-alist))
-     
-    (add-hook 'prog-mode-hook
-              #'add-fira-code-symbol-keywords)
+;; This works when using emacs --daemon + emacsclient
+(add-hook 'after-make-frame-functions (lambda (frame) (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")))
+;; This works when using emacs without server/client
+(set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")
+;; I haven't found one statement that makes both of the above situations work, so I use both for now
+
+(defconst fira-code-font-lock-keywords-alist
+  (mapcar (lambda (regex-char-pair)
+            `(,(car regex-char-pair)
+              (0 (prog1 ()
+                   (compose-region (match-beginning 1)
+                                   (match-end 1)
+                                   ;; The first argument to concat is a string containing a literal tab
+                                   ,(concat "	" (list (decode-char 'ucs (cadr regex-char-pair)))))))))
+          '(("\\(www\\)"                   #Xe100)
+            ("[^/]\\(\\*\\*\\)[^/]"        #Xe101)
+            ("\\(\\*\\*\\*\\)"             #Xe102)
+            ("\\(\\*\\*/\\)"               #Xe103)
+            ("\\(\\*>\\)"                  #Xe104)
+            ("[^*]\\(\\*/\\)"              #Xe105)
+            ("\\(\\\\\\\\\\)"              #Xe106)
+            ("\\(\\\\\\\\\\\\\\)"          #Xe107)
+            ("\\({-\\)"                    #Xe108)
+            ("\\(\\[\\]\\)"                #Xe109)
+            ("\\(::\\)"                    #Xe10a)
+            ("\\(:::\\)"                   #Xe10b)
+            ("[^=]\\(:=\\)"                #Xe10c)
+            ("\\(!!\\)"                    #Xe10d)
+            ("\\(!=\\)"                    #Xe10e)
+            ("\\(!==\\)"                   #Xe10f)
+            ("\\(-}\\)"                    #Xe110)
+            ("\\(--\\)"                    #Xe111)
+            ("\\(---\\)"                   #Xe112)
+            ("\\(-->\\)"                   #Xe113)
+            ("[^-]\\(->\\)"                #Xe114)
+            ("\\(->>\\)"                   #Xe115)
+            ("\\(-<\\)"                    #Xe116)
+            ("\\(-<<\\)"                   #Xe117)
+            ("\\(-~\\)"                    #Xe118)
+            ("\\(#{\\)"                    #Xe119)
+            ("\\(#\\[\\)"                  #Xe11a)
+            ("\\(##\\)"                    #Xe11b)
+            ("\\(###\\)"                   #Xe11c)
+            ("\\(####\\)"                  #Xe11d)
+            ("\\(#(\\)"                    #Xe11e)
+            ("\\(#\\?\\)"                  #Xe11f)
+            ("\\(#_\\)"                    #Xe120)
+            ("\\(#_(\\)"                   #Xe121)
+            ("\\(\\.-\\)"                  #Xe122)
+            ("\\(\\.=\\)"                  #Xe123)
+            ("\\(\\.\\.\\)"                #Xe124)
+            ("\\(\\.\\.<\\)"               #Xe125)
+            ("\\(\\.\\.\\.\\)"             #Xe126)
+            ("\\(\\?=\\)"                  #Xe127)
+            ("\\(\\?\\?\\)"                #Xe128)
+            ("\\(;;\\)"                    #Xe129)
+            ("\\(/\\*\\)"                  #Xe12a)
+            ("\\(/\\*\\*\\)"               #Xe12b)
+            ("\\(/=\\)"                    #Xe12c)
+            ("\\(/==\\)"                   #Xe12d)
+            ("\\(/>\\)"                    #Xe12e)
+            ("\\(//\\)"                    #Xe12f)
+            ("\\(///\\)"                   #Xe130)
+            ("\\(&&\\)"                    #Xe131)
+            ("\\(||\\)"                    #Xe132)
+            ("\\(||=\\)"                   #Xe133)
+            ("[^|]\\(|=\\)"                #Xe134)
+            ("\\(|>\\)"                    #Xe135)
+            ("\\(\\^=\\)"                  #Xe136)
+            ("\\(\\$>\\)"                  #Xe137)
+            ("\\(\\+\\+\\)"                #Xe138)
+            ("\\(\\+\\+\\+\\)"             #Xe139)
+            ("\\(\\+>\\)"                  #Xe13a)
+            ("\\(=:=\\)"                   #Xe13b)
+            ("[^!/]\\(==\\)[^>]"           #Xe13c)
+            ("\\(===\\)"                   #Xe13d)
+            ("\\(==>\\)"                   #Xe13e)
+            ("[^=]\\(=>\\)"                #Xe13f)
+            ("\\(=>>\\)"                   #Xe140)
+            ("\\(<=\\)"                    #Xe141)
+            ("\\(=<<\\)"                   #Xe142)
+            ("\\(=/=\\)"                   #Xe143)
+            ("\\(>-\\)"                    #Xe144)
+            ("\\(>=\\)"                    #Xe145)
+            ("\\(>=>\\)"                   #Xe146)
+            ("[^-=]\\(>>\\)"               #Xe147)
+            ("\\(>>-\\)"                   #Xe148)
+            ("\\(>>=\\)"                   #Xe149)
+            ("\\(>>>\\)"                   #Xe14a)
+            ("\\(<\\*\\)"                  #Xe14b)
+            ("\\(<\\*>\\)"                 #Xe14c)
+            ("\\(<|\\)"                    #Xe14d)
+            ("\\(<|>\\)"                   #Xe14e)
+            ("\\(<\\$\\)"                  #Xe14f)
+            ("\\(<\\$>\\)"                 #Xe150)
+            ("\\(<!--\\)"                  #Xe151)
+            ("\\(<-\\)"                    #Xe152)
+            ("\\(<--\\)"                   #Xe153)
+            ("\\(<->\\)"                   #Xe154)
+            ("\\(<\\+\\)"                  #Xe155)
+            ("\\(<\\+>\\)"                 #Xe156)
+            ("\\(<=\\)"                    #Xe157)
+            ("\\(<==\\)"                   #Xe158)
+            ("\\(<=>\\)"                   #Xe159)
+            ("\\(<=<\\)"                   #Xe15a)
+            ("\\(<>\\)"                    #Xe15b)
+            ("[^-=]\\(<<\\)"               #Xe15c)
+            ("\\(<<-\\)"                   #Xe15d)
+            ("\\(<<=\\)"                   #Xe15e)
+            ("\\(<<<\\)"                   #Xe15f)
+            ("\\(<~\\)"                    #Xe160)
+            ("\\(<~~\\)"                   #Xe161)
+            ("\\(</\\)"                    #Xe162)
+            ("\\(</>\\)"                   #Xe163)
+            ("\\(~@\\)"                    #Xe164)
+            ("\\(~-\\)"                    #Xe165)
+            ("\\(~=\\)"                    #Xe166)
+            ("\\(~>\\)"                    #Xe167)
+            ("[^<]\\(~~\\)"                #Xe168)
+            ("\\(~~>\\)"                   #Xe169)
+            ("\\(%%\\)"                    #Xe16a)
+            ;;("\\(x\\)"                     #Xe16b)
+            ("[^:=]\\(:\\)[^:=]"           #Xe16c)
+            ("[^\\+<>]\\(\\+\\)[^\\+<>]"   #Xe16d)
+            ("[^\\*/<>]\\(\\*\\)[^\\*/<>]" #Xe16f))))
+
+(defun add-fira-code-symbol-keywords ()
+  (font-lock-add-keywords nil fira-code-font-lock-keywords-alist))
+
+(add-hook 'prog-mode-hook
+          #'add-fira-code-symbol-keywords)
 
 
 ;; Auth-source pass
@@ -177,7 +177,7 @@
            (getenv "WSLENV"))
   (message "WSL")
   (setq visible-bell       nil
-	ring-bell-function #'ignore)
+	    ring-bell-function #'ignore)
   (setq
    browse-url-generic-program  "~/.local/bin/wsl-browse.sh"
    browse-url-browser-function #'browse-url-generic)
@@ -316,7 +316,7 @@ and assumes the default Org-roam naming scheme."
 ;;   ;; (global-fira-code-mode)
 ;;   :custom
 ;;   (fira-code-mode-disabled-ligatures '("[]" "#{" "#(" "#_" "#_(" "x")))
-  
+
 ;; Save File
 (setq delete-old-versions t)
 (setq backup-directory-alist
@@ -471,12 +471,12 @@ and assumes the default Org-roam naming scheme."
   (load-file "~/.emacs.d/straight/repos/emacs-calfw/calfw-org.el")
 
   (defun cal-all ()
-  (interactive)
-  (calfw-open-calendar-buffer
-   :contents-sources
-   (list
-    (calfw-org-create-source nil "org-agenda" "Green")  ; orgmode source from org-agenda files
-    )))
+    (interactive)
+    (calfw-open-calendar-buffer
+     :contents-sources
+     (list
+      (calfw-org-create-source nil "org-agenda" "Green")  ; orgmode source from org-agenda files
+      )))
   (defun cal-all-jesse ()
     (interactive)
     (calfw-open-calendar-buffer
@@ -491,7 +491,7 @@ and assumes the default Org-roam naming scheme."
      (list
       (calfw-org-create-source '("~/Sync/org/cal_personal.org" "~/Sync/org/calendar-beorg.org" "~/Sync/org/cal_work.org" "~/Sync/org/cal_work-meetings.org") "Ana+Jesse" "DarkGreen")  ; orgmode source from org-agenda files
       )))
-    (defun cal-ana ()
+  (defun cal-ana ()
     (interactive)
     (calfw-open-calendar-buffer
      :contents-sources
@@ -504,7 +504,7 @@ and assumes the default Org-roam naming scheme."
      :contents-sources
      (list
       (calfw-org-create-source '("~/Sync/org/cal_work-meetings.org" "~/Sync/org/cal_work.org") "Work" "MediumBlue")
-  
+
       )))
   (defun cal-work-meetings ()
     (interactive)
@@ -513,14 +513,14 @@ and assumes the default Org-roam naming scheme."
      (list
       (calfw-org-create-source '("~/Sync/org/cal_work-meetings.org") "Work" "MediumBlue")
       )))
-    (defun cal-work-event ()
+  (defun cal-work-event ()
     (interactive)
     (calfw-open-calendar-buffer
      :contents-sources
      (list
       (calfw-org-create-source '("~/Sync/org/cal_work.org") "Work" "MediumBlue")
       )))
-      (defun cal-lab ()
+  (defun cal-lab ()
     (interactive)
     (calfw-open-calendar-buffer
      :contents-sources
@@ -600,7 +600,7 @@ and assumes the default Org-roam naming scheme."
   (add-to-list 'org-modules 'org-habit)
   (require 'org-protocol)
   :hook ((org-mode . my-org-hook)
-	 (org-agenda-mode . hl-line-mode))
+	     (org-agenda-mode . hl-line-mode))
   :custom
   (org-agenda-files "~/Sync/org/agenda-list.txt")
   (org-agenda-timegrid-use-ampm t)
@@ -626,9 +626,9 @@ and assumes the default Org-roam naming scheme."
       "* %? [[%:link][%:description]] \nCaptured On: %U"
       :immediate-finish t)
      ))
-  
+
   (org-directory "~/Sync/org")
-  (org-agenda-custom-commands 
+  (org-agenda-custom-commands
    '(
      ("b" "Work Computer [b]ortan" tags-todo "@bortan-someday")
      ("c" "[C]omputer (any)" tags-todo "@computer-someday")
@@ -653,21 +653,21 @@ and assumes the default Org-roam naming scheme."
        (tags "someday+LEVEL=2")))))
   :config
   (setq org-refile-targets '((nil :maxlevel . 9)
-			     ("~/Sync/org/someday.org" :maxlevel . 9)
-			     ("~/Sync/org/gtd.org" :maxlevel . 3)
-			     ("~/Sync/org/research.org" :maxlevel . 3)
-			     ("~/Sync/org/todo.org" :maxlevel . 2)
-			     ("~/Sync/org/project.org" :maxlevel . 9)
-			     ("~/Sync/org/cal_calendar.org" :maxlevel . 9)))
+			                 ("~/Sync/org/someday.org" :maxlevel . 9)
+			                 ("~/Sync/org/gtd.org" :maxlevel . 3)
+			                 ("~/Sync/org/research.org" :maxlevel . 3)
+			                 ("~/Sync/org/todo.org" :maxlevel . 2)
+			                 ("~/Sync/org/project.org" :maxlevel . 9)
+			                 ("~/Sync/org/cal_calendar.org" :maxlevel . 9)))
   ;; Looks
   (setq-default org-startup-indented t
-		org-pretty-entities t
-		org-use-sub-superscripts "{}"
-		org-hide-emphasis-markers t
-		org-startup-with-inline-images t
-		org-image-actual-width '(300))
+		        org-pretty-entities t
+		        org-use-sub-superscripts "{}"
+		        org-hide-emphasis-markers t
+		        org-startup-with-inline-images t
+		        org-image-actual-width '(300))
   (add-to-list 'org-entities-user
-	       '(("nubar" "\\bar{\\nu}" nil "ν̅" "ν̅" "ν̅" "ν̅")))
+	           '(("nubar" "\\bar{\\nu}" nil "ν̅" "ν̅" "ν̅" "ν̅")))
   (setq org-refile-use-outline-path 'file)
   (setq org-refile-allow-creating-parent-nodes t)					; Show full paths for refiling
   (setq org-outline-path-complete-in-steps nil)
@@ -688,30 +688,30 @@ and assumes the default Org-roam naming scheme."
   (setq org-tags-exclude-from-inheritance "project")
   (setq org-attach-id-dir "~/Sync/org/roam/assets/")
   (setq org-todo-keywords
-	'((sequence "NEXT(n)" "|" "DONE(d)" "Delegated(D)")
-	  (sequence "WAITING(w)" "APPT(a)" )
-	  (sequence "|" "CANCELED(c)")))
+	    '((sequence "NEXT(n)" "|" "DONE(d)" "Delegated(D)")
+	      (sequence "WAITING(w)" "APPT(a)" )
+	      (sequence "|" "CANCELED(c)")))
   (require 'ox-beamer)
   (require 'ox-latex)
   (setq org-export-allow-bind-keywords t)
   (setq org-latex-listings 'minted)
   ;; (add-to-list 'org-latex-packages-alist '(("" "minted")))
-  
-  
+
+
   (setq org-latex-pdf-process
-	'("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	  "bibtex %b"
-	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	  "bibtex %b"
-	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	  "bibtex %b"))
+	    '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+	      "bibtex %b"
+	      "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+	      "bibtex %b"
+	      "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+	      "bibtex %b"))
   (setq org-latex-minted-options '(("breaklines" "true")
-				   ("breakanywhere" "true")))
+				                   ("breakanywhere" "true")))
   (setq org-latex-pdf-process
-	(mapcar
-	 (lambda (s)
-	   (replace-regexp-in-string "%latex " "%latex -shell-escape " s))
-	 org-latex-pdf-process)))
+	    (mapcar
+	     (lambda (s)
+	       (replace-regexp-in-string "%latex " "%latex -shell-escape " s))
+	     org-latex-pdf-process)))
 
 
 (use-package org-crypt
@@ -745,28 +745,28 @@ and assumes the default Org-roam naming scheme."
   ;; if only !exist "file" field in bib entry
   (setq bibtex-completion-notes-path "~/Sync/org/roam/ref/")           ; dir to keep notes for the pdfs
 
-  ;; BEGIN: Change insert citation (<f3>) behaviour of helm-bibtex for org-mode 
+  ;; BEGIN: Change insert citation (<f3>) behaviour of helm-bibtex for org-mode
   (defun custom/bibtex-completion-format-citation-org (keys)
     "Custom cite definition for org-mode"
     (s-join ", "
-	    (--map (format "[cite:@%s]" it) keys)))
+	        (--map (format "[cite:@%s]" it) keys)))
   ;; END: Change insert citation (<f3>) behaviour of helm-bibtex for org-mode
 
   (setq bibtex-autokey-year-length 4                          ; customisations for 'bibtex-generate-autokey'
-	bibtex-autokey-name-year-separator "-"                ; press C-c C-c (bibtex-clean-entry) on a bib entry w/o %citekey
-	bibtex-autokey-year-title-separator "-"               ; to automatically insert a %citekey based on meta data
-	bibtex-autokey-titleword-separator "-"                ; use M-x crossref-add-bibtex-entry <ret>: to add an entry from
-	bibtex-autokey-titlewords 2                           ; https://www.crossref.org/
-	bibtex-autokey-titlewords-stretch 1
-	bibtex-autokey-titleword-length 5)
+	    bibtex-autokey-name-year-separator "-"                ; press C-c C-c (bibtex-clean-entry) on a bib entry w/o %citekey
+	    bibtex-autokey-year-title-separator "-"               ; to automatically insert a %citekey based on meta data
+	    bibtex-autokey-titleword-separator "-"                ; use M-x crossref-add-bibtex-entry <ret>: to add an entry from
+	    bibtex-autokey-titlewords 2                           ; https://www.crossref.org/
+	    bibtex-autokey-titlewords-stretch 1
+	    bibtex-autokey-titleword-length 5)
 
   (setq bibtex-completion-format-citation-functions
-	'((org-mode      . custom/bibtex-completion-format-citation-org)
-	  (latex-mode    . bibtex-completion-format-citation-cite)
-	  (markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
-	  (python-mode   . bibtex-completion-format-citation-sphinxcontrib-bibtex)
-	  (rst-mode      . bibtex-completion-format-citation-sphinxcontrib-bibtex)
-	  (default       . bibtex-completion-format-citation-default))))
+	    '((org-mode      . custom/bibtex-completion-format-citation-org)
+	      (latex-mode    . bibtex-completion-format-citation-cite)
+	      (markdown-mode . bibtex-completion-format-citation-pandoc-citeproc)
+	      (python-mode   . bibtex-completion-format-citation-sphinxcontrib-bibtex)
+	      (rst-mode      . bibtex-completion-format-citation-sphinxcontrib-bibtex)
+	      (default       . bibtex-completion-format-citation-default))))
 
 ;; LaTeX previews
 ;; (use-package org-fragtog
@@ -907,6 +907,7 @@ and assumes the default Org-roam naming scheme."
   :hook (c-or-c++-ts-mode . eglot-ensure)
   :config
   (setq c-ts-mode-indent-style "k&r")
+  (setq c-or-c++-ts-mode-indent-style "k&r")
   (setq c-toggle-auto-newline 1)
   (setq c-toggle-electric-state 1)
   (setq-default c-electric-flag t))

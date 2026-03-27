@@ -57,7 +57,7 @@
 ;;        nnmail-fancy-expiry-targets
 ;;        '((to-from "jmend46@lsu.edu" "nnimap:Mail/lsu/Trash")
 ;;          (to-from "jessepmendez79@gmail.com" "nnimap:Mail/personal/[Gmail]/Trash")))
-;; Posting Styles and Replies         
+;; Posting Styles and Replies
 (setq gnus-posting-styles
       '(("Personal" ; Matches Gnus group called "Personal"
          (address "Jesse Mendez <jessepmendez79@gmail.com>")
@@ -115,7 +115,7 @@
 			 (group 1.0))
 	       (vertical 1.0
 			 (summary 1.0 point)))))
-(require 'gnus-desktop-notify)
-(gnus-desktop-notify-mode)
-(gnus-demon-add-rescan)
-(setq gnus-desktop-notify-groups 'gnus-desktop-notify-explicit)
+;; (require 'gnus-desktop-notify)
+;; (gnus-desktop-notify-mode)
+;; (gnus-demon-add-rescan)
+;; (setq gnus-desktop-notify-groups 'gnus-desktop-notify-explicit)

@@ -38,6 +38,36 @@
   ;; the mode `compile-angel-on-load-mode' was activated.
   (compile-angel-on-load-mode 1))
 
+(use-package moe-theme
+  :config
+  (moe-light))
+
+                                        ; This assumes you've installed the package via MELPA.
+(use-package ligature
+  :config
+  ;; Enable the "www" ligature in every possible major mode
+  (ligature-set-ligatures 't '("www"))
+  ;; Enable traditional ligature support in eww-mode, if the
+  ;; `variable-pitch' face supports it
+  (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
+  ;; Enable all Cascadia Code ligatures in programming modes
+  (ligature-set-ligatures 'prog-mode '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+                                       ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+                                       "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+                                       "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+                                       "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+                                       "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+                                       "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+                                       "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+                                       ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+                                       "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+                                       "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+                                       "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+                                       "\\\\" "://"))
+  ;; Enables ligature checks globally in all buffers. You can also do it
+  ;; per mode with `ligature-mode'.
+  (global-ligature-mode t))
+
 ;; Auth-source pass
 (use-package pass
   :config
@@ -543,6 +573,7 @@
   :mode
   ("\\.org\\'" . org-mode)
   :custom
+  (org-log-into-drawer t)
   (org-hide-leading-stars t)
   (org-startup-indented t)
   (org-adapt-indentation nil)
@@ -560,6 +591,7 @@
   (org-outline-path-complete-in-steps nil)
   (org-plantuml-exec-mode 'jar)
   (org-plantuml-jar-path (expand-file-name "~/Sync/bin/plantuml-1.2026.1.jar"))
+  (org-attach-use-inheritance t)
   ;; (org-tags-exclude-from-inheritance "project")
   (org-attach-id-dir "~/Sync/org/roam/assets/")
   (org-agenda-files "~/Sync/org/agenda-list.txt")
@@ -621,7 +653,7 @@
 (global-set-key "\C-co" 'org-noter)
 (global-set-key "\C-ck" 'kill-src-block-at-point)
 (global-set-key "\C-cu" 'org-reset-checkbox-state-subtree)
-(setq org-tags-exclude-from-inheritance "project")
+(setq org-tags-exclude-from-inheritance '(("project")))
 (setq org-attach-id-dir "~/Sync/org/roam/assets/")
 (setq org-todo-keywords
 	  '((sequence "NEXT(n)" "|" "DONE(d)" "Delegated(D)")

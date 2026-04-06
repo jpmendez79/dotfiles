@@ -75,7 +75,8 @@
   (setq auth-sources '(password-store))
   (setq auth-source-do-cache nil))
 
-
+;; Eat terminal
+(use-package eat)
 (use-package ebdb
   :config
   (setq ebdb-mua-auto-update-p 'query)
@@ -149,7 +150,11 @@
       ))))
 
 
-(use-package auctex)
+(use-package auctex
+  :config
+  (pdf-tools-install :no-query)
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+        TeX-source-correlate-start-server t))
 
 (use-package pdf-tools
   :magic ("%PDF" . pdf-view-mode)
@@ -159,7 +164,7 @@
   (setq-default pdf-view-display-size 'fit-page)
   (setq pdf-annot-activate-created-annotations t)
   (require 'pdf-occur)
-  (pdf-tools-install :no-query))
+  )
 
 ;; Auto-revert in Emacs is a feature that automatically updates the
 ;; contents of a buffer to reflect changes made to the underlying file

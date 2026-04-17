@@ -68,6 +68,12 @@
   ;; per mode with `ligature-mode'.
   (global-ligature-mode t))
 
+(use-package yasnippet
+  :config
+  ;; (add-to-list 'load-path
+  ;;              "~/.emacs.d/snippets/")
+  (yas-global-mode 1))
+
 ;; Auth-source pass
 (use-package pass
   :config
@@ -583,10 +589,10 @@
   (org-startup-indented t)
   (org-adapt-indentation nil)
   (org-edit-src-content-indentation 0)
-  ;; (org-fontify-done-headline t)
-  ;; (org-fontify-todo-headline t)
-  ;; (org-fontify-whole-heading-line t)
-  ;; (org-fontify-quote-and-verse-blocks t)
+  (org-fontify-done-headline t)
+  (org-fontify-todo-headline t)
+  (org-fontify-whole-heading-line t)
+  (org-fontify-quote-and-verse-blocks t)
   (org-pretty-entities t)
   (org-use-sub-superscripts "{}")
   (org-hide-emphasis-markers t)
@@ -670,6 +676,8 @@
 (setq org-latex-listings 'minted)
 
 
+;; (use-package org-gantt)
+(load-file "~/.emacs.d/var/lisp/org-gantt.el")
 ;; Managing Bibliographies
 (use-package bibtex
   :custom
@@ -727,6 +735,7 @@ and assumes the default Org-roam naming scheme."
        "modified" (format-time-string "[%Y-%m-%d %a %H:%M]")))))
 
 (use-package org-roam
+  :hook ((org-mode . visual-line-mode))
   :bind
   (("C-c r j" . org-roam-dailies-capture-today)
    ("C-c r f" . org-roam-node-find)

@@ -59,15 +59,15 @@
 ;;          (to-from "jessepmendez79@gmail.com" "nnimap:Mail/personal/[Gmail]/Trash")))
 ;; Posting Styles and Replies
 (setq gnus-posting-styles
-      '(("Personal" ; Matches Gnus group called "Personal"
+      '(("gmail"
          (address "Jesse Mendez <jessepmendez79@gmail.com>")
-	 	 ("X-Message-SMTP-Method" "smtp smtp.gmail.com 587 jessepmendez79@gmail.com")
-	 )
-        ("LSU" ; Matches Gnus group called "LSU"
-         (address "Jesse Mendez <jmend46@lsu.edu")
-	 (signature-file "~/.signature.lsu")
-	 ("X-Message-SMTP-Method" "smtp localhost 1025 jmend46@lsu.edu"))
-	))
+         ("X-Message-SMTP-Method"
+          "smtp smtp.gmail.com 587 jessepmendez79@gmail.com"))
+        ("lsu"
+         (address "Jesse Mendez <jmend46@lsu.edu>")
+         (signature-file "~/.signature.lsu")
+         ("X-Message-SMTP-Method"
+          "smtp localhost 1025 jmend46@lsu.edu"))))
 (setq message-dont-reply-to-names
       '("jmend46@lsu.edu"
         "jessepmendez79@gmail.com"))

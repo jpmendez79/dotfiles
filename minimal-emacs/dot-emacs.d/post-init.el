@@ -616,6 +616,9 @@
 	 (sequence "WAITING(w)" "APPT(a)" )
 	 (sequence "|" "CANCELED(c)")))
   (org-directory "~/Sync/org")
+  (org-capture-templates
+   '(("a" "Capture an Appointment" entry (file "~/Sync/org/cal_calendar.org") "* %?\n%^T")
+     ("i" "Capture an idea to inbox" entry (file "~/Sync/org/inbox.org") "* %?\n")))
   (org-agenda-custom-commands
    '(
      ("b" "Work Computer [b]ortan" tags-todo "@bortan-someday")
@@ -646,16 +649,14 @@
 			            ("~/Sync/org/todo.org" :maxlevel . 2)
 			            ("~/Sync/org/project.org" :maxlevel . 9)
 			            ("~/Sync/org/cal_calendar.org" :maxlevel . 9)))
-
-  )
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((ditaa . t)
-   (python . t)
-   (plantuml . t)
-   (calc . t)
-   (shell . t)
-   ))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((ditaa . t)
+     (python . t)
+     (plantuml . t)
+     (calc . t)
+     (shell . t)
+     )))
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
@@ -675,6 +676,18 @@
 (setq org-export-allow-bind-keywords t)
 (setq org-latex-listings 'minted)
 
+(use-package org-caldav
+  :config
+  (require 'org-caldav)
+  (setq org-caldav-url "http://localhost:1080/users")
+  (setq org-caldav-calendar-id "jmend46@lsu.edu/Calendar")
+  (setq org-caldav-files '("~/Sync/org/cal_calendar.org"))
+  (setq org-caldav-inbox nil)
+  (setq org-caldav-sync-direction 'org->cal)
+  (setq org-caldav-save-directory "~/Sync/org/org-caldav/")
+  ;; (setq org-caldav-uuid-extension ".EML")
+  (setq org-icalendar-timezone "US/Central")
+  )
 
 ;; (use-package org-gantt)
 (load-file "~/.emacs.d/var/lisp/org-gantt.el")

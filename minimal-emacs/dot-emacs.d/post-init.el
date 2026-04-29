@@ -914,10 +914,95 @@ and assumes the default Org-roam naming scheme."
   (setq c-ts-mode-indent-style "k&r")
   (setq c++-ts-mode-indent-style "k&r")
   (setq c-or-c++-ts-mode-indent-style "k&r")
+  (c-ts-mode-set-global-style "k&r")
   (setq c-toggle-auto-newline 1)
   (setq c-toggle-electric-state 1)
   (setq-default c-electric-flag t))
 
+(use-package kirigami
+  :commands (kirigami-open-fold
+             kirigami-open-fold-rec
+             kirigami-close-fold
+             kirigami-toggle-fold
+             kirigami-open-folds
+             kirigami-close-folds-except-current
+             kirigami-close-folds)
+
+  :bind
+  (("C-c z o" . kirigami-open-fold)          ; Open fold at point
+   ("C-c z O" . kirigami-open-fold-rec)      ; Open fold recursively
+   ("C-c z r" . kirigami-open-folds)         ; Open all folds
+   ("C-c z c" . kirigami-close-fold)         ; Close fold at point
+   ("C-c z m" . kirigami-close-folds)        ; Close all folds
+   ("C-c z a" . kirigami-toggle-fold)))      ; Toggle fold at point
+
+;; Intelligent code folding by using the structural understanding of the
+;; built-in tree-sitter parser. Unlike traditional folding methods that rely on
+;; regular expressions or indentation, treesit-fold uses the actual syntax tree
+;; of the code to accurately identify foldable regions such as functions,
+;; classes, comments, and documentation strings. This allows for faster and more
+;; precise folding behavior that respects the grammar of the programming
+;; language, ensuring that fold boundaries are always syntactically correct even
+;; in complex or nested code structures.
+(use-package treesit-fold
+  :commands (treesit-fold-close
+             treesit-fold-close-all
+             treesit-fold-open
+             treesit-fold-toggle
+             treesit-fold-open-all
+             treesit-fold-mode
+             global-treesit-fold-mode
+             treesit-fold-open-recursively
+             treesit-fold-line-comment-mode)
+
+  :custom
+  (treesit-fold-line-count-show t)
+  (treesit-fold-line-count-format " ▼")
+
+  :config
+  (set-face-attribute 'treesit-fold-replacement-face nil
+                      :foreground "#808080"
+                      :box nil
+                      :weight 'bold))
+
+;; Systems and General Purpose
+(add-hook 'c-ts-mode-hook #'treesit-fold-mode)
+(add-hook 'c++-ts-mode-hook #'treesit-fold-mode)
+(add-hook 'java-ts-mode-hook #'treesit-fold-mode)
+(add-hook 'rust-ts-mode-hook #'treesit-fold-mode)
+(add-hook 'go-ts-mode-hook #'treesit-fold-mode)
+(add-hook 'ruby-ts-mode-hook #'treesit-fold-mode)
+
+;; Web and Frontend
+(add-hook 'js-ts-mode-hook #'treesit-fold-mode)
+(add-hook 'typescript-ts-mode-hook #'treesit-fold-mode)
+(add-hook 'tsx-ts-mode-hook #'treesit-fold-mode)
+(add-hook 'css-ts-mode-hook #'treesit-fold-mode)
+(add-hook 'html-ts-mode-hook #'treesit-fold-mode)
+
+;; Scripting and Infrastructure
+(add-hook 'bash-ts-mode-hook #'treesit-fold-mode)
+(add-hook 'cmake-ts-mode-hook #'treesit-fold-mode)
+(add-hook 'dockerfile-ts-mode-hook #'treesit-fold-mode)
+
+;; Data and Configuration
+(add-hook 'json-ts-mode-hook #'treesit-fold-mode)
+(add-hook 'toml-ts-mode-hook #'treesit-fold-mode)
+
+;; Third-party
+;; (add-hook 'kotlin-ts-mode-hook #'treesit-fold-mode)
+;; (add-hook 'swift-ts-mode-hook #'treesit-fold-mode)
+;; (add-hook 'elixir-ts-mode-hook #'treesit-fold-mode)
+;; (add-hook 'zig-ts-mode-hook #'treesit-fold-mode)
+
+;; Uncomment the following if you are an `evil-mode' user:
+;; (with-eval-after-load 'evil
+;;   (define-key evil-normal-state-map "zo" 'kirigami-open-fold)
+;;   (define-key evil-normal-state-map "zO" 'kirigami-open-fold-rec)
+;;   (define-key evil-normal-state-map "zc" 'kirigami-close-fold)
+;;   (define-key evil-normal-state-map "za" 'kirigami-toggle-fold)
+;;   (define-key evil-normal-state-map "zr" 'kirigami-open-folds)
+;;   (define-key evil-normal-state-map "zm" 'kirigami-close-folds))
 (use-package tramp
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)

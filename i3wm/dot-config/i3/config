@@ -20,7 +20,7 @@ font pango:monospace 8
 #font pango:DejaVu Sans Mono 8
 
 # Add pipewire to startup
-exec gentoo-pipewire-launcher &
+exec gentoo-pipewire-launcher restart &
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 
@@ -38,7 +38,8 @@ exec --no-startup-id picom -b
 exec --no-startup-id nm-applet
 exec --no-startup-id pasystray
 exec --no-startup-id blueman-applet
-exec --no-startup-id hsetroot -fill cloud_la.jpg
+exec --no-startup-id hsetroot -fill ~/pedro.jpg
+exec --no-startup-id ~/.davmail/davmail
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -146,6 +147,10 @@ workspace $ws3 output DVI-I-2-1 eDP-1
 workspace $ws4 output DVI-I-2-1 eDP-1
 workspace $ws5 output eDP-1
 workspace $ws6 output eDP-1
+
+# Presentation Monitor
+workspace $ws10 output DP-2
+
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
 bindsym $mod+2 workspace number $ws2

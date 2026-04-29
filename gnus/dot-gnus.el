@@ -23,6 +23,8 @@
 ;;                          (ebdb-message 0.4)))))
 ;; Gnus Servers
 (setq gnus-select-method '(nnnil ""))
+(setq gnus-check-new-newsgroups nil)
+
 ;; (setq gnus-select-method '(nnimap "Mail"
 ;;                               (nnimap-stream shell)
 ;;                               (nnimap-shell-program "/usr/libexec/dovecot/imap -o mail_location=maildir:~/Mail:LAYOUT=fs")))
@@ -33,21 +35,20 @@
                       (nnimap-server-port 993)
                       (nnimap-stream ssl)
                       (nnir-search-engine imap)
-                      ; @see http://www.gnu.org/software/emacs/manual/html_node/gnus/Expiring-Mail.html
+                                        ; @see http://www.gnu.org/software/emacs/manual/html_node/gnus/Expiring-Mail.html
                       ;; press 'E' to expire email
-                      (nnmail-expiry-target "nnimap+gmail:[Gmail]/Trash")
-                      (nnmail-expiry-wait 90)))
-(setq gnus-verbose 9)
-(setq nnimap-record-commands t)
+                      (nnmail-expiry-target "nnimap+gmail:[Gmail]/Trash")))
+;; (setq gnus-verbose 9)
+;; (setq nnimap-record-commands t)
 ;; OPTIONAL, the setup for Microsoft Hotmail
 (add-to-list 'gnus-secondary-select-methods
              '(nnimap "lsu"
                       (nnimap-address "127.0.0.1")
                       (nnimap-server-port 1143)
                       (nnimap-stream plain)
-		      (nnimap-user "jmend46@lsu.edu")
-		      (nnmail-expiry-target "nnimap+lsu:Trash")
-		      (nnimap-authenticator login)))
+		              (nnimap-user "jmend46@lsu.edu")
+		              (nnmail-expiry-target "nnimap+lsu:Trash")
+		              (nnimap-authenticator login)))
 
 
 (setq gnus-verbose 10
@@ -94,6 +95,7 @@
 ;; Message Mode
 (setq message-fill-column nil)
 (add-hook 'message-mode-hook 'flyspell-mode)
+(add-hook 'message-mode-hook 'visual-line-mode)
 
 ;; Prefer Plaintext
 (setq mm-discouraged-alternatives

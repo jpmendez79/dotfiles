@@ -616,8 +616,12 @@
 	 (sequence "WAITING(w)" "APPT(a)" )
 	 (sequence "|" "CANCELED(c)")))
   (org-directory "~/Sync/org")
+  (setq org-capture-templates
+        (quote (
+                )))
   (org-capture-templates
    '(("a" "Capture an Appointment" entry (file "~/Sync/org/cal_calendar.org") "* %?\n%^T")
+     ("r" "note" entry (file+datetree "~/Sync/org/research.org")  "* %?\nEntered on %U\n  %i")
      ("i" "Capture an idea to inbox" entry (file "~/Sync/org/inbox.org") "* %?\n")))
   (org-agenda-custom-commands
    '(
@@ -641,7 +645,13 @@
        (tags "Project-someday+LEVEL=1") ; review all projects (assuming you use todo keywords to designate projects)
        (tags-todo "-someday+TODO=\"WAITING\"")
 
-       (tags "someday+LEVEL=2")))))
+       (tags "someday+LEVEL=2")))
+     ("D" "Daily Review "
+      ((agenda ""
+               ((org-agenda-overriding-header "Completed Tasks")
+                (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
+                (org-agenda-span 'day)))))
+     ))
   (org-refile-targets '((nil :maxlevel . 9)
 			            ("~/Sync/org/someday.org" :maxlevel . 9)
 			            ("~/Sync/org/gtd.org" :maxlevel . 3)
@@ -869,7 +879,7 @@ and assumes the default Org-roam naming scheme."
             :user "cookie")
    :full-and-display-names t
    :default t
-   :subscribed-channels '((wirecell_elee general "DM: Hanyu Wei" dm_team))
+   :subscribed-channels '(("wirecell_elee" "general" "DM: Hanyu Wei" "dm_team"))
    ) ;; using slack-extra-subscribed-channels because I can change it dynamically
   (slack-register-team
    :name "LSU Neutrino Group"

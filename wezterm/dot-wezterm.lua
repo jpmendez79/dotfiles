@@ -15,6 +15,12 @@ config.ssh_domains = {
     username = "jpmendez"
   },
 }
+-- config.font = wezterm.font 'Fira Code'
+-- You can specify some parameters to influence the font selection;
+-- for example, this selects a Bold, Italic font variant.
+-- config.font =
+  wezterm.font('JetBrains Mono', { weight = 'Bold', italic = true })
+  
 -- How many lines of scrollback you want to retain per tab
 config.scrollback_lines = 3500
 config.enable_tab_bar = false

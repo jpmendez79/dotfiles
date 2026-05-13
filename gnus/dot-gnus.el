@@ -96,20 +96,25 @@
 (setq message-fill-column nil)
 (add-hook 'message-mode-hook 'flyspell-mode)
 (add-hook 'message-mode-hook 'visual-line-mode)
+(add-hook 'message-mode-hook 'ebdb-complete-enable)
+
 
 ;; Prefer Plaintext
 (setq mm-discouraged-alternatives
       '("text/html" "text/richtext"))
 
+(require 'ebdb-gnus)
+(require 'ebdb-message)
+(ebdb-insinuate-gnus)
 ;; EBDB Popup Window
 (gnus-add-configuration
  '(article
    (horizontal 1.0
-	       (vertical 25
-			 (group 1.0))
-	       (vertical 1.0
-			 (summary 0.25 point)
-			 (article 1.0)))))
+	           (vertical 25
+			             (group 1.0))
+	           (vertical 1.0
+			             (summary 0.25 point)
+			             (article 1.0)))))
 (gnus-add-configuration
  '(summary
    (horizontal 1.0

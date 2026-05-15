@@ -1,5 +1,5 @@
 # -*-conf-*-
-IMAPAccount gmail
+IMAPAccount personal
 # Address to connect to
 Host imap.gmail.com
 User jessepmendez79@gmail.com
@@ -14,15 +14,15 @@ CertificateFile /etc/ssl/certs/ca-certificates.crt
 #CertificateFile ~/.cert/Equifax_Secure_CA.pem
 
 IMAPStore gmail-remote
-Account gmail
+Account personal
 
 MaildirStore gmail-local
 SubFolders Verbatim
 # The trailing "/" is important
-Path ~/Mail/personal/
-Inbox ~/Mail/personal/Inbox
+Path ~/.mail/personal/
+Inbox ~/.mail/personal/Inbox
 
-Channel gmail
+Channel personal
 Far :gmail-remote:
 Near :gmail-local:
 # Exclude everything under the internal [Gmail] folder, except the interesting folders
@@ -37,32 +37,32 @@ Expunge Both
 # Save the synchronization state files in the relevant directory
 SyncState *
 
-IMAPAccount university
+IMAPAccount lsu
 Host 127.0.0.1
 Port 1143
 User jmend46@lsu.edu
 # PassCmd "gpg2 -q -d ~/.authinfo.gpg | awk -F'\"' 'FNR == 4 {print $2}'"
-PassCmd "pass show auth/lsu_sso | head -n1"
+PassCmd "pass show token/mbsync_lsu"
 # Is it literally the comment?
 # For whatever reason mbsync NEEDS a comment string below the above passcmd
 TLSType None
 Authmechs LOGIN
 PipelineDepth 1
 
-IMAPStore university-remote
-Account university
+IMAPStore lsu-remote
+Account lsu
 MaxSize 40M
 PathDelimiter /
 
-MaildirStore university-local
+MaildirStore lsu-local
 # AltMap yes
 Subfolders Verbatim
-Path ~/Mail/lsu/
-Inbox ~/Mail/lsu/Inbox
+Path ~/.mail/lsu/
+Inbox ~/.mail/lsu/Inbox
 
-Channel university
-Far :university-remote:
-Near :university-local:
+Channel lsu
+Far :lsu-remote:
+Near :lsu-local:
 SyncState *
 Patterns *
 Create Both

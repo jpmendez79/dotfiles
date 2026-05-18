@@ -22,20 +22,84 @@ SubFolders Verbatim
 Path ~/.mail/personal/
 Inbox ~/.mail/personal/Inbox
 
-Channel personal
+# CONNECTIONS SPECIFY LINKS BETWEEN REMOTE AND LOCAL FOLDERS
+#
+# CONNECTIONS ARE SPECIFIED USING PATTERNS, WHICH MATCH REMOTE MAIl
+# FOLDERS. SOME COMMONLY USED PATTERS INCLUDE:
+#
+# 1 "*" TO MATCH EVERYTHING
+# 2 "!DIR" TO EXCLUDE "DIR"
+# 3 "DIR" TO MATCH DIR
+
+Channel gmail-inbox
 Far :gmail-remote:
 Near :gmail-local:
-# Exclude everything under the internal [Gmail] folder, except the interesting folders
-Patterns *
+Patterns "INBOX"
+Create Both
+Expunge Both
+SyncState *
+
+Channel gmail-sent
+Far :gmail-remote:"[Gmail]/Sent Mail"
+Near :gmail-local:"Sent Mail"
+Create Both
+Expunge Both
+SyncState *
+
+Channel gmail-all
+Far :gmail-remote:"[Gmail]/All Mail"
+Near :gmail-local:"All Mail"
+Create Both
+Expunge Both
+SyncState *
+
+# Channel gmail-starred
+# Far :gmail-remote:"[Gmail]/Starred"
+# Near :gmail-local:"Starred"
+# Create Both
+# Expunge Both
+# SyncState *
+
+Channel gmail-trash
+Far :gmail-remote:"[Gmail]/Trash"
+Near :gmail-local:"Trash"
+Create Both
+Expunge Both
+SyncState *
+
+# GROUPS PUT TOGETHER CHANNELS, SO THAT WE CAN INVOKE
+# MBSYNC ON A GROUP TO SYNC ALL CHANNELS
+#
+# FOR INSTANCE: "mbsync gmail" GETS MAIL FROM
+# "gmail-inbox", "gmail-sent", and "gmail-trash"
+#
+Group gmail
+Channel gmail-inbox
+Channel gmail-sent
+Channel gmail-trash
+Channel gmail-all
+# Channel gmail-starred
+
+
+
+# Channel personal
+# Far :gmail-remote:
+# Near :gmail-local:
+# # Exclude everything under the internal [Gmail] folder, except the interesting folders
+# Patterns *
 # ![Gmail]* "[Gmail]/Sent Mail" "[Gmail]/Starred" "[Gmail]/All Mail [Gmail]/Trash"
 # Or include everything
 #Patterns *
 # Automatically create missing mailboxes, both locally and on the server
-Create Both
+# Create Both
 # Sync the movement of messages between folders and deletions, add after making sure the sync works
-Expunge Both
-# Save the synchronization state files in the relevant directory
-SyncState *
+
+
+
+
+# Expunge Both
+# # Save the synchronization state files in the relevant directory
+# SyncState *
 
 IMAPAccount lsu
 Host 127.0.0.1

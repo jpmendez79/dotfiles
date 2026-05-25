@@ -700,7 +700,7 @@
   )
 
 ;; (use-package org-gantt)
-(load-file "~/.emacs.d/var/lisp/org-gantt.el")
+;; (load-file "~/.emacs.d/var/lisp/org-gantt.el")
 ;; Managing Bibliographies
 (use-package bibtex
   :custom

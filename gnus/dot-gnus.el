@@ -1,4 +1,5 @@
-
+;; Hooks
+;; (add-hook 'gnus-before-startup-hook '(start-process "mbsync" "*mbsync out*" "mbsync" "-a" "-q"))
 ;; Personal Information
 (setq user-full-name "Jesse Mendez")
 (setq user-mail-address "jmend46@lsu.edu")
@@ -118,10 +119,10 @@
 (gnus-add-configuration
  '(summary
    (horizontal 1.0
-	       (vertical 25
-			 (group 1.0))
-	       (vertical 1.0
-			 (summary 1.0 point)))))
+	           (vertical 25
+			             (group 1.0))
+	           (vertical 1.0
+			             (summary 1.0 point)))))
 ;; (require 'gnus-desktop-notify)
 ;; (gnus-desktop-notify-mode)
 ;; (gnus-demon-add-rescan)

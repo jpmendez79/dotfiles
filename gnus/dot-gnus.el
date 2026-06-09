@@ -123,6 +123,9 @@
 			             (group 1.0))
 	           (vertical 1.0
 			             (summary 1.0 point)))))
+(require 'mbsync)
+(add-hook 'mbsync-exit-hook 'gnus-group-get-new-news)
+(define-key gnus-group-mode-map (kbd "f") 'mbsync)
 ;; (require 'gnus-desktop-notify)
 ;; (gnus-desktop-notify-mode)
 ;; (gnus-demon-add-rescan)

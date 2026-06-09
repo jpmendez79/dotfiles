@@ -1594,6 +1594,8 @@ and assumes the default Org-roam naming scheme."
 (use-package ox-tufte
   :init
   (require 'ox-tufte))
+
+(use-package mbsync)
 ;; Configure the built-in Emacs server to start after initialization,
 ;; allowing the use of the emacsclient command to open files in the
 ;; current session.

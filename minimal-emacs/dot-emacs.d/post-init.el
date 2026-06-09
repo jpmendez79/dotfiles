@@ -757,17 +757,23 @@ and assumes the default Org-roam naming scheme."
       (goto-char (point-min))
       (org-set-property
        "modified" (format-time-string "[%Y-%m-%d %a %H:%M]")))))
-
 (use-package org-roam
   :hook ((org-mode . visual-line-mode))
   :bind
-  (("C-c r j" . org-roam-dailies-capture-today)
+  (("C-c d c" . org-roam-dailies-capture-today)
+   ("C-c d ." . org-roam-dailies-goto-today)
+   ("C-c d n" . org-roam-dailies-goto-next-note)
+   ("C-c d p" . org-roam-dailies-goto-previous-note)
+   ("C-c d d" . org-roam-dailies-goto-date)
+   ("C-c d t" . org-roam-dailies-goto-tomorrow)
+   ("C-c d y" . org-roam-dailies-goto-yesterday)
    ("C-c r f" . org-roam-node-find)
    ("C-c r i" . org-roam-node-insert)
    )
   :custom
   (org-roam-directory "~/Sync/org/roam")
   )
+
 (org-roam-db-autosync-mode)
 (add-hook 'before-save-hook #'org-roam-insert-created-property)
 (add-hook 'before-save-hook #'org-roam-insert-modified-property)

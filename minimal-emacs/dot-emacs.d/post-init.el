@@ -606,7 +606,9 @@
   (org-attach-use-inheritance t)
   ;; (org-tags-exclude-from-inheritance "project")
   (org-attach-id-dir "~/Sync/org/roam/assets/")
-  (org-agenda-files "~/Sync/org/agenda-list.txt")
+  (org-agenda-files '("~/Sync/org/gtd.org" "~/Sync/org/project.org" "~/Sync/org/todo.org" "~/Sync/org/cal_calendar.org"))
+
+  (setq org-agenda-files )
   (org-agenda-timegrid-use-ampm t)
   (org-agenda-include-diary t)
   (calendar-mark-diary-entries-flag t)
@@ -945,22 +947,33 @@ and assumes the default Org-roam naming scheme."
              eglot-format-buffer))
 
 ;; Treesitter Grammars
-(setq treesit-language-source-alist
-      '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
-        (c . ("https://github.com/tree-sitter/tree-sitter-c.git"))
-	    (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp.git"))
-        (make . ("https://github.com/alemuller/tree-sitter-make"))
-        (python . ("https://github.com/tree-sitter/tree-sitter-python"))))
-(setq major-mode-remap-alist
-      '((bash-mode . bash-ts-mode)
-	    (python-mode . python-ts-mode)
-	    (c-mode . c-ts-mode)
-        (c++-mode . c++-ts-mode)
-        (c-or-c++-mode . c-or-c++-ts-mode)
-	    ))
+;; (use-package tree-sitter-langs ;; grammar bundle
+;;   :after tree-sitter
+;;   :custom (global-tree-sitter-mode t))
+
+(use-package treesit-auto ;; auto-install missing grammars
+  :ensure t
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
+;; (setq treesit-language-source-alist
+;;       '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
+;;         (c . ("https://github.com/tree-sitter/tree-sitter-c.git"))
+;; 	    (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp.git"))
+;;         (make . ("https://github.com/alemuller/tree-sitter-make"))
+;;         (python . ("https://github.com/tree-sitter/tree-sitter-python"))))
+;; (setq major-mode-remap-alist
+;;       '((bash-mode . bash-ts-mode)
+;; 	    (python-mode . python-ts-mode)
+;; 	    (c-mode . c-ts-mode)
+;;         (c++-mode . c++-ts-mode)
+;;         (c-or-c++-mode . c-or-c++-ts-mode)
+;; 	    ))
 
 (use-package c-ts-mode
-  :hook (c-or-c++-ts-mode . eglot-ensure)
   :config
   (setq c-ts-mode-indent-style "k&r")
   (setq c++-ts-mode-indent-style "k&r")
@@ -1054,6 +1067,16 @@ and assumes the default Org-roam naming scheme."
 ;;   (define-key evil-normal-state-map "za" 'kirigami-toggle-fold)
 ;;   (define-key evil-normal-state-map "zr" 'kirigami-open-folds)
 ;;   (define-key evil-normal-state-map "zm" 'kirigami-close-folds))
+(use-package diff-hl
+  :commands (diff-hl-mode
+             global-diff-hl-mode)
+  :hook (prog-mode . diff-hl-mode)
+  :init
+  (setq diff-hl-flydiff-delay 0.4)  ; Faster
+  (setq diff-hl-show-staged-changes nil)  ; Realtime feedback
+  (setq diff-hl-update-async t)  ; Do not block Emacs
+  (setq diff-hl-global-modes '(not pdf-view-mode image-mode)))
+
 (use-package tramp
   :config
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)

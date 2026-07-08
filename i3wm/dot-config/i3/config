@@ -40,7 +40,7 @@ exec --no-startup-id pasystray
 exec --no-startup-id blueman-applet
 exec --no-startup-id hsetroot -fill ~/pedro.jpg
 exec --no-startup-id ~/.davmail/davmail
-
+exec --no-startup-id ~/bin/kanataa-tray-linux
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status

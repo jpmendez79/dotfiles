@@ -604,6 +604,7 @@
   (org-plantuml-exec-mode 'jar)
   (org-plantuml-jar-path (expand-file-name "~/Sync/bin/plantuml-1.2026.1.jar"))
   (org-attach-use-inheritance t)
+  (org-attach-store-link-p "file")
   ;; (org-tags-exclude-from-inheritance "project")
   (org-attach-id-dir "~/Sync/org/roam/assets/")
   (org-agenda-files '("~/Sync/org/gtd.org" "~/Sync/org/project.org" "~/Sync/org/todo.org" "~/Sync/org/cal_calendar.org"))
@@ -1382,6 +1383,13 @@ and assumes the default Org-roam naming scheme."
 ;; modification date, etc.) and all the files in the `dired-omit-files' regular
 ;; expression for a cleaner display.
 (add-hook 'dired-mode-hook #'dired-hide-details-mode)
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (define-key dired-mode-map (kbd "C-c C-x c")
+                        (lambda ()
+                          (interactive)
+                          (let ((org-attach-method 'cp))
+                            (call-interactively #'org-attach-dired-to-subtree))))))
 
 ;; Hide files from dired
 (setq dired-omit-files (concat "\\`[.]\\'"

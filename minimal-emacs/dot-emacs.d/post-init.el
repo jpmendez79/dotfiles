@@ -883,7 +883,8 @@ and assumes the default Org-roam naming scheme."
   ;; :hook (slack-mode-hook . emojify-mode)
   :bind (("C-c s K" . slack-stop)
          ("C-c s c" . slack-select-rooms)
-         ("C-c s u" . slack-select-unread-rooms)
+         ("C-c s T" . slack-change-current-team)
+         ("caaaa-c s u" . slack-select-unread-rooms)
          ("C-c s U" . slack-user-select)
          ("C-c s s" . slack-search-from-messages)
          ("C-c s J" . slack-jump-to-browser)
@@ -964,7 +965,8 @@ and assumes the default Org-roam naming scheme."
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
   :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
   :config
-  (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
+  (claude-code-ide-emacs-tools-setup)
+  (claude-code-ide-terminal-backend 'eat)) ; Optionally enable Emacs MCP tools
 
 ;; (setq treesit-language-source-alist
 ;;       '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))

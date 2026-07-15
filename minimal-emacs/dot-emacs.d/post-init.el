@@ -960,6 +960,12 @@ and assumes the default Org-roam naming scheme."
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
+(use-package claude-code-ide
+  :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
+  :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
+  :config
+  (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
+
 ;; (setq treesit-language-source-alist
 ;;       '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
 ;;         (c . ("https://github.com/tree-sitter/tree-sitter-c.git"))

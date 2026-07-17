@@ -884,7 +884,7 @@ and assumes the default Org-roam naming scheme."
   :bind (("C-c s K" . slack-stop)
          ("C-c s c" . slack-select-rooms)
          ("C-c s T" . slack-change-current-team)
-         ("caaaa-c s u" . slack-select-unread-rooms)
+         ("C-c s u" . slack-select-unread-rooms)
          ("C-c s U" . slack-user-select)
          ("C-c s s" . slack-search-from-messages)
          ("C-c s J" . slack-jump-to-browser)

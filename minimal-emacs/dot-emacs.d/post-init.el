@@ -600,9 +600,8 @@
   (org-attach-store-link-p "file")
   ;; (org-tags-exclude-from-inheritance "project")
   (org-attach-id-dir "~/Sync/org/roam/assets/")
-  (org-agenda-files '("~/Sync/org/gtd.org" "~/Sync/org/project.org" "~/Sync/org/todo.org" "~/Sync/org/cal_calendar.org"))
+  (org-agenda-files '("~/Sync/org/gtd.org" "~/Sync/org/project.org" "~/Sync/org/todo.org" "~/Sync/org/cal_calendar.org" "~/Sync/org/calendar-beorg.org"))
 
-  (setq org-agenda-files )
   (org-agenda-timegrid-use-ampm t)
   (org-agenda-include-diary t)
   (calendar-mark-diary-entries-flag t)
@@ -959,7 +958,7 @@ and assumes the default Org-roam naming scheme."
   :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
   :config
   (claude-code-ide-emacs-tools-setup)
-  (claude-code-ide-terminal-backend 'eat)) ; Optionally enable Emacs MCP tools
+  (setq claude-code-ide-terminal-backend 'eat)) ; Optionally enable Emacs MCP tools
 
 ;; (setq treesit-language-source-alist
 ;;       '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))

@@ -547,7 +547,7 @@
   (org-plantuml-exec-mode 'jar)
   (org-plantuml-jar-path (expand-file-name "~/Sync/bin/plantuml-1.2026.1.jar"))
   (org-attach-use-inheritance t)
-  (org-attach-store-link-p "file")
+  (org-attach-store-link-p 'file)
   ;; (org-tags-exclude-from-inheritance "project")
   (org-attach-id-dir "~/Sync/org/roam/assets/")
   (org-agenda-files '("~/Sync/org/gtd.org" "~/Sync/org/project.org" "~/Sync/org/todo.org" "~/Sync/org/cal_calendar.org" "~/Sync/org/calendar-beorg.org"))
@@ -605,14 +605,15 @@
 			            ("~/Sync/org/todo.org" :maxlevel . 2)
 			            ("~/Sync/org/project.org" :maxlevel . 9)
 			            ("~/Sync/org/cal_calendar.org" :maxlevel . 9)))
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((ditaa . t)
-     (python . t)
-     (plantuml . t)
-     (calc . t)
-     (shell . t)
-     )))
+  (with-eval-after-load 'org
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((ditaa . t)
+       (python . t)
+       (plantuml . t)
+       (calc . t)
+       (shell . t)
+       ))))
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)

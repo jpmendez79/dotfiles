@@ -657,6 +657,26 @@
      ("file" "Link to a document file." "" )))
   (bibtex-align-at-equal-sign t))
 
+(use-package biblio
+  :custom
+  (biblio-download-directory "~/Sync/org/roam/ref/documents/"))
+
+(use-package ivy-bibtex
+  :config
+  (setq ivy-bibtex-default-action 'ivy-bibtex-edit-notes)
+  (setq bibtex-completion-bibliography '("~/Sync/org/roam/ref/main.bib"))
+  (setq bibtex-completion-library-path '("~/Sync/org/roam/ref/documents"))
+  (setq bibtex-completion-notes-path "~/Sync/org/roam/ref/notes/j")
+  (ivy-add-actions
+   'ivy-bibtex
+   '(("p" ivy-bibtex-open-any "Open pdf, url or DOI"))))
+
+
+  (use-package org-roam-bibtex
+    :after org-roam
+    :config
+    (org-roam-bibtex-mode 1)) ; optional: if using Org-ref v2 or v3 citation links
+
 
 (use-package ledger-mode
   :hook (ledger-mode . my-ledger-hook)
@@ -754,11 +774,23 @@ and assumes the default Org-roam naming scheme."
                                    ;;  "%?"
                                    ;;  :target (file+head "project/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
                                    ;;  :unnarrowed t)
-				                   ("b" "bibliography notes" plain             ; Org-noter integration
-				                    (file "~/Sync/org/roam/ref/notes-template.org")
-				                    :target (file+head "ref/${citekey}.org"
-							                           "#+title: ${title}\n")
-				                    :empty-lines 1)))
+                                   ("r" "bibliography reference" plain
+                                    "%?"
+                                    :if-new
+                                    (file+head "ref/${citekey}.org" "#+title: ${title}\n
+  #+filetags: ${entry-type}
+  - keywords :: ${keywords}
+  - tags ::
+
+  * Analysis of ${entry-type} by ${author}
+  :PROPERTIES:
+  :URL: ${url}
+  :NOTER_DOCUMENT: ~/Sync/org/roam/ref/documents/${citekey}.pdf
+  :NOTER_PAGE:
+  :END:")
+                                    :unnarrowed t
+                                    :jump-to-captured t)
+				                   ))
 
 
 
@@ -790,31 +822,6 @@ and assumes the default Org-roam naming scheme."
   ("C-c r l" . consult-org-roam-forward-links)
   ("C-c r s" . consult-org-roam-search))
 
-
-(use-package citar
-  :hook
-  (LaTeX-mode . citar-capf-setup)
-  (org-mode . citar-capf-setup)
-  :custom
-  (citar-bibliography '("~/Sync/bib/main.bib"))
-  (org-cite-global-bibliography '("~/Sync/bib/main.bib"))
-  (citar-library-paths '("~/Sync/bib/documents"))
-  (org-cite-insert-processor 'citar)
-  (org-cite-follow-processor 'citar)
-  (org-cite-activate-processor 'citar)
-  (citar-bibliography org-cite-global-bibliography)
-  ;; optional: org-cite-insert is also bound to C-c C-x C-@
-  :bind
-  (:map org-mode-map :package org ("C-c b" . #'org-cite-insert)))
-
-(use-package citar-embark
-  :after (citar embark)
-  :no-require
-  :config (citar-embark-mode))
-
-(use-package biblio
-  :custom
-  (biblio-download-directory "~/Sync/bib/documents/"))
 
 (use-package orderless
   :ensure t

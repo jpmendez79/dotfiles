@@ -664,7 +664,7 @@
 (use-package ivy-bibtex
   :config
   (setq ivy-bibtex-default-action 'ivy-bibtex-edit-notes)
-  (setq bibtex-completion-bibliography '("~/Sync/org/roam/ref/main.bib"))
+  (setq bibtex-completion-bibliography '("~/Sync/org/roam/ref/zot.bib"))
   (setq bibtex-completion-library-path '("~/Sync/org/roam/ref/documents"))
   (setq bibtex-completion-notes-path "~/Sync/org/roam/ref/notes/j")
   (ivy-add-actions
@@ -743,15 +743,19 @@ and assumes the default Org-roam naming scheme."
 (org-roam-db-autosync-mode)
 (add-hook 'before-save-hook #'org-roam-insert-created-property)
 (add-hook 'before-save-hook #'org-roam-insert-modified-property)
-;; (cl-defmethod org-roam-node-type ((node org-roam-node))
-;;   "Return the TYPE of NODE."
-;;   (condition-case nil
-;; 	  (file-name-nondirectory
-;; 	   (directory-file-name
-;;         (file-name-directory
-;;          (file-relative-name (org-roam-node-file node) org-roam-directory))))
-;;     (error "")))
-(setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+(cl-defmethod org-roam-node-type ((node org-roam-node))
+  "Return the TYPE of NODE."
+  (condition-case nil
+      (file-name-nondirectory
+       (directory-file-name
+        (file-name-directory
+         (file-relative-name (org-roam-node-file node) org-roam-directory))))
+    (error "")))
+
+(setq org-roam-node-display-template
+      (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+
+
 (setq org-roam-dailies-directory "dailies/")
 (setq org-roam-dalies-capture-templates '(("d" "default" entry "* %?" :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>
 "))))
@@ -763,6 +767,11 @@ and assumes the default Org-roam naming scheme."
                                     plain
                                     "%?"
                                     :target (file+head "resources/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n - sequence :: ")
+                                    :unnarrowed t)
+                                   ("p" "project"
+                                    plain
+                                    "%?"
+                                    :target (file+head "projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n - sequence :: ")
                                     :unnarrowed t)
 				                   ("a" "area"
                                     plain
@@ -1393,198 +1402,198 @@ and assumes the default Org-roam naming scheme."
 (setq tooltip-short-delay 0.08) ; Delay before showing a short tooltip (Default: 0.1)
 (tooltip-mode 1)
 
-(use-package org-static-blog
-  :config
-  (setq org-static-blog-publish-title "Jesse Mendez's Online Home")
-  (setq org-static-blog-publish-url "https://jessepmendez.com/")
-  (setq org-static-blog-publish-directory "~/Sync/org/website/jessepmendez.com/")
-  (setq org-static-blog-posts-directory "~/Sync/org/website/posts/")
-  (setq org-static-blog-drafts-directory "~/Sync/org/website/pages")
-  (setq org-static-blog-enable-tags t)
-  (setq org-static-blog-enable-social nil)
-  (setq org-export-with-toc nil)
-  (setq org-export-with-section-numbers nil)
-
-  ;; This header is inserted into the <head> section of every page:
-  ;;   (you will need to create the style sheet at
-  ;;    ~/Sync/10-19_Personal/11_projects/11.12_website_from_scratch/org-blog/static/style.css
-  ;;    and the favicon at
-  ;;    ~/Sync/10-19_Personal/11_projects/11.12_website_from_scratch/org-blog/static/favicon.ico)
-  (setq org-static-blog-page-header
-        "<meta name=\"author\" content=\"Jesse Mendez\">
-<meta name=\"referrer\" content=\"no-referrer\">
-<meta name=\"viewport\" content=\"initial-scale=1,width=device-width,minimum-scale=1\">
-<link href= \"static/tufte.css\" rel=\"stylesheet\" type=\"text/css\" />
-<link href= \"static/ox-tufte.css\" rel=\"stylesheet\" type=\"text/css\" />
-<link rel=\"icon\" href=\"static/favicon.ico\">
-<script defer src=\"https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js\"></script>")
-
-
-  ;; #+HTML_HEAD: <link rel="stylesheet" href="/path/to/tufte.css" type="text/css" />
-  ;; #+HTML_HEAD: <link rel="stylesheet" href="/path/to/ox-tufte.css" type="text/css" />
-
-  ;; <link href= \"static/style.css\" rel=\"stylesheet\" type=\"text/css\" />
-  ;; This preamble is inserted at the beginning of the <body> of every page:
-  ;;   This particular HTML creates a <div> with a simple linked headline
-  ;;   * {
-  ;;   margin: 0;
-  ;;   padding: 0;
-  ;;   box-sizing: border-box;
-  ;; }
-  ;;
-  ;; body {
-  ;;   font-family: Arial, sans-serif;
-  ;; }
-  (defun my/reload-blog-partials ()
-    (setq org-static-blog-page-preamble
-          (with-temp-buffer
-            (insert-file-contents "~/Sync/org/website/preamble.html")
-            (buffer-string))))
-
-  (my/reload-blog-partials)
-
-  (setq org-static-blog-page-preamble
-        (with-temp-buffer
-          (insert-file-contents "~/Sync/org/website/preamble.html")
-          (buffer-string)))
-
-
-  ;;   (setq org-static-blog-page-preamble
-  ;; "
-  ;; <!-- Font Awesome -->
-  ;; <link
-  ;;   rel=\"stylesheet\"
-  ;;   href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css\"
-  ;; />
-  ;;
-  ;; <style>
-  ;;   .site-header {
-  ;;     display: flex;
-  ;;     justify-content: space-between;
-  ;;     align-items: center;
-  ;;     padding: 1rem 2rem;
-  ;;   }
-  ;;
-  ;;   .header-left {
-  ;;     display: flex;
-  ;;     align-items: center;
-  ;;     gap: 1rem;
-  ;;   }
-  ;;
-  ;;   .header-profile {
-  ;;     display: flex;
-  ;;     flex-direction: column;
-  ;;     gap: 0.4rem;
-  ;;   }
-  ;;
-  ;;   .header-socials {
-  ;;     display: flex;
-  ;;     gap: 0.75rem;
-  ;;   }
-  ;;
-  ;;   .header-nav {
-  ;;     display: flex;
-  ;;     gap: 2rem;
-  ;;   }
-  ;;
-  ;;   .header-image {
-  ;;     width: 64px;
-  ;;     height: 64px;
-  ;;     object-fit: cover;
-  ;;     border-radius: 50%;
-  ;;   }
-  ;;
-  ;;   /* Sticky only on non-mobile */
-  ;;   @media (min-width: 701px) {
-  ;;     .site-header {
-  ;;       position: sticky;
-  ;;       top: 0;
-  ;;     }
-  ;;   }
-  ;;
-  ;;   /* Mobile layout */
-  ;;   @media (max-width: 700px) {
-  ;;     .site-header {
-  ;;       flex-direction: column;
-  ;;       gap: 1rem;
-  ;;       text-align: center;
-  ;;     }
-  ;;
-  ;;     .header-left {
-  ;;       flex-direction: column;
-  ;;     }
-  ;;
-  ;;     .header-nav {
-  ;;       flex-wrap: wrap;
-  ;;       justify-content: center;
-  ;;     }
-  ;;   }
-  ;; </style>
-  ;;
-  ;; <header class=\"site-header\">
-  ;;
-  ;;   <div class=\"header-left\">
-  ;;
-  ;;     <img
-  ;;       src=\"profile.jpg\"
-  ;;       alt=\"Profile\"
-  ;;       class=\"header-image\"
-  ;;     />
-  ;;
-  ;;     <div class=\"header-profile\">
-  ;;
-  ;;       <div>Your Name</div>
-  ;;
-  ;;       <div class=\"header-socials\">
-  ;;         <a href=\"https://github.com/yourusername\">
-  ;;           <i class=\"fa-brands fa-github\"></i>
-  ;;         </a>
-  ;;
-  ;;         <a href=\"https://orcid.org/0000-0000-0000-0000\">
-  ;;           <i class=\"fa-brands fa-orcid\"></i>
-  ;;         </a>
-  ;;
-  ;;         <a href=\"https://scholar.google.com/\">
-  ;;           <i class=\"fa-solid fa-graduation-cap\"></i>
-  ;;         </a>
-  ;;       </div>
-  ;;
-  ;;     </div>
-  ;;   </div>
-  ;;
-  ;;   <nav class=\"header-nav\">
-  ;;     <a href=\"/research\">Research</a>
-  ;;     <a href=\"/posts\">Posts</a>
-  ;;     <a href=\"/about\">About</a>
-  ;;   </nav>
-  ;;
-  ;; </header>
-  ;;
-  ;;
-  ;;         "
-  ;;         )
-
-  ;;         "<div class=\"header\">
-  ;;   <a href=\"https://staticblog.org\">My Static Org Blog</a>
-  ;; </div>"
-  ;; <div class='navbar'>
-  ;; <nav>
-  ;; <a href='/index.html'>Jesse Mendez</a>
-  ;; <a href='/about.html'>About Me</a>
-  ;; <a href='/research.html'>Research</a>
-  ;; <a href='/blog.html'>Blog</a>
-  ;; </nav>
-  ;; </div>
-  ;; </div>
-  ;; This postamble is inserted at the end of the <body> of every page:
-  ;;   This particular HTML creates a <div> with a link to the archive page
-  ;;   and a licensing stub.
-  (setq org-static-blog-page-postamble "<center><a rel=\"license\" href=\"https://creativecommons.org/licenses/by-sa/3.0/\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by-sa/3.0/88x31.png\" /></a><br /><span xmlns:dct=\"https://purl.org/dc/terms/\" href=\"https://purl.org/dc/dcmitype/Text\" property=\"dct:title\" rel=\"dct:type\">bastibe.de</span> by <a xmlns:cc=\"https://creativecommons.org/ns#\" href=\"https://bastibe.de\" property=\"cc:attributionName\" </a> is licensed under a <a rel=\"license\" href=\"https://creativecommons.org/licenses/by-sa/3.0/\">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.</center>")
-
-  ;; This HTML code is inserted into the index page between the preamble and
-  ;;   the blog posts
-  (setq org-static-blog-index-front-matter
-        ""))
+;; (use-package org-static-blog
+;;   :config
+;;   (setq org-static-blog-publish-title "Jesse Mendez's Online Home")
+;;   (setq org-static-blog-publish-url "https://jessepmendez.com/")
+;;   (setq org-static-blog-publish-directory "~/Sync/org/website/jessepmendez.com/")
+;;   (setq org-static-blog-posts-directory "~/Sync/org/website/posts/")
+;;   (setq org-static-blog-drafts-directory "~/Sync/org/website/pages")
+;;   (setq org-static-blog-enable-tags t)
+;;   (setq org-static-blog-enable-social nil)
+;;   (setq org-export-with-toc nil)
+;;   (setq org-export-with-section-numbers nil)
+;;
+;;   ;; This header is inserted into the <head> section of every page:
+;;   ;;   (you will need to create the style sheet at
+;;   ;;    ~/Sync/10-19_Personal/11_projects/11.12_website_from_scratch/org-blog/static/style.css
+;;   ;;    and the favicon at
+;;   ;;    ~/Sync/10-19_Personal/11_projects/11.12_website_from_scratch/org-blog/static/favicon.ico)
+;;   (setq org-static-blog-page-header
+;;         "<meta name=\"author\" content=\"Jesse Mendez\">
+;; <meta name=\"referrer\" content=\"no-referrer\">
+;; <meta name=\"viewport\" content=\"initial-scale=1,width=device-width,minimum-scale=1\">
+;; <link href= \"static/tufte.css\" rel=\"stylesheet\" type=\"text/css\" />
+;; <link href= \"static/ox-tufte.css\" rel=\"stylesheet\" type=\"text/css\" />
+;; <link rel=\"icon\" href=\"static/favicon.ico\">
+;; <script defer src=\"https://cdn.jsdelivr.net/npm/mathjax@4/tex-svg.js\"></script>")
+;;
+;;
+;;   ;; #+HTML_HEAD: <link rel="stylesheet" href="/path/to/tufte.css" type="text/css" />
+;;   ;; #+HTML_HEAD: <link rel="stylesheet" href="/path/to/ox-tufte.css" type="text/css" />
+;;
+;;   ;; <link href= \"static/style.css\" rel=\"stylesheet\" type=\"text/css\" />
+;;   ;; This preamble is inserted at the beginning of the <body> of every page:
+;;   ;;   This particular HTML creates a <div> with a simple linked headline
+;;   ;;   * {
+;;   ;;   margin: 0;
+;;   ;;   padding: 0;
+;;   ;;   box-sizing: border-box;
+;;   ;; }
+;;   ;;
+;;   ;; body {
+;;   ;;   font-family: Arial, sans-serif;
+;;   ;; }
+;;   (defun my/reload-blog-partials ()
+;;     (setq org-static-blog-page-preamble
+;;           (with-temp-buffer
+;;             (insert-file-contents "~/Sync/org/website/preamble.html")
+;;             (buffer-string))))
+;;
+;;   (my/reload-blog-partials)
+;;
+;;   (setq org-static-blog-page-preamble
+;;         (with-temp-buffer
+;;           (insert-file-contents "~/Sync/org/website/preamble.html")
+;;           (buffer-string)))
+;;
+;;
+;;   ;;   (setq org-static-blog-page-preamble
+;;   ;; "
+;;   ;; <!-- Font Awesome -->
+;;   ;; <link
+;;   ;;   rel=\"stylesheet\"
+;;   ;;   href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css\"
+;;   ;; />
+;;   ;;
+;;   ;; <style>
+;;   ;;   .site-header {
+;;   ;;     display: flex;
+;;   ;;     justify-content: space-between;
+;;   ;;     align-items: center;
+;;   ;;     padding: 1rem 2rem;
+;;   ;;   }
+;;   ;;
+;;   ;;   .header-left {
+;;   ;;     display: flex;
+;;   ;;     align-items: center;
+;;   ;;     gap: 1rem;
+;;   ;;   }
+;;   ;;
+;;   ;;   .header-profile {
+;;   ;;     display: flex;
+;;   ;;     flex-direction: column;
+;;   ;;     gap: 0.4rem;
+;;   ;;   }
+;;   ;;
+;;   ;;   .header-socials {
+;;   ;;     display: flex;
+;;   ;;     gap: 0.75rem;
+;;   ;;   }
+;;   ;;
+;;   ;;   .header-nav {
+;;   ;;     display: flex;
+;;   ;;     gap: 2rem;
+;;   ;;   }
+;;   ;;
+;;   ;;   .header-image {
+;;   ;;     width: 64px;
+;;   ;;     height: 64px;
+;;   ;;     object-fit: cover;
+;;   ;;     border-radius: 50%;
+;;   ;;   }
+;;   ;;
+;;   ;;   /* Sticky only on non-mobile */
+;;   ;;   @media (min-width: 701px) {
+;;   ;;     .site-header {
+;;   ;;       position: sticky;
+;;   ;;       top: 0;
+;;   ;;     }
+;;   ;;   }
+;;   ;;
+;;   ;;   /* Mobile layout */
+;;   ;;   @media (max-width: 700px) {
+;;   ;;     .site-header {
+;;   ;;       flex-direction: column;
+;;   ;;       gap: 1rem;
+;;   ;;       text-align: center;
+;;   ;;     }
+;;   ;;
+;;   ;;     .header-left {
+;;   ;;       flex-direction: column;
+;;   ;;     }
+;;   ;;
+;;   ;;     .header-nav {
+;;   ;;       flex-wrap: wrap;
+;;   ;;       justify-content: center;
+;;   ;;     }
+;;   ;;   }
+;;   ;; </style>
+;;   ;;
+;;   ;; <header class=\"site-header\">
+;;   ;;
+;;   ;;   <div class=\"header-left\">
+;;   ;;
+;;   ;;     <img
+;;   ;;       src=\"profile.jpg\"
+;;   ;;       alt=\"Profile\"
+;;   ;;       class=\"header-image\"
+;;   ;;     />
+;;   ;;
+;;   ;;     <div class=\"header-profile\">
+;;   ;;
+;;   ;;       <div>Your Name</div>
+;;   ;;
+;;   ;;       <div class=\"header-socials\">
+;;   ;;         <a href=\"https://github.com/yourusername\">
+;;   ;;           <i class=\"fa-brands fa-github\"></i>
+;;   ;;         </a>
+;;   ;;
+;;   ;;         <a href=\"https://orcid.org/0000-0000-0000-0000\">
+;;   ;;           <i class=\"fa-brands fa-orcid\"></i>
+;;   ;;         </a>
+;;   ;;
+;;   ;;         <a href=\"https://scholar.google.com/\">
+;;   ;;           <i class=\"fa-solid fa-graduation-cap\"></i>
+;;   ;;         </a>
+;;   ;;       </div>
+;;   ;;
+;;   ;;     </div>
+;;   ;;   </div>
+;;   ;;
+;;   ;;   <nav class=\"header-nav\">
+;;   ;;     <a href=\"/research\">Research</a>
+;;   ;;     <a href=\"/posts\">Posts</a>
+;;   ;;     <a href=\"/about\">About</a>
+;;   ;;   </nav>
+;;   ;;
+;;   ;; </header>
+;;   ;;
+;;   ;;
+;;   ;;         "
+;;   ;;         )
+;;
+;;   ;;         "<div class=\"header\">
+;;   ;;   <a href=\"https://staticblog.org\">My Static Org Blog</a>
+;;   ;; </div>"
+;;   ;; <div class='navbar'>
+;;   ;; <nav>
+;;   ;; <a href='/index.html'>Jesse Mendez</a>
+;;   ;; <a href='/about.html'>About Me</a>
+;;   ;; <a href='/research.html'>Research</a>
+;;   ;; <a href='/blog.html'>Blog</a>
+;;   ;; </nav>
+;;   ;; </div>
+;;   ;; </div>
+;;   ;; This postamble is inserted at the end of the <body> of every page:
+;;   ;;   This particular HTML creates a <div> with a link to the archive page
+;;   ;;   and a licensing stub.
+;;   (setq org-static-blog-page-postamble "<center><a rel=\"license\" href=\"https://creativecommons.org/licenses/by-sa/3.0/\"><img alt=\"Creative Commons License\" style=\"border-width:0\" src=\"https://i.creativecommons.org/l/by-sa/3.0/88x31.png\" /></a><br /><span xmlns:dct=\"https://purl.org/dc/terms/\" href=\"https://purl.org/dc/dcmitype/Text\" property=\"dct:title\" rel=\"dct:type\">bastibe.de</span> by <a xmlns:cc=\"https://creativecommons.org/ns#\" href=\"https://bastibe.de\" property=\"cc:attributionName\" </a> is licensed under a <a rel=\"license\" href=\"https://creativecommons.org/licenses/by-sa/3.0/\">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.</center>")
+;;
+;;   ;; This HTML code is inserted into the index page between the preamble and
+;;   ;;   the blog posts
+;;   (setq org-static-blog-index-front-matter
+;;         ""))
 
 (use-package ox-tufte
   :init

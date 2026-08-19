@@ -754,7 +754,7 @@ and assumes the default Org-roam naming scheme."
 
 (setq org-roam-node-display-template
       (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-
+(setq org-roam-node-template-prefixes `(("tags" . "::") ("todo" . "t:")))
 
 (setq org-roam-dailies-directory "dailies/")
 (setq org-roam-dalies-capture-templates '(("d" "default" entry "* %?" :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>
@@ -766,17 +766,17 @@ and assumes the default Org-roam naming scheme."
 (setq org-roam-capture-templates '(("d" "default"
                                     plain
                                     "%?"
-                                    :target (file+head "resources/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n - sequence :: ")
+                                    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n - sequence :: ")
                                     :unnarrowed t)
                                    ("p" "project"
                                     plain
                                     "%?"
-                                    :target (file+head "projects/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n - sequence :: ")
+                                    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n - sequence :: ")
                                     :unnarrowed t)
 				                   ("a" "area"
                                     plain
                                     "%?"
-                                    :target (file+head "areas/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+                                    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
                                     :unnarrowed t)
 				                   ;; ("p" "project"
                                    ;;  plain

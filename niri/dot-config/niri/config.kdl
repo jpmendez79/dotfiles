@@ -268,9 +268,8 @@ layout {
 // See the binds section below for more spawn examples.
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
-spawn-at-startup "waybar"
+spawn-at-startup "/home/.bin/launch_waybar.sh"
 
-spawn-at-startup "/home/jpmendez/bin/kanata-tray-linux"
 spawn-at-startup "blueman-applet"
 spawn-at-startup "/home/jpmendez/.davmail/davmail"
 spawn-at-startup "swaybg" "-i" "pedro.jpg"

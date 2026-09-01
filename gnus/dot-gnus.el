@@ -100,7 +100,7 @@
 (add-hook 'message-mode-hook 'ebdb-complete-enable)
 
 
-;; Prefer Plaintext
+;; prefer Plaintext
 (setq mm-discouraged-alternatives
       '("text/html" "text/richtext"))
 

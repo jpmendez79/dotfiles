@@ -1,9 +1,12 @@
+# -*- mode: bash-ts -*-
+
 # /etc/skel/.bashrc
 #
 # This file is sourced by all *interactive* bash shells on startup,
 # including some apparently interactive shells such as scp and rcp
 # that can't tolerate any output.  So make sure this doesn't display
 # anything or bad things will happen !
+PS1='\[\e[32m\]\u@\H\[\e[0m\] \[\e[94m\]\w\[\e[0m\] \[\e[96m\]λ\[\e[0m\] '
 # Use bash-completion, if available, and avoid double-sourcing
 [[ $PS1 &&
   ! ${BASH_COMPLETION_VERSINFO:-} &&

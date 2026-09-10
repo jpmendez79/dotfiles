@@ -31,6 +31,17 @@ gpgconf --launch gpg-agent
 gpg-connect-agent updatestartuptty /bye > /dev/null
 
 alias yal="ykman oath accounts code -s jmend46 | xclip"
+alias kc="kitten icat"
+alias kd="kitten dnd"
+alias ks="kitten ssh"
+
+cdj() {
+      # Update with your document root folder
+      pushd ~/*/*/1*
+    }
+
+    export cdj
+
 # if ! ps -e -o args | grep -q '^emacs --daemon$'; then
 #   emacs --daemon
 # else

@@ -7,21 +7,21 @@
 ;; (require 'ebdb-message)
 ;; (setq ebdb-message-auto-update-p 'query)
 ;; (setq ebdb-gnus-auto-update-p 'query)
-;; (gnus-add-configuration
-;;  '(article
-;;    (vertical 1.0
-;;      (summary 0.25 point)
-;;      (horizontal 1.0
-;;        (article 1.0)
-;;        (buffer 0.4)))))
+(gnus-add-configuration
+ '(article
+   (vertical 1.0
+             (summary 0.25 point)
+             (horizontal 1.0
+                         (article 1.0)
+                         (buffer 0.4)))))
 
-;; (gnus-add-configuration
-;;  '(article
-;;    (vertical 1.0
-;;              (summary 0.25 point)
-;;              (horizontal 1.0
-;;                          (article 1.0)
-;;                          (ebdb-message 0.4)))))
+(gnus-add-configuration
+ '(article
+   (vertical 1.0
+             (summary 0.25 point)
+             (horizontal 1.0
+                         (article 1.0)
+                         (ebdb-message 0.4)))))
 ;; Gnus Servers
 ;; (setq gnus-select-method '(nnnil ""))
 ;; (setq gnus-check-new-newsgroups nil)
@@ -97,7 +97,7 @@
 (setq message-fill-column nil)
 (add-hook 'message-mode-hook 'flyspell-mode)
 (add-hook 'message-mode-hook 'visual-line-mode)
-(add-hook 'message-mode-hook 'ebdb-complete-enable)
+;; (add-hook 'message-mode-hook 'ebdb-complete-enable)
 
 
 ;; prefer Plaintext

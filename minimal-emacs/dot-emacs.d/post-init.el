@@ -753,7 +753,7 @@ and assumes the default Org-roam naming scheme."
     (error "")))
 
 (setq org-roam-node-display-template
-      (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+      (concat "${type:15} ${title:*} " (propertize "${tags:30}" 'face 'org-tag)))
 (setq org-roam-node-template-prefixes `(("tags" . "::") ("todo" . "t:")))
 
 (setq org-roam-dailies-directory "dailies/")

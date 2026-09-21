@@ -1,64 +1,44 @@
-;; Hooks
-;; (add-hook 'gnus-before-startup-hook '(start-process "mbsync" "*mbsync out*" "mbsync" "-a" "-q"))
 ;; Personal Information
 (setq user-full-name "Jesse Mendez")
 (setq user-mail-address "jmend46@lsu.edu")
-;; (require 'ebdb-gnus)
-;; (require 'ebdb-message)
-;; (setq ebdb-message-auto-update-p 'query)
-;; (setq ebdb-gnus-auto-update-p 'query)
-(gnus-add-configuration
- '(article
-   (vertical 1.0
-             (summary 0.25 point)
-             (horizontal 1.0
-                         (article 1.0)
-                         (buffer 0.4)))))
+(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
+(eval-after-load 'gnus-topic
+  '(progn
+     (setq gnus-message-archive-group '((format-time-string "sent.%Y")))
+     (setq gnus-topic-topology '(("Gnus" visible)
+                                 (("Louisiana State University" visible nil nil))
+                                 (("Gmail" visible nil nil))))
 
-(gnus-add-configuration
- '(article
-   (vertical 1.0
-             (summary 0.25 point)
-             (horizontal 1.0
-                         (article 1.0)
-                         (ebdb-message 0.4)))))
-;; Gnus Servers
-;; (setq gnus-select-method '(nnnil ""))
-;; (setq gnus-check-new-newsgroups nil)
+     ;; key of topic is specified in my sample ".gnus.el"
+     (setq gnus-topic-alist '(("Louisiana State University" ; the key of topic
+                               "lsu/Inbox"
+                               "lsu/Sent"
+                               "lsu/Drafts"
+                               "lsu/Trash")
+                              ("Gmail" ; the key of topic
+                               "personal/Inbox"
+                               "personal/Sent Mail"
+                               "personal/All Mail"
+                               "personal/Drafts"
+                               "personal/Trash")
+
+                              ("Gnus")))))
+
+;; Threads!  I hate reading un-threaded email -- especially mailing
+;; lists.  This helps a ton!
+(setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject)
+;; Also, I prefer to see only the top level message.  If a message has
+;; several replies or is part of a thread, only show the first message.
+;; `gnus-thread-ignore-subject' will ignore the subject and
+;; look at 'In-Reply-To:' and 'References:' headers.
+(setq gnus-thread-hide-subtree t)
+(setq gnus-thread-ignore-subject t)
 
 (setq gnus-select-method '(nnimap "Mail"
                                   (nnimap-stream shell)
                                   (nnimap-shell-program "/usr/libexec/dovecot/imap -o mail_driver=maildir -o mail_path=~/.mail -o mailbox_list_layout=fs")))
 
-;; (add-to-list 'gnus-secondary-select-methods
-;;              '(nnimap "gmail"
-;;                       (nnimap-address "imap.gmail.com")
-;;                       (nnimap-server-port 993)
-;;                       (nnimap-stream ssl)
-;;                       (nnir-search-engine imap)
-;;                                         ; @see http://www.gnu.org/software/emacs/manual/html_node/gnus/Expiring-Mail.html
-;;                       ;; press 'E' to expire email
-;;                       (nnmail-expiry-target "nnimap+gmail:[Gmail]/Trash")))
-;; (setq gnus-verbose 9)
-;; (setq nnimap-record-commands t)
-;; OPTIONAL, the setup for Microsoft Hotmail
-;; (add-to-list 'gnus-secondary-select-methods
-;;              '(nnimap "lsu"
-;;                       (nnimap-address "127.0.0.1")
-;;                       (nnimap-server-port 1143)
-;;                       (nnimap-stream plain)
-;; 		              (nnimap-user "jmend46@lsu.edu")
-;; 		              (nnmail-expiry-target "nnimap+lsu:Trash")
-;; 		              (nnimap-authenticator login)))
-;;
-;;
-;; (setq gnus-verbose 10
-;;       nnimap-debug t)
 
-;; (setq nnmail-expiry-target 'nnmail-fancy-expiry-target
-;;        nnmail-fancy-expiry-targets
-;;        '((to-from "jmend46@lsu.edu" "nnimap:Mail/lsu/Trash")
-;;          (to-from "jessepmendez79@gmail.com" "nnimap:Mail/personal/[Gmail]/Trash")))
 ;; Posting Styles and Replies
 (setq gnus-posting-styles
       '(("gmail"
@@ -67,7 +47,7 @@
           "smtp smtp.gmail.com 587 jessepmendez79@gmail.com"))
         ("lsu"
          (address "Jesse Mendez <jmend46@lsu.edu>")
-         (signature-file "~/.signature.lsu")
+         (signature-file "~/.signature-lsu.html")
          ("X-Message-SMTP-Method"
           "smtp localhost 1025 jmend46@lsu.edu"))))
 (setq message-dont-reply-to-names
@@ -97,17 +77,15 @@
 (setq message-fill-column nil)
 (add-hook 'message-mode-hook 'flyspell-mode)
 (add-hook 'message-mode-hook 'visual-line-mode)
-;; (add-hook 'message-mode-hook 'ebdb-complete-enable)
 
 
-;; prefer Plaintext
-(setq mm-discouraged-alternatives
-      '("text/html" "text/richtext"))
 
 (require 'ebdb-gnus)
 (require 'ebdb-message)
 (ebdb-insinuate-gnus)
-;; EBDB Popup Window
+(add-hook 'message-mode-hook 'ebdb-complete-enable)
+
+;; ebdb Popup Window
 (gnus-add-configuration
  '(article
    (horizontal 1.0
@@ -123,10 +101,11 @@
 			             (group 1.0))
 	           (vertical 1.0
 			             (summary 1.0 point)))))
+
 (require 'mbsync)
 (add-hook 'mbsync-exit-hook 'gnus-group-get-new-news)
 (define-key gnus-group-mode-map (kbd "f") 'mbsync)
-;; (require 'gnus-desktop-notify)
-;; (gnus-desktop-notify-mode)
-;; (gnus-demon-add-rescan)
-;; (setq gnus-desktop-notify-groups 'gnus-desktop-notify-explicit)
+(require 'gnus-desktop-notify)
+(gnus-desktop-notify-mode)
+(gnus-demon-add-rescan)
+(setq gnus-desktop-notify-groups 'gnus-desktop-notify-explicit)

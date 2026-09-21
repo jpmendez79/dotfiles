@@ -100,6 +100,7 @@
 
 ;;; Some useful stuff
 (global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "C-c b") 'ivy-bibtex)
 (use-package auctex
   :config
   (pdf-tools-install :no-query)
@@ -214,15 +215,15 @@
 ;; Cape, or Completion At Point Extensions, extends the capabilities of
 ;; in-buffer completion. It integrates with Corfu or the default completion UI,
 ;; by providing additional backends through completion-at-point-functions.
-(use-package cape
-  :commands (cape-dabbrev cape-file cape-elisp-block)
-  :bind ("C-c p" . cape-prefix-map)
-  :init
-  ;; Add to the global default value of `completion-at-point-functions' which is
-  ;; used by `completion-at-point'.
-  (add-hook 'completion-at-point-functions #'cape-dabbrev)
-  (add-hook 'completion-at-point-functions #'cape-file)
-  (add-hook 'completion-at-point-functions #'cape-elisp-block))
+;; (use-package cape
+;;   :commands (cape-dabbrev cape-file cape-elisp-block)
+;;   :bind ("C-c p" . cape-prefix-map)
+;;   :init
+;;   ;; Add to the global default value of `completion-at-point-functions' which is
+;;   ;; used by `completion-at-point'.
+;;   (add-hook 'completion-at-point-functions #'cape-dabbrev)
+;;   (add-hook 'completion-at-point-functions #'cape-file)
+;;   (add-hook 'completion-at-point-functions #'cape-elisp-block))
 
 ;; Vertico provides a vertical completion interface, making it easier to
 ;; navigate and select from completion candidates (e.g., when `M-x` is pressed).
@@ -618,7 +619,6 @@
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
 (global-set-key "\C-c." 'org-time-stamp)
-(global-set-key "\C-cp" 'org-pomodoro)
 (global-set-key "\C-co" 'org-noter)
 (global-set-key "\C-ck" 'kill-src-block-at-point)
 (global-set-key "\C-cu" 'org-reset-checkbox-state-subtree)
@@ -666,7 +666,7 @@
   (setq ivy-bibtex-default-action 'ivy-bibtex-edit-notes)
   (setq bibtex-completion-bibliography '("~/Sync/org/roam/ref/zot.bib"))
   (setq bibtex-completion-library-path '("~/Sync/org/roam/ref/documents"))
-  (setq bibtex-completion-notes-path "~/Sync/org/roam/ref/notes/j")
+  (setq bibtex-completion-notes-path "~/Sync/org/roam/ref/notes/")
   (ivy-add-actions
    'ivy-bibtex
    '(("p" ivy-bibtex-open-any "Open pdf, url or DOI"))))
@@ -787,11 +787,9 @@ and assumes the default Org-roam naming scheme."
                                     "%?"
                                     :if-new
                                     (file+head "ref/${citekey}.org" "#+title: ${title}\n
-  #+filetags: ${entry-type}
-  - keywords :: ${keywords}
-  - tags ::
+#+filetags: ${entry-type}
 
-  * Analysis of ${entry-type} by ${author}
+* Analysis of ${entry-type} by ${author}
   :PROPERTIES:
   :URL: ${url}
   :NOTER_DOCUMENT: ~/Sync/org/roam/ref/documents/${citekey}.pdf

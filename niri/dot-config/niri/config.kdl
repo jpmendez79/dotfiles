@@ -8,10 +8,12 @@
 // https://niri-wm.github.io/niri/Configuration:-Input
 input {
     keyboard {
+        repeat-delay 800
+        repeat-rate 25
+
         xkb {
             // You can set rules, model, layout, variant and options.
             // For more information, see xkeyboard-config(7).
-
             // For example:
             // layout "us,ru"
             // options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
@@ -274,7 +276,6 @@ layout {
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
 spawn-at-startup "~/.bin/waybar-launcher.sh"
-spawn-at-startup "gentoo-pipewire-launcher"
 spawn-at-startup "blueman-applet"
 spawn-at-startup "/home/jpmendez/.davmail/davmail"
 spawn-at-startup "swaybg" "-i" "pedro.jpg"

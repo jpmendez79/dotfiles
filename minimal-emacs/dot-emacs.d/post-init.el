@@ -632,7 +632,7 @@
 (require 'ox-latex)
 (setq org-export-allow-bind-keywords t)
 (setq org-latex-listings 'minted)
-
+(setq org-cite-global-bibliography '("~/Sync/org/roam/ref/zot.bib"))
 (use-package org-caldav
   :config
   (require 'org-caldav)
@@ -734,6 +734,7 @@ and assumes the default Org-roam naming scheme."
    ("C-c d t" . org-roam-dailies-goto-tomorrow)
    ("C-c d y" . org-roam-dailies-goto-yesterday)
    ("C-c r f" . org-roam-node-find)
+   ("C-c r t" . org-roam-tag-add)
    ("C-c r i" . org-roam-node-insert)
    )
   :custom
@@ -897,7 +898,7 @@ and assumes the default Org-roam naming scheme."
    ))
 
 (use-package emojify)
-
+(setq emojify-display-style 'unicode)
 ;; Set up the Language Server Protocol (LSP) servers using Eglot.
 (use-package eglot
   :ensure nil
@@ -1599,6 +1600,18 @@ and assumes the default Org-roam naming scheme."
   (require 'ox-tufte))
 
 (use-package mbsync)
+
+(use-package buffer-to-pdf
+  :ensure nil
+  :init
+  ;; Then upgrade it with the command `package-vc-upgrade' or `package-vc-upgrade-all'.
+  (unless (package-installed-p 'buffer-to-pdf)
+    (package-vc-install "https://github.com/protesilaos/buffer-to-pdf.git"))
+  :config
+  ;; Configure `buffer-to-pdf-directory' to specify where PDF files are stored.
+  ;; This is the default value:
+  (setq buffer-to-pdf-directory (expand-file-name "~/")))
+
 ;; Configure the built-in Emacs server to start after initialization,
 ;; allowing the use of the emacsclient command to open files in the
 ;; current session.

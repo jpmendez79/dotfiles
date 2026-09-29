@@ -633,6 +633,10 @@
 (setq org-export-allow-bind-keywords t)
 (setq org-latex-listings 'minted)
 (setq org-cite-global-bibliography '("~/Sync/org/roam/ref/zot.bib"))
+
+(use-package org-transclusion-font-lock
+  :after org
+  :config (org-transclusion-font-lock-mode +1))
 (use-package org-caldav
   :config
   (require 'org-caldav)

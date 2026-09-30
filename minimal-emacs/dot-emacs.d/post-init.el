@@ -38,11 +38,31 @@
   ;; the mode `compile-angel-on-load-mode' was activated.
   (compile-angel-on-load-mode 1))
 
-(use-package moe-theme
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(use-package doom-themes
+  :ensure t
+  :custom
+  ;; Global settings (defaults)
+  (doom-themes-enable-bold t)   ; if nil, bold is universally disabled
+  (doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  ;; for treemacs users
+  (doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
   :config
-  (moe-light))
+  (load-theme 'doom-wallust-dark t)
 
-                                        ; This assumes you've installed the package via MELPA.
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Enable custom neotree themes (nerd-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
+;; (use-package moe-theme
+;;   :config
+;;   (moe-light))
+;;
+;;                                         ; this assumes you've installed the package via MELPA.
 (use-package ligature
   :config
   ;; Enable the www ligature in every possible major mode
@@ -634,9 +654,9 @@
 (setq org-latex-listings 'minted)
 (setq org-cite-global-bibliography '("~/Sync/org/roam/ref/zot.bib"))
 
-(use-package org-transclusion-font-lock
-  :after org
-  :config (org-transclusion-font-lock-mode +1))
+;; (use-package org-transclusion-font-lock
+;;   :after org
+;;   :config (org-transclusion-font-lock-mode +1))
 (use-package org-caldav
   :config
   (require 'org-caldav)

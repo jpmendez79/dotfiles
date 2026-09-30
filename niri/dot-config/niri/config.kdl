@@ -278,10 +278,11 @@ layout {
 spawn-at-startup "~/.bin/waybar-launcher.sh"
 spawn-at-startup "blueman-applet"
 spawn-at-startup "/home/jpmendez/.davmail/davmail"
-spawn-at-startup "swaybg" "-i" "pedro.jpg"
-// To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
+// spawn-at-startup "swaybg" "-i" "pedro.jpg"
+// to run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
-
+spawn-sh-at-startup "swaybg -i ~/uB-event/first-neutrino-images-oct23.png"
+spawn-sh-at-startup "~/.cargo/bin/wallust run -u ~/uB-event/first-neutrino-images-oct23.png"
 hotkey-overlay {
     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
     skip-at-startup
@@ -331,14 +332,14 @@ window-rule {
     focus-ring {
         off
     }
-    // background-effect {
-    //     blur true
-    // }
+    background-effect {
+        blur true
+    }
 }
 
 window-rule {
     match app-id="^emacs*"
-
+    opacity 0.8
 
 }
 // Work around WezTerm's initial configure bug

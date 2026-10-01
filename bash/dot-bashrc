@@ -56,4 +56,4 @@ cdj() {
 # put your fun stuff here.
 export VISUAL="emacsclient -c"
 export EDITOR="emacsclient -c"
-export PATH="${PATH}:~/go/bin:~/.bin/"
+export PATH="${PATH}:~/go/bin:~/.bin/:~/.cargo/bin/"

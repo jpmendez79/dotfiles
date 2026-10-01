@@ -48,7 +48,7 @@
   ;; for treemacs users
   (doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
   :config
-  (load-theme 'doom-wallust-dark t)
+  (load-theme 'doom-wallust-light t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)

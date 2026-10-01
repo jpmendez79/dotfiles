@@ -6,6 +6,34 @@
 // Input device configuration.
 // Find the full list of options on the wiki:
 // https://niri-wm.github.io/niri/Configuration:-Input
+// output "DVI-I-1" {
+//     // off
+//     mode "1920x1080@60.000"
+//     // scale 2.0
+//     // transform "90"
+//     // position x=1280 y=0
+//     // variable-refresh-rate // on-demand=true
+//     // focus-at-startup
+//     // backdrop-color "#001100"
+//     // max-bpc 8
+//
+//     hot-corners {
+//         // off
+//         top-left
+//         // top-right
+//         // bottom-left
+//         // bottom-right
+//     }
+//
+//     layout {
+//         // ...layout settings for eDP-1...
+//     }
+//
+//     // Custom modes. Caution: may damage your display.
+//     // mode custom=true "1920x1080@100"
+//     // modeline 173.00  1920 2048 2248 2576  1080 1083 1088 1120 "-hsync" "+vsync"
+// }
+
 input {
     keyboard {
         repeat-delay 800
@@ -328,18 +356,18 @@ window-rule {
 
 window-rule {
     match app-id="^kitty*"
-    opacity 0.8
+    opacity 1.0
     focus-ring {
         off
     }
-    background-effect {
-        blur true
-    }
+    // background-effect {
+    //     blur true
+    // }
 }
 
 window-rule {
     match app-id="^emacs*"
-    opacity 0.8
+    opacity 1.0
 
 }
 // Work around WezTerm's initial configure bug
@@ -672,3 +700,7 @@ binds {
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
 }
+
+// debug {
+//     render-drm-device "/dev/dri/renderD128"
+// }

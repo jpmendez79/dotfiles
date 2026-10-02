@@ -548,6 +548,15 @@
   :commands (org-mode org-version)
   :mode
   ("\\.org\\'" . org-mode)
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((ditaa . t)
+     (python . t)
+     (plantuml . t)
+     (calc . t)
+     (shell . t)
+     ))
   :custom
   (org-log-into-drawer t)
   (org-hide-leading-stars t)
@@ -625,16 +634,7 @@
 			            ("~/Sync/org/research.org" :maxlevel . 3)
 			            ("~/Sync/org/todo.org" :maxlevel . 2)
 			            ("~/Sync/org/project.org" :maxlevel . 9)
-			            ("~/Sync/org/cal_calendar.org" :maxlevel . 9)))
-  (with-eval-after-load 'org
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((ditaa . t)
-       (python . t)
-       (plantuml . t)
-       (calc . t)
-       (shell . t)
-       ))))
+			            ("~/Sync/org/cal_calendar.org" :maxlevel . 9))))
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-ca" 'org-agenda)
@@ -764,6 +764,9 @@ and assumes the default Org-roam naming scheme."
   :custom
   (org-roam-directory "~/Sync/org/roam")
   )
+
+(use-package org-noter
+  :ensure t)
 
 (org-roam-db-autosync-mode)
 (add-hook 'before-save-hook #'org-roam-insert-created-property)
@@ -930,18 +933,16 @@ and assumes the default Org-roam naming scheme."
              eglot-rename
              eglot-format-buffer))
 
-;; Treesitter Grammars
-;; (use-package tree-sitter-langs ;; grammar bundle
-;;   :after tree-sitter
-;;   :custom (global-tree-sitter-mode t))
-
-(use-package treesit-auto ;; auto-install missing grammars
-  :ensure t
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
+(use-package treesit-langs :ensure t :vc (:url "https://github.com/emacs-tree-sitter/treesit-langs"))
+(setq major-mode-remap-alist '((css-mode . css-ts-mode)
+							   (dockerfile-mode . dockerfile-ts-mode)
+							   (mhtml-mode . html-ts-mode)
+							   (javascript-mode . js-ts-mode)
+							   (json-mode . json-ts-mode)
+							   (typescript-mode . typescript-ts-mode)
+							   (yaml-mode . yaml-ts-mode)
+                               (kdl-mode . kdl-ts-mode)
+                               (bash-mode . bash-ts-mode)))
 
 (use-package claude-code-ide
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)

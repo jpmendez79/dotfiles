@@ -613,12 +613,18 @@
        (tags-todo "-someday+TODO=\"WAITING\"")
 
        (tags "someday+LEVEL=2")))
+     ("A" "Ana" agenda ""
+      ((org-agenda-files '("~/Sync/org/calendar-beorg.org"))
+       (org-agenda-tag-filter-preset '("+aveneriotrejo@gmailcom"))
+       (org-agenda-remove-tags t)
+       (org-agenda-overriding-header "Ana's Calendar")))
      ("D" "Daily Review "
       ((agenda ""
                ((org-agenda-overriding-header "Completed Tasks")
                 (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
                 (org-agenda-span 'day)))))
      ))
+  (org-agenda-tag-filter-preset '("-aveneriotrejo@gmailcom"))
   (org-refile-targets '((nil :maxlevel . 9)
 			            ("~/Sync/org/someday.org" :maxlevel . 9)
 			            ("~/Sync/org/gtd.org" :maxlevel . 3)

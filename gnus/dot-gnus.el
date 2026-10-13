@@ -4,7 +4,7 @@
 (add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
 (eval-after-load 'gnus-topic
   '(progn
-     (setq gnus-message-archive-group '((format-time-string "sent.%Y")))
+     ;; (setq gnus-message-archive-group '((format-time-string "sent.%Y")))
      (setq gnus-topic-topology '(("Gnus" visible)
                                  (("Louisiana State University" visible nil nil))
                                  (("Gmail" visible nil nil))))
@@ -89,18 +89,18 @@
 (gnus-add-configuration
  '(article
    (horizontal 1.0
-	           (vertical 25
-			             (group 1.0))
-	           (vertical 1.0
-			             (summary 0.25 point)
-			             (article 1.0)))))
+               (vertical 25
+                         (group 1.0))
+               (vertical 1.0
+                         (summary 0.25 point)
+                         (article 1.0)))))
 (gnus-add-configuration
  '(summary
    (horizontal 1.0
-	           (vertical 25
-			             (group 1.0))
-	           (vertical 1.0
-			             (summary 1.0 point)))))
+               (vertical 25
+                         (group 1.0))
+               (vertical 1.0
+                         (summary 1.0 point)))))
 
 (require 'mbsync)
 (add-hook 'mbsync-exit-hook 'gnus-group-get-new-news)

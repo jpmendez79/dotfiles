@@ -169,11 +169,12 @@ and assumes the default Org-roam naming scheme."
                 (org-agenda-skip-function '(org-agenda-skip-entry-if 'nottodo 'done))
                 (org-agenda-span 'day))))))
      org-agenda-tag-filter-preset '("-aveneriotrejo@gmailcom")
+     org-refile-allow-creating-parent-nodes t
      org-refile-targets '((nil :maxlevel . 9)
                         ("~/Sync/org/someday.org" :maxlevel . 9)
                         ("~/Sync/org/gtd.org" :maxlevel . 3)
                         ("~/Sync/org/research.org" :maxlevel . 3)
-                        ("~/Sync/org/todo.org" :maxlevel . 2)
+                        ("~/Sync/org/todo.org" :maxlevel . 1)
                         ("~/Sync/org/project.org" :maxlevel . 9)
                         ("~/Sync/org/cal_calendar.org" :maxlevel . 9))
      org-tags-exclude-from-inheritance '(("project"))

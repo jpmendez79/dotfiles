@@ -88,7 +88,8 @@
   (yas-global-mode 1))
 
 ;; Auth-source pass
-(use-package pass
+(use-package auth-source-pass
+  :ensure nil
   :config
   (auth-source-pass-enable)
   (setq auth-sources '(password-store))
@@ -550,7 +551,7 @@
   ("\\.org\\'" . org-mode)
   :custom
   (org-log-into-drawer t)
-  (org-hide-leading-stars t)
+  (org-hide-leading-stars t)            ; Yes
   (org-startup-indented t)
   (org-adapt-indentation nil)
   (org-edit-src-content-indentation 0)
@@ -580,8 +581,8 @@
    '("+Project-someday+LEVEL=1/-DONE-CANCELED-someday" ("NEXT" "WAITING")))
   (org-todo-keywords
    '((sequence "NEXT(n)" "|" "DONE(d)" "Delegated(D)")
-	 (sequence "WAITING(w)" "APPT(a)" )
-	 (sequence "|" "CANCELED(c)")))
+     (sequence "WAITING(w)" "APPT(a)" )
+     (sequence "|" "CANCELED(c)")))
   (org-directory "~/Sync/org")
   (setq org-capture-templates
         (quote (
@@ -626,12 +627,12 @@
      ))
   (org-agenda-tag-filter-preset '("-aveneriotrejo@gmailcom"))
   (org-refile-targets '((nil :maxlevel . 9)
-			            ("~/Sync/org/someday.org" :maxlevel . 9)
-			            ("~/Sync/org/gtd.org" :maxlevel . 3)
-			            ("~/Sync/org/research.org" :maxlevel . 3)
-			            ("~/Sync/org/todo.org" :maxlevel . 2)
-			            ("~/Sync/org/project.org" :maxlevel . 9)
-			            ("~/Sync/org/cal_calendar.org" :maxlevel . 9)))
+                        ("~/Sync/org/someday.org" :maxlevel . 9)
+                        ("~/Sync/org/gtd.org" :maxlevel . 3)
+                        ("~/Sync/org/research.org" :maxlevel . 3)
+                        ("~/Sync/org/todo.org" :maxlevel . 2)
+                        ("~/Sync/org/project.org" :maxlevel . 9)
+                        ("~/Sync/org/cal_calendar.org" :maxlevel . 9)))
   (with-eval-after-load 'org
     (org-babel-do-load-languages
      'org-babel-load-languages
@@ -651,9 +652,9 @@
 (setq org-tags-exclude-from-inheritance '(("project")))
 (setq org-attach-id-dir "~/Sync/org/roam/assets/")
 (setq org-todo-keywords
-	  '((sequence "NEXT(n)" "|" "DONE(d)" "Delegated(D)")
-	    (sequence "WAITING(w)" "APPT(a)" )
-	    (sequence "|" "CANCELED(c)")))
+      '((sequence "NEXT(n)" "|" "DONE(d)" "Delegated(D)")
+        (sequence "WAITING(w)" "APPT(a)" )
+        (sequence "|" "CANCELED(c)")))
 (require 'ox-beamer)
 (require 'ox-latex)
 (setq org-export-allow-bind-keywords t)
@@ -804,12 +805,12 @@ and assumes the default Org-roam naming scheme."
                                     "%?"
                                     :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n - sequence :: ")
                                     :unnarrowed t)
-				                   ("a" "area"
+                                   ("a" "area"
                                     plain
                                     "%?"
                                     :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
                                     :unnarrowed t)
-				                   ;; ("p" "project"
+                                   ;; ("p" "project"
                                    ;;  plain
                                    ;;  "%?"
                                    ;;  :target (file+head "project/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
@@ -828,7 +829,7 @@ and assumes the default Org-roam naming scheme."
   :END:")
                                     :unnarrowed t
                                     :jump-to-captured t)
-				                   ))
+                                   ))
 
 
 
@@ -960,16 +961,16 @@ and assumes the default Org-roam naming scheme."
 ;; (setq treesit-language-source-alist
 ;;       '((bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
 ;;         (c . ("https://github.com/tree-sitter/tree-sitter-c.git"))
-;; 	    (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp.git"))
+;;      (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp.git"))
 ;;         (make . ("https://github.com/alemuller/tree-sitter-make"))
 ;;         (python . ("https://github.com/tree-sitter/tree-sitter-python"))))
 ;; (setq major-mode-remap-alist
 ;;       '((bash-mode . bash-ts-mode)
-;; 	    (python-mode . python-ts-mode)
-;; 	    (c-mode . c-ts-mode)
+;;      (python-mode . python-ts-mode)
+;;      (c-mode . c-ts-mode)
 ;;         (c++-mode . c++-ts-mode)
 ;;         (c-or-c++-mode . c-or-c++-ts-mode)
-;; 	    ))
+;;      ))
 
 (use-package c-ts-mode
   :config
@@ -1367,15 +1368,33 @@ and assumes the default Org-roam naming scheme."
   (uniquify-separator "•")
   (uniquify-after-kill-buffer-p t))
 
+
+;; (use-package dired
+;;   :ensure nil
+;;   :custom
+;;   (dired-auto-revert-buffer t)
+;;   (dired-dwim-target t)
+;;   (dired-guess-shell-alist-user
+;;    `(("\\.\\(png\\|jpe?g\\|tiff\\)" ,(if (eq system-type 'darwin) "open" "xdg-open"))
+;;      ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv")
+;;      (".*" ,(if (eq system-type 'darwin) "open" "xdg-open"))))
+;;   (dired-kill-when-opening-new-dired-buffer t)
+;;   (dired-listing-switches "-alh --group-directories-first")
+;;   (dired-omit-files "^\\.")                                ; with dired-omit-mode (C-x M-o)
+;;   (dired-hide-details-hide-absolute-location t)
+;;   :init
+;;   (add-hook 'dired-mode-hook (lambda ()
+;;                                (dired-omit-mode 1)          ;; Turning this ON also sets the C-x M-o binding.
+;;                                (turn-on-gnus-dired-mode))))  ;; This makes C-c RET C-a add attachments.
 ;; Window dividers separate windows visually. Window dividers are bars that can
 ;; be dragged with the mouse, thus allowing you to easily resize adjacent
 ;; windows.
 ;; https://www.gnu.org/software/emacs/manual/html_node/emacs/Window-Dividers.html
-(add-hook 'after-init-hook #'window-divider-mode)
-
-;; Constrain vertical cursor movement to lines within the buffer
-(setq dired-movement-style 'bounded-files)
-
+;; (add-hook 'after-init-hook #'window-divider-mode)
+;;
+;; ;; Constrain vertical cursor movement to lines within the buffer
+;; (setq dired-movement-style 'bounded-files)
+;;
 ;; Dired buffers: Automatically hide file details (permissions, size,
 ;; modification date, etc.) and all the files in the `dired-omit-files' regular
 ;; expression for a cleaner display.
@@ -1413,6 +1432,7 @@ and assumes the default Org-roam naming scheme."
 
 ;; Enables visual indication of minibuffer recursion depth after initialization.
 (add-hook 'after-init-hook #'minibuffer-depth-indicate-mode)
+
 
 ;; Configure Emacs to ask for confirmation before exiting
 (setq confirm-kill-emacs 'y-or-n-p)

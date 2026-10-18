@@ -7,7 +7,8 @@
 ;; (add-to-list 'package-archives
 ;;              '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (package-initialize)
-
+;; Allow project-aware grep/search tools work without using consult in org roam (or any directory)
+(add-to-list 'project-vc-extra-root-markers ".project-root")
 (use-package org-roam
   :ensure t
   :hook ((org-mode . visual-line-mode))
@@ -170,7 +171,7 @@ and assumes the default Org-roam naming scheme."
                 (org-agenda-span 'day))))))
      org-agenda-tag-filter-preset '("-aveneriotrejo@gmailcom")
      org-refile-allow-creating-parent-nodes t
-     org-refile-use-outline-path t
+     org-refile-use-outline-path 'file
      org-refile-targets '((nil :maxlevel . 9)
                         ("~/Sync/org/someday.org" :maxlevel . 9)
                         ("~/Sync/org/gtd.org" :maxlevel . 3)
@@ -189,3 +190,11 @@ and assumes the default Org-roam naming scheme."
 (global-set-key "\C-co" 'org-noter)
 (global-set-key "\C-ck" 'kill-src-block-at-point)
 (global-set-key "\C-cu" 'org-reset-checkbox-state-subtree)
+  (with-eval-after-load 'eglot
+    (add-to-list
+     'eglot-server-programs
+     '((tex-mode) "digestif")))
+ (add-hook 'tex-mode-hook #'eglot-ensure)
+;; (use-package tex-mode
+;;   :ensure nil
+;;   :hook (latex-mode . eglot-ensure))

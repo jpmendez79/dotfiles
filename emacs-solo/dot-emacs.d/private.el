@@ -172,6 +172,7 @@ and assumes the default Org-roam naming scheme."
      org-agenda-tag-filter-preset '("-aveneriotrejo@gmailcom")
      org-refile-allow-creating-parent-nodes t
      org-refile-use-outline-path 'file
+     org-outline-path-complete-in-steps nil
      org-refile-targets '((nil :maxlevel . 9)
                         ("~/Sync/org/someday.org" :maxlevel . 9)
                         ("~/Sync/org/gtd.org" :maxlevel . 3)

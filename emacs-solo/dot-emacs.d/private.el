@@ -199,3 +199,35 @@ and assumes the default Org-roam naming scheme."
 ;; (use-package tex-mode
 ;;   :ensure nil
 ;;   :hook (latex-mode . eglot-ensure))
+;; (require 'oauth2)
+
+  ;;     message-self-insert-commands nil
+  ;;     message-expand-name-standard-ui t))
+;; (use-package message
+;;   :ensure nil
+;;   :custom
+;;   (message-mail-alias-type 'ecomplete)
+;;   ;; (message-self-insert-commands nil)   ; don't pop up completions while typing
+;;   (message-expand-name-standard-ui t)  ; use normal completion-at-point / TAB
+;;   :hook
+;;   ;; Record To/Cc/From/Reply-To of every message you send
+;;   (message-sent-hook . message-put-addresses-in-ecomplete))
+(use-package message
+  :ensure nil
+  :custom
+  (message-mail-alias-type 'ecomplete)
+  ;; (message-self-insert-commands nil)   ; don't pop up completions while typing
+  (message-expand-name-standard-ui t)  ; use normal completion-at-point / TAB
+  :hook
+  ;; Record To/Cc/From/Reply-To of every message you send
+  (message-sent . message-put-addresses-in-ecomplete))
+
+(setq mendez/zettle-dir '("~/Sync/org/roam" "~/Sync/org/roam/dailies"))
+(defun mendez/zettle-search ()
+  "Search Directory"
+  (interactive)
+  (let ((org-agenda-files mendez/zettle-dir))
+  (message "%s"
+           org-agenda-files)
+  (org-search-view)
+  ))

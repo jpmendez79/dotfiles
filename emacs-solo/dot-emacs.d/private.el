@@ -134,7 +134,7 @@ and assumes the default Org-roam naming scheme."
  org-directory "~/Sync/org"
  org-capture-templates
    '(("a" "Capture an Appointment" entry (file "~/Sync/org/cal_calendar.org") "* %?\n%^T")
-     ("r" "note" entry (file+datetree "~/Sync/org/research.org")  "* %?\nEntered on %U\n  %i")
+     ("r" "note" entry (file+datetree "~/Sync/org/zettelkasten/research.org")  "* %^{PROMPT}\n%<%r>\n  %?")
      ("i" "Capture an idea to inbox" entry (file "~/Sync/org/inbox.org") "* %?\n"))
    org-agenda-custom-commands
    '(
@@ -231,3 +231,24 @@ and assumes the default Org-roam naming scheme."
            org-agenda-files)
   (org-search-view)
   ))
+
+;; Function by Yann Herklotz from his package org-zettelkasten https://git.sr.ht/~ymherklotz/org-zettelkasten/tree/main
+(defun org-zettelkasten--incr-alpha (ident-part)
+  "Increments a string of lowercase letters in IDENT-PART."
+  (let ((carry 0)
+        (new-list nil)
+        (rev-list (reverse (string-to-list ident-part))))
+    (let ((new-val (dolist (ident-el
+                            (cons (+ (car rev-list) 1) (cdr rev-list))
+                            (concat new-list))
+                     (let ((incr-val (+ ident-el carry)))
+                       (if (<= incr-val ?z)
+                           (progn
+                             (setq new-list (cons incr-val new-list))
+                             (setq carry 0))
+                         (setq new-list (cons ?a new-list))
+                         (setq carry 1))))))
+      (if (< 0 carry) (concat "a" new-val) new-val)
+      (message new-val))))
+
+;; (org-zettelkasten--incr-alpha "3a4b2")

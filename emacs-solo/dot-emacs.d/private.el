@@ -252,3 +252,35 @@ and assumes the default Org-roam naming scheme."
       (message new-val))))
 
 ;; (org-zettelkasten--incr-alpha "3a4b2")
+
+(define-abbrev-table 'global-abbrev-table
+    '(;; Arrows
+      ("ra" "→")
+      ("la" "←")
+      ("ua" "↑")
+      ("da" "↓")
+      ;; Latex neutrino symbols
+      ("numu" "\\nu_{\\mu}")
+      ("nue" "\\nu_{e}")
+      ("nus" "\\nu_{s}")
+      ("dm2" "\\Delta{}m^{2}")
+      ("dm41" "\\Delta{}m^{2}_{41}")
+      ("chi2" "\\chi^{2}")
+      ("dchi" "\\Delta\\chi^{2}")
+
+      ;; Utils
+      ("isodate" ""
+       (lambda () (insert (format "%s" (format-time-string "%Y-%m-%dT%H:%M:%S")))))
+
+      ("uuid" ""
+       (lambda () (insert (org-id-uuid))))
+
+      ;; Markdown
+      ("cb" "```@\n\n```"
+       (lambda () (search-backward "@") (delete-char 1)))
+
+      ;; ORG
+      ("ocb" "#+BEGIN_SRC @\n\n#+END_SRC"
+       (lambda () (search-backward "@") (delete-char 1)))
+      ("oheader" "#+TITLE: ###1###\n#+AUTHOR: ###2###\n#+EMAIL: ###3###\n#+OPTIONS: toc:nil\n"
+       emacs-solo/abbrev--replace-placeholders)))

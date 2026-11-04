@@ -233,24 +233,27 @@ and assumes the default Org-roam naming scheme."
   ))
 
 ;; Function by Yann Herklotz from his package org-zettelkasten https://git.sr.ht/~ymherklotz/org-zettelkasten/tree/main
-(defun org-zettelkasten--incr-alpha (ident-part)
-  "Increments a string of lowercase letters in IDENT-PART."
-  (let ((carry 0)
-        (new-list nil)
-        (rev-list (reverse (string-to-list ident-part))))
-    (let ((new-val (dolist (ident-el
-                            (cons (+ (car rev-list) 1) (cdr rev-list))
-                            (concat new-list))
-                     (let ((incr-val (+ ident-el carry)))
-                       (if (<= incr-val ?z)
-                           (progn
-                             (setq new-list (cons incr-val new-list))
-                             (setq carry 0))
-                         (setq new-list (cons ?a new-list))
-                         (setq carry 1))))))
-      (if (< 0 carry) (concat "a" new-val) new-val)
-      (message new-val))))
+;; (defun org-zettelkasten--incr-alpha (ident-part)
+;;   "Increments a string of lowercase letters in IDENT-PART."
+;;   (let ((carry 0)
+;;         (new-list nil)
+;;         (rev-list (reverse (string-to-list ident-part))))
+;;     (let ((new-val (dolist (ident-el
+;;                             (cons (+ (car rev-list) 1) (cdr rev-list))
+;;                             (concat new-list))
+;;                      (let ((incr-val (+ ident-el carry)))
+;;                        (if (<= incr-val ?z)
+;;                            (progn
+;;                              (setq new-list (cons incr-val new-list))
+;;                              (setq carry 0))
+;;                          (setq new-list (cons ?a new-list))
+;;                          (setq carry 1))))))
+;;       (if (< 0 carry) (concat "a" new-val) new-val)
+;;       (message new-val))))
 
+;; (require 'org-zettelkasten)
+(setq org-zettelkasten-directory "~/Sync/org/zettelkasten/")
+(setq org-zettelkasten-mapping-file "~/Sync/org/zettelkasten/org-zettelkasten-index")
 ;; (org-zettelkasten--incr-alpha "3a4b2")
 
 (define-abbrev-table 'global-abbrev-table

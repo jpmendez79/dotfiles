@@ -8,7 +8,6 @@ ssh/dot-ssh/bnl_sdcc.pub
 ssh/dot-ssh/yubi_ssh_key
 ssh/dot-ssh/iphone_ssh
 emacs-vanilla/dot-emacs.d/config.pdf
-gnus/untitled.pdf
 *.pdf
 *.key
 *.pub

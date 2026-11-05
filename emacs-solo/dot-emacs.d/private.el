@@ -255,6 +255,26 @@ and assumes the default Org-roam naming scheme."
 (setq org-zettelkasten-directory "~/Sync/org/zettelkasten/")
 (setq org-zettelkasten-mapping-file "~/Sync/org/zettelkasten/org-zettelkasten-index")
 ;; (org-zettelkasten--incr-alpha "3a4b2")
+(defun emacspeak-wizards-execute-asynchronously (key)
+  "Read key-sequence, then execute its command on a new thread."
+  (interactive (list (read-key-sequence "Key Sequence: ")))
+  (let ((l  (local-key-binding key))
+        (g (global-key-binding key))
+        (k
+         (when-let (map(get-text-property (point) 'keymap))
+           (lookup-key map key))))
+    (cl-flet
+        ((do-it (command)
+                (make-thread command)
+                (message "Running %s on a new thread." command)))
+      (cond
+       ( (commandp k) (do-it k))
+       ( (commandp l) (do-it l))
+       ((commandp g) (do-it g))
+       (t (error "%s is not bound to a command." key))))))
+
+(global-set-key (kbd "C-' a") 'emacspeak-wizards-execute-asynchronously)
+;;→ \chi^{2}
 
 (define-abbrev-table 'global-abbrev-table
     '(;; Arrows
@@ -271,6 +291,9 @@ and assumes the default Org-roam naming scheme."
       ("chi2" "\\chi^{2}")
       ("dchi" "\\Delta\\chi^{2}")
 
+      ;; Latex Structures
+      ("ft" "\\frametitle{###1###}\n###@###"
+       emacs-solo/abbrev--replace-placeholders)
       ;; Utils
       ("isodate" ""
        (lambda () (insert (format "%s" (format-time-string "%Y-%m-%dT%H:%M:%S")))))

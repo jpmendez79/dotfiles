@@ -13,3 +13,4 @@ emacs-vanilla/dot-emacs.d/config.pdf
 *.key
 *.pub
 !*lisp/*.el
+emacs-solo/dot-emacs.d/custom-vars.el

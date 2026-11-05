@@ -4,6 +4,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(bookmark-default-file (emacs-solo--cache-path 'bookmark-file) nil nil "Customized with use-package emacs")
+ '(gnus-asynchronous t)
  '(package-selected-packages '(org-roam)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

@@ -14,7 +14,6 @@
                                "nnimap+LSU:INBOX"
                                "nnimap+LSU:Sent"
                                "nnimap+LSU:Trash")
-                              "nnimap+LSU:drafts"
                               ("Gmail" ; the key of topic
                                "nnimap+Gmail:Inbox"
                                "nnimap+Gmail:Sent Mail"
@@ -34,9 +33,6 @@
 (setq gnus-thread-hide-subtree t)
 (setq gnus-thread-ignore-subject t)
 
-;; (setq gnus-select-method '(nnimap "Mail"
-;;                                   (nnimap-stream shell)
-;;                                   (nnimap-shell-program "/usr/libexec/dovecot/imap -o mail_driver=maildir -o mail_path=~/.mail -o mailbox_list_layout=fs")))
 
 (setq gnus-secondary-select-methods
              '((nnimap "LSU"

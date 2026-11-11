@@ -9,122 +9,10 @@
 (package-initialize)
 ;; Allow project-aware grep/search tools work without using consult in org roam (or any directory)
 (add-to-list 'project-vc-extra-root-markers ".project-root")
-(use-package org-roam
+(use-package pdf-tools
   :ensure t
-  :hook ((org-mode . visual-line-mode))
-  :bind
-  (("C-c d c" . org-roam-dailies-capture-today)
-   ("C-c d ." . org-roam-dailies-goto-today)
-   ("C-c d n" . org-roam-dailies-goto-next-note)
-   ("C-c d p" . org-roam-dailies-goto-previous-note)
-   ("C-c d d" . org-roam-dailies-goto-date)
-   ("C-c d t" . org-roam-dailies-goto-tomorrow)
-   ("C-c d y" . org-roam-dailies-goto-yesterday)
-   ("C-c r f" . org-roam-node-find)
-   ("C-c r t" . org-roam-tag-add)
-   ("C-c r i" . org-roam-node-insert)
-   )
-  :custom
-  (org-roam-directory "~/Sync/org/roam")
-  :config
-  (defun org-roam-insert-created-property ()
-  "Insert :created: property for an Org-roam node.
-
-Does not override the property if it already exists.
-
-Calculation of the creation date is based on the filename of the note,
-and assumes the default Org-roam naming scheme."
-  (interactive)
-  (when (org-roam-file-p)
-    ;; Don't update if the created property already exists
-    (unless (org-entry-get (point-min) "created" t)
-      (let ((creation-time (org-roam-extract-timestamp-from-filepath
-                            (buffer-file-name))))
-        ;; Don't error if the filename doesn't contain a timestamp
-        (when creation-time
-          (save-excursion
-            ;; Ensure point is at the beginning of the buffer
-            (goto-char (point-min))
-            (org-set-property "created" creation-time)))))))
-
-(defun org-roam-extract-timestamp-from-filepath (filepath)
-  "Extract timestamp from the Org-roam FILEPATH assuming it follows the default naming scheme."
-  (let ((filename (file-name-nondirectory filepath)))
-    (when (string-match "\\([0-9]\\{8\\}\\)\\([0-9]\\{4\\}\\)" filename)
-      (let ((year (substring filename (match-beginning 1) (+ (match-beginning 1) 4)))
-            (month (substring filename (+ (match-beginning 1) 4) (+ (match-beginning 1) 6)))
-            (day (substring filename (+ (match-beginning 1) 6) (+ (match-beginning 1) 8)))
-            (hour (substring filename (match-beginning 2) (+ (match-beginning 2) 2)))
-            (minute (substring filename (+ (match-beginning 2) 2) (+ (match-beginning 2) 4))))
-        (format "[%s-%s-%s %s:%s]" year month day hour minute)))))
-
-(defun org-roam-insert-modified-property ()
-  "Update the :modified: property for an Org-roam node upon saving."
-  (when (org-roam-file-p)
-    (save-excursion
-      ;; Ensure property is applied to the whole file
-      (goto-char (point-min))
-      (org-set-property
-       "modified" (format-time-string "[%Y-%m-%d %a %H:%M]")))))
-
-(org-roam-db-autosync-mode)
-(add-hook 'before-save-hook #'org-roam-insert-created-property)
-(add-hook 'before-save-hook #'org-roam-insert-modified-property)
-(cl-defmethod org-roam-node-type ((node org-roam-node))
-  "Return the TYPE of NODE."
-  (condition-case nil
-      (file-name-nondirectory
-       (directory-file-name
-        (file-name-directory
-         (file-relative-name (org-roam-node-file node) org-roam-directory))))
-    (error "")))
-
-(setq org-roam-node-display-template
-      (concat "${type:15} ${title:*} " (propertize "${tags:30}" 'face 'org-tag)))
-(setq org-roam-node-template-prefixes `(("tags" . "::") ("todo" . "t:")))
-
-(setq org-roam-dailies-directory "dailies/")
-(setq org-roam-dalies-capture-templates '(("d" "default" entry "* %?" :target (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>
-"))))
-;; (setq org-roam-dailies-capture-templates '(("j" "journal"
-;; entry
-;; "* %?"
-;; :target (file+head "%<%Y%m%d>.org" "#+title: %<%Y-%m-%d>\n"))))
-(setq org-roam-capture-templates '(("d" "default"
-                                    plain
-                                    "%?"
-                                    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n - sequence :: ")
-                                    :unnarrowed t)
-                                   ("p" "project"
-                                    plain
-                                    "%?"
-                                    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n - sequence :: ")
-                                    :unnarrowed t)
-                                   ("a" "area"
-                                    plain
-                                    "%?"
-                                    :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-                                    :unnarrowed t)
-                                   ;; ("p" "project"
-                                   ;;  plain
-                                   ;;  "%?"
-                                   ;;  :target (file+head "project/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-                                   ;;  :unnarrowed t)
-                                   ("r" "bibliography reference" plain
-                                    "%?"
-                                    :if-new
-                                    (file+head "ref/${citekey}.org" "#+title: ${title}\n
-#+filetags: ${entry-type}
-
-* Analysis of ${entry-type} by ${author}
-  :PROPERTIES:
-  :URL: ${url}
-  :NOTER_DOCUMENT: ~/Sync/org/roam/ref/documents/${citekey}.pdf
-  :NOTER_PAGE:
-  :END:")
-                                    :unnarrowed t
-                                    :jump-to-captured t)
-                                   )))
+ )
+(setq doc-view-resolution 600)
 ;; Org Mode Customizations
 (setq
  org-log-into-drawer t
@@ -290,8 +178,9 @@ and assumes the default Org-roam naming scheme."
       ("dm41" "\\Delta{}m^{2}_{41}")
       ("chi2" "\\chi^{2}")
       ("dchi" "\\Delta\\chi^{2}")
-
-      ;; Latex Structures
+      ("suu" "\\sin{\\theta_{\\mu\\mu}}^{2}")
+      ("g2" "g^{2}")
+      ;; Latex Structure
       ("ft" "\\frametitle{###1###}\n###@###"
        emacs-solo/abbrev--replace-placeholders)
       ;; Utils
